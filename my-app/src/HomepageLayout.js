@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import LoginForm from './LoginApp.js';
-import ImageExampleFluid from './ImageExampleFluid.js';
 import style from './style.js';
 import {
   Button,
@@ -65,7 +64,6 @@ export default class HomepageLayout extends Component {
                 </Menu.Item>
               </Menu>
             </Container>
-
             <Container text>
               <Header
                 as='h1'
@@ -170,3 +168,4 @@ export default class HomepageLayout extends Component {
     )
   }
 }
+

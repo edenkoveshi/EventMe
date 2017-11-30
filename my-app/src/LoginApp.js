@@ -1,9 +1,25 @@
-import React from 'react'
-import { Button, Form, Grid, Header, Image, Message, Segment, Modal, Icon, style } from 'semantic-ui-react'
-import ImageExampleFluid from './ImageExampleFluid.js'
+import React, { Component } from 'react';
+import { Button, Form, Grid, Header, Image, Message, Segment, Modal, Icon, style } from 'semantic-ui-react';
+import { BrowserRouter as Router , Link, Route} from 'react-router-dom';
+import HomepageLayout from './HomepageLayout.js';
 
-const LoginForm = () => (
-  <div className='login-form'>
+
+export default class LoginForm extends React.Component {
+  constructor(props)
+{
+    super();
+    this.state = {}
+    this.handleClick = this.handleClick.bind(this);
+}
+
+  handleClick() {
+    HomepageLayout.state = { visible: false }; //??
+    window.location.href = '/Example';
+  }
+
+        render() {
+          return (
+            <div className='login-form'>
     {/*
       Heads up! The styles below are necessary for the correct render of this example.
       You can do same with CSS, the main idea is that all the elements up to the `Grid`
@@ -13,14 +29,9 @@ const LoginForm = () => (
     trigger= {<Button primary size='huge' >
                 Get Started
                 <Icon name='right arrow' />
-              </Button>}
-    >
-
-    <Modal.Content BackgroundImage='./newyork.jpg'>
-
+              </Button>}>
     <Grid
       textAlign='center'
-      BackgroundImage='./newyork.jpg'
       style={{ height: '100%'}}
       verticalAlign='middle'
     >
@@ -41,8 +52,7 @@ const LoginForm = () => (
               iconPosition='left'
               placeholder='Password'
               type='password'/>
-
-            <Button color='teal' fluid size='large'>Login</Button>
+        <Button onClick={this.handleClick} color='teal' fluid size='large'>Login</Button>
           </Segment>
         </Form>
         <Message>
@@ -50,9 +60,8 @@ const LoginForm = () => (
         </Message>
       </Grid.Column>
     </Grid>
-      </Modal.Content>
       </Modal>
   </div>
-)
-
-export default LoginForm
+    );
+  }
+} 
