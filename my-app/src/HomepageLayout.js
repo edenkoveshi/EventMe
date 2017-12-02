@@ -93,8 +93,7 @@ export default class HomepageLayout extends Component {
                   bordered
                   rounded
                   size='huge'
-                  src='./newyork.jpg'
-                />
+                  src='./newyork.jpg'/>
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
