@@ -16,6 +16,7 @@
 .demo-2 .large-header {
 	background-image: url('../img/2.jpg');
 	background-position: center bottom;
+	background-size: cover;
 }
 
 .demo-3 .large-header {
@@ -49,6 +50,7 @@
 	font-weight: normal;
 	font-size: 8em;
 	padding-left: 10px;
+	top: 45%;
 	text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
 	background-color: rgba(0,0,0,0);
 }
@@ -99,6 +101,18 @@
 	.demo-2 .main-title {
 		font-size: 4em;
 	}
+}
+
+.date{
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	color: #f9f1e9;
+	text-align: center;
+	top: 55%;
+	left: 50%;
+	-webkit-transform: translate3d(-50%,-50%,0);
+	transform: translate3d(-50%,-50%,0);
 }
 
 /* Add a black background color to the top navigation */
