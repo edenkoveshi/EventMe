@@ -8,7 +8,7 @@
         <link rel="stylesheet" type="text/css" href="css/demo.css" />
         <link rel="stylesheet" type="text/css" href="css/component.css" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script src="js/tmp.js"></script>
+        <script src="js/eventtable.js"></script>
 
 
 <style>
@@ -49,6 +49,7 @@
     
         a {
             color: #06c;
+
         }
     
         #main_nav ul {
@@ -61,7 +62,7 @@
         #main_nav li {
             float: left;
             position: relative;
-            width: 350px;
+            width: 352px;
             list-style: none;
             -webkit-transition: .5s;
             transition: .5s;
@@ -134,11 +135,12 @@
                    <nav id="main_nav">
             <ul>
                 <li>
-                    <a href="">Events</a>
+                    <a >Events</a>
                     <ul>
-                        <li><a>My Events</a></li>
-                        <li><a>Events I Attend</a></li>
-                        <li><a>Events I Attended</a></li>
+                        <li><a href="#">Create Event</a></li>
+                        <li><a href="#">My Events</a></li>
+                        <li><a href="#">Events I Attend</a></li>
+                        <li><a href="#">Events I Attended</a></li>
                     </ul>
                 </li>
                 <li>
@@ -189,10 +191,13 @@
                             </ul>
                         </li>
                         <li><input type="checkbox">Movie</input></li>
+                        <li><input type="checkbox">Going Out</input></li>
+                        <li><input type="checkbox">Hanging</input></li>
+                        <li><input type="checkbox">Hiking</input></li>
                     </ul>
                 </li>
                 <li>
-                    <a>Serach</a>
+                    <a href="#">Search</a>
                 </li>
             </ul>
         </nav>
