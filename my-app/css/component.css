@@ -103,14 +103,28 @@
 	}
 }
 
-.date{
-	position: absolute;
+.demo-2 table {
+	font-family: arial, sans-serif;
+	border-collapse: collapse;
+    width: 90%;
+    position: absolute;
 	margin: 0;
 	padding: 0;
 	color: #f9f1e9;
 	text-align: center;
-	top: 55%;
+	top: 50%;
 	left: 50%;
 	-webkit-transform: translate3d(-50%,-50%,0);
 	transform: translate3d(-50%,-50%,0);
 }
+
+.demo-2 td, .demo-2 th {
+	border: 1px solid #dddddd;
+	text-align: left;
+	padding: 8px;
+}
+
+.demo-2 tr:nth-child(even) {
+	background-color: #dddddd;
+}
+
