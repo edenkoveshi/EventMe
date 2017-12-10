@@ -55,11 +55,75 @@
             }
         </style>
 	</head>
+    <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
 	<body>
-		<div class="container demo-2">
+    <!-- Facebook Initialization -->
+    <div id="fb-root"></div>
+    <script>
+        FBLogin=function(){
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId            : '420752561660679',
+                autoLogAppEvents : true,
+                xfbml            : true,
+                version          : 'v2.11'
+            });
+           /* FB.getLoginStatus(function(response) {
+                if (response.status === 'connected') {
+                    window.location.href="frontpage.html";
+                    window.alert("Welcome");
+                }
+                else {*/
+                    FB.login(function(response){
+                        if(response.authResponse)
+                        {
+                            window.alert("Welcome");
+                            window.location.href="frontpage.html";
+                            FB.api('/me',function(response)
+                            {
+                                //window.alert(response.name+response.id)
+                                user.name=response.name;
+                                user.ID=response.id;
+                            })
+                            FB.api('me/friends',function(response)
+                            {
+                                window.alert(JSON.stringify(response));
+                                window.alert(JSON.stringify(reponse.data));
+                                user.friends=response;
+
+                            });
+                            //ADD HERE - INSERT USER TO DB
+
+                        }
+                        else {
+                            window.alert("Login cancelled");
+                        }
+                    },{scope:'user_friends'});
+                //}
+            //});
+        };
+
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk')); }</script>
+    <!-- Import JQuery  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#cb").click(function () {
+                    $("#fb_login").toggle(this.checked);
+                }
+            )
+        })
+    </script>
+    <div class="container demo-2">
 			<div class="content">
                 <div id="large-header" class="large-header">
-                    <canvas id="demo-canvas"></canvas>
+                    <!-- <canvas id="demo-canvas"></canvas> -->
 
                     <!-- Trigger/Open The Modal -->
                     <button id="myBtn" class="main-title">Get Started</button>
@@ -70,9 +134,16 @@
                       <!-- Modal content -->
                       <div class="modal-content">
                         <span class="close">&times;</span>
-                        <a href="frontpage.html">
+                        <!--<a href="frontpage.html">
                             <img src="https://www.thenerdmag.com/wp-content/uploads/facebook-login.png" />
-                        </a>
+                        </a>-->
+                          <!-- Facebook login -->
+                          <a id="fb_login" style="display: none" onclick="return FBLogin()"><img src="img/FB_login.png"></a>
+                          <!-- Checkbox -->
+                          <form action="">
+                              <input type="checkbox" id="cb"><br>I accept sharing my location
+                          </form>
+
                       </div>
 
                     </div>
