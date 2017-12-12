@@ -16,15 +16,11 @@ function buildHtmlTable(selector) {
       var cellValue = myList[i][columns[colIndex]];
       if (cellValue == null) cellValue = "";
       if (columns[colIndex] == "name") {
-        row$.append($('<td>'));
-        row$.append($('<a href="#">').html(cellValue));
-        row$.append($('</a>'));
-        row$.append($('</td>'));
+        row$.append($('<td>'+'<a href="#">'+cellValue+'</a>'+'</td>'+'</tr>'));
       } else {
-        row$.append($('<td>').html(cellValue));
-        row$.append($('</td>'));
+        row$.append($('<td>'+cellValue+'</td>'+'</tr>'));
       }
-    }row$.append($('</tr>'));
+    }
     $(selector).append(row$);
   }
 }
