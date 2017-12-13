@@ -89,11 +89,13 @@
     
         #main_nav ul ul ul {
             left: 100%;
+            width: 50px;
             top: 0;
         }
 
         #main_nav ul ul ul ul{
             left: 100%;
+            width: 50px;
             top: 0;
         }
     
@@ -108,6 +110,10 @@
         #main_nav li li li:hover, #main_nav li li li:hover li {
             background: #bbb;
         }
+
+        #main_nav li li li input:hover, #main_nav li li li:hover input {
+            background: #bbb;
+        }
     
         #main_nav li li li:hover {
             background: #999;
@@ -120,6 +126,25 @@
         #main_nav li:hover > ul {
             visibility: visible;
             opacity: 1;
+        }
+
+        input[type=text] {
+            width: 130px;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: white;
+            background-image: url('searchicon.png');
+            background-position: 10px 10px; 
+            background-repeat: no-repeat;
+            padding: 12px 20px 12px 40px;
+            -webkit-transition: width 0.4s ease-in-out;
+            transition: width 0.4s ease-in-out;
+        }
+
+        input[type=text]:focus {
+            width: 100%;
         }
 
     </style>
@@ -149,13 +174,13 @@
                         <li>
                             <a>Date</a>
                             <ul>
-                                <li><input type="date"></input></li>
+                                <li><input type="date" style="width:100%"></input></li>
                             </ul>
                         </li>
                         <li>
                             <a>Time</a>
                             <ul>
-                                <li><input type="time"></input></li> 
+                                <li><input type="time" style="width:100%"></input></li> 
                             </ul>
                         </li>
                     </ul>
@@ -165,39 +190,42 @@
                     <ul>
                         <li><a>Food</a>
                            <ul>
-                                <li><input type="checkbox">Mexican</input></li>
-                                <li><input type="checkbox">Hamburger</input></li>
-                                <li><input type="checkbox">Italian</input></li>
-                                <li><input type="checkbox">Israeli</input></li>
-                                <li><input type="checkbox">Sushi</input></li>
-                                <li><input type="checkbox">Viatnamise</input></li>
-                                <li><input type="checkbox">Chinese</input></li>
-                                <li><input type="checkbox"></input></li>
+                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Mexican</input></li>
+                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Hamburger</input></li>
+                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Italian</input></li>
+                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Israeli</input></li>
+                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Sushi</input></li>
+                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Viatnamise</input></li>
+                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Chinese</input></li>
+                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox"></input></li>
                             </ul>
                         </li>
 
                         <li><a>Party</a>
                            <ul>
-                                <li><input type="checkbox">Techno</input></li>
-                                <li><input type="checkbox">Salsa</input></li>
-                                <li><input type="checkbox">Main-Stream</input></li>
+                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Techno</input></li>
+                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Salsa</input></li>
+                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Main-Stream</input></li>
                             </ul>
                         </li>
                         <li><a>Shopping</a>
                            <ul>
-                                <li><input type="checkbox">Groceries</input></li>
-                                <li><input type="checkbox">Clothes</input></li>
-                                <li><input type="checkbox">Home Decore</input></li>
+                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Groceries</input></li>
+                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Clothes</input></li>
+                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Home Decore</input></li>
                             </ul>
                         </li>
-                        <li><input type="checkbox">Movie</input></li>
-                        <li><input type="checkbox">Going Out</input></li>
-                        <li><input type="checkbox">Hanging</input></li>
-                        <li><input type="checkbox">Hiking</input></li>
+                        <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Movie</input></li>
+                        <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Going Out</input></li>
+                        <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Hanging</input></li>
+                        <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Hiking</input></li>
                     </ul>
                 </li>
                 <li>
                     <a href="#">Search</a>
+                    <ul>
+                        <li><input type="text" name="search" placeholder="Search.." style="width: 100%;"></input></li>
+                    </ul>
                 </li>
             </ul>
         </nav>
@@ -205,7 +233,7 @@
 
                 <canvas id="demo-canvas"></canvas>
 
-                  <table id="excelDataTable" border="1"></table>
+                  <table id="excelDataTable" style="top: 50%; left: 50%; text-align: center; position: absolute; display: block; height: 200px; overflow-y: scroll; margin-left:auto; margin-right: auto; width: 500px;"></table>
 
               </div>
             </div>
