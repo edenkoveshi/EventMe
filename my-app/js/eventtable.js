@@ -29,7 +29,7 @@ function buildHtmlTable(selector) {
       var cellValue = myList[i][columns[colIndex]];
       if (cellValue == null) cellValue = "";
       if (columns[colIndex] == "name") {
-        row$.append($('<td>'+'<a href="#">'+cellValue+'</a>'+'</td>'+'</tr>'));
+        row$.append($('<td>'+'<a href="event.html">'+cellValue+'</a>'+'</td>'+'</tr>'));
       } else {
         row$.append($('<td>'+cellValue+'</td>'+'</tr>'));
       }

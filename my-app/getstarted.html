@@ -84,11 +84,12 @@
                                 //window.alert(response.name+response.id)
                                 user.name=response.name;
                                 user.ID=response.id;
-                            })
-                            FB.api('me/friends',function(response)
+                            });
+
+                            FB.api('/me/friends',function(response)
                             {
                                 window.alert(JSON.stringify(response));
-                                window.alert(JSON.stringify(reponse.data));
+                                window.alert(JSON.stringify(response.data));
                                 user.friends=response;
 
                             });
@@ -118,7 +119,7 @@
                     $("#fb_login").toggle(this.checked);
                 }
             )
-        })
+        });
     </script>
     <div class="container demo-2">
 			<div class="content">
