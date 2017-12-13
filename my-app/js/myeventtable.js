@@ -15,14 +15,14 @@ function boxChecked(t) {
   if (t.is(':checked')) {
     myList.push({ "child": "abc", "age": 50 });
     $("#excelDataTable tr").remove();
-    buildEventsTable('#excelDataTable');
+    buildMyEventsTable('#excelDataTable');
   }
 }
 
 
 // Builds the HTML Table out of myList.
-function buildEventsTable(selector) {
-  $(selector).append($('<caption>'+"Events"+'</caption>'));
+function buildMyEventsTable(selector) {
+  $(selector).append($('<caption>'+"My Events"+'</caption>'));
   var columns = addAllColumnHeaders(myList, selector);
   for (var i = 0; i < myList.length; i++) {
 
