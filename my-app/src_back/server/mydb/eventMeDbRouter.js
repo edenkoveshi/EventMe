@@ -11,7 +11,17 @@ router.get('/', function(req, res) {
     res.render('index', { title: 'eventMe DB routers home!' });
 });
 
-router.get('/addOpenEvent/:owner_id', (req, res) => {
+router.post('/addOpenEvent', (req, res) => {
+    return new Promise( (resolve, reject) => {
+        es.addOpenEvent(req.body.name,'2','3','4',req.body.time)
+            .then(_=> {
+                res.redirect('/')
+                resolve()
+            }).catch(err => reject(err))
+    })
+})
+
+router.get('/addOpenEventLegacy/:owner_id', (req, res) => {
     return new Promise( (resolve, reject) => {
         es.addOpenEvent(req.params.owner_id,'1','2','3','4')
             .then(_=> {
