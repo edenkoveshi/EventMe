@@ -11,7 +11,7 @@ class eventDAO
     get_event(eventId)
     {
         return DB.db.collection('events').find(
-            {"__id" :  eventId})  //returns a Promise
+            {"eventId" :  eventId}).toArray()  //returns a Promise
     }
 
     get_all_events()

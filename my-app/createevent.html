@@ -2,8 +2,8 @@
 <html lang="en" class="no-js">
 	<head>
         <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
-        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="Examples for creative website header animations using Canvas and JavaScript" />
         <meta name="keywords" content="header, canvas, animated, creative, inspiration, javascript" />
         <meta name="author" content="Codrops" />
@@ -116,11 +116,11 @@
                         </script>
                     </div>
                     <div id="event-properties" class="center" ><!--event creation form-->
-                    <form style="background:cornflowerblue">
+                    <form style="background:cornflowerblue" action="/eventMe/addOpenEvent" method="post">
                         Activity name:
-                        <input type="text" name="Activity_name"/><br>
+                        <input type="text" name="name"/><br>
                         Date and time:
-                        <input type="datetime-local" name="Activity_time"/><br>
+                        <input type="datetime-local" name="time"/><br>
                         Location (Current location will be taken as default):
                         <input type="button" name="Activity_location" value="Click here" onclick="ChooseLocation()"/><br>
                         <!-- Google Maps modal-->
@@ -303,9 +303,10 @@
                         all_fields_set=0;
                 }
                 var check=$('event-properties#filter input:checked').length;
-                if(all_fields_set==1 && check>0)
+                if(all_fields_set==1)
                 {
                     window.alert("Event created successfully!");
+										$("form").submit();
                     //window.location.href="myevents.html";
                 }
                 else{
@@ -324,7 +325,7 @@
         <script src="js/getstarted.js"></script>
         <script type="text/javascript"
          src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js">
-        </script> 
+        </script>
         <script type="text/javascript"
          src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js">
         </script>

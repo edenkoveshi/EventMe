@@ -15,8 +15,6 @@ class eventService {
                 let new_event = new Event(event_id, owner_id, location, type, info, time, own_user[0].friends_list)
                 eventDAO.create_event(new_event)
                     .then(_=> {
-                        console.log('saved! ', new_event)
-                        console.log('own public events:! ', own_user[0].own_public_events)
                         let updated_own_open_event_list = own_user[0].own_public_events
                         updated_own_open_event_list.push(event_id)
                         userDAO.update_user_created_events(owner_id, own_user[0].created_events)
@@ -36,9 +34,8 @@ class eventService {
     getEvent(event_id) {
         return new Promise((resolve, reject) => {
             eventDAO.get_event(event_id)
-                .then(_=> {
-                    console.log('retrieved a new event! ', new_event)
-                    resolve()
+                .then(requested_events=> {
+                    resolve(requested_events[0])
                 }).catch(err => reject(err))
         })
     }

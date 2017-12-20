@@ -11,17 +11,7 @@ router.get('/', function(req, res) {
     res.render('index', { title: 'eventMe DB routers home!' });
 });
 
-router.post('/addOpenEvent', (req, res) => {
-    return new Promise( (resolve, reject) => {
-        es.addOpenEvent(req.body.name,'2','3','4',req.body.time)
-            .then(_=> {
-                res.redirect('/')
-                resolve()
-            }).catch(err => reject(err))
-    })
-})
-
-router.get('/addOpenEventLegacy/:owner_id', (req, res) => {
+router.get('/addOpenEvent/:owner_id', (req, res) => {
     return new Promise( (resolve, reject) => {
         es.addOpenEvent(req.params.owner_id,'1','2','3','4')
             .then(_=> {
@@ -48,7 +38,6 @@ router.get('/getEventById/:event_id', (req, res) => {
             .then(req_event => {
                 console.log(req_event)
                 res.render('req_event');
-                res.redirect('/')
                 resolve()
             }).catch(err => reject(err))
     })
@@ -61,7 +50,6 @@ router.get('/getUserByFbId/:user_fb_id', (req, res) => {
             .then(req_user => {
                 console.log(req_user)
                 //res.render('req_user');
-                res.redirect('/')
                 resolve()
             }).catch(err => reject(err))
     })
