@@ -116,7 +116,7 @@
                         </script>
                     </div>
                     <div id="event-properties" class="center" ><!--event creation form-->
-                    <form style="background:cornflowerblue">
+                    <form style="background:cornflowerblue" action="\addOpenEvent\fakeID" method="post">
                         Activity name:
                         <input type="text" name="Activity_name"/><br>
                         Date and time:
@@ -303,10 +303,11 @@
                         all_fields_set=0;
                 }
                 var check=$('event-properties#filter input:checked').length;
-                if(all_fields_set==1 && check>0)
+                if(all_fields_set==1)
                 {
                     window.alert("Event created successfully!");
                     //window.location.href="myevents.html";
+                    $("form").submit();
                 }
                 else{
                     window.alert("Please fill all non-optional fields.");
