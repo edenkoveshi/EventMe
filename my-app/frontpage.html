@@ -149,7 +149,7 @@
 
     </style>
 	</head>
-	<body onLoad="buildEventsTable('#excelDataTable')">
+	<body onLoad="buildEventsTableMain('#excelDataTable')">
 		<div class="container demo-2">
 
 
@@ -190,41 +190,41 @@
                     <ul>
                         <li><a>Food</a>
                            <ul>
-                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Mexican</input></li>
-                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Hamburger</input></li>
-                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Italian</input></li>
-                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Israeli</input></li>
-                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Sushi</input></li>
-                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Viatnamise</input></li>
-                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Chinese</input></li>
-                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox"></input></li>
+                                <li><input onclick="boxChecked($(this));" name="Food_Mexican" type="checkbox" id="checkbox">Mexican</input></li>
+                                <li><input onclick="boxChecked($(this));" name="Food_Hamburger" type="checkbox" id="checkbox">Hamburger</input></li>
+                                <li><input onclick="boxChecked($(this));" name="Food_Italian" type="checkbox" id="checkbox">Italian</input></li>
+                                <li><input onclick="boxChecked($(this));" name="Food_Israeli" type="checkbox" id="checkbox">Israeli</input></li>
+                                <li><input onclick="boxChecked($(this));" name="Food_Sushi" type="checkbox" id="checkbox">Sushi</input></li>
+                                <li><input onclick="boxChecked($(this));" name="Food_Viatnamise" type="checkbox" id="checkbox">Viatnamise</input></li>
+                                <li><input onclick="boxChecked($(this));" name="Food_Chinese" type="checkbox" id="checkbox">Chinese</input></li>
                             </ul>
                         </li>
 
                         <li><a>Party</a>
                            <ul>
-                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Techno</input></li>
-                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Salsa</input></li>
-                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Main-Stream</input></li>
+                                <li><input onclick="boxChecked($(this));" name="Party_Techno" type="checkbox" id="checkbox">Techno</input></li>
+                                <li><input onclick="boxChecked($(this));" name="Party_Salsa" type="checkbox" id="checkbox">Salsa</input></li>
+                                <li><input onclick="boxChecked($(this));" name="Party_MainStream" type="checkbox" id="checkbox">Main-Stream</input></li>
                             </ul>
                         </li>
                         <li><a>Shopping</a>
                            <ul>
-                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Groceries</input></li>
-                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Clothes</input></li>
-                                <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Home Decore</input></li>
+                                <li><input onclick="boxChecked($(this));" name="Shopping_Groceries" type="checkbox" id="checkbox">Groceries</input></li>
+                                <li><input onclick="boxChecked($(this));" name="Shopping_Clothes" type="checkbox" id="checkbox">Clothes</input></li>
+                                <li><input onclick="boxChecked($(this));" name="Shoppinf_HomeDecore" type="checkbox" id="checkbox">Home Decore</input></li>
                             </ul>
                         </li>
-                        <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Movie</input></li>
-                        <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Going Out</input></li>
-                        <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Hanging</input></li>
-                        <li><input onclick="boxChecked($(this));" name="checkbox" type="checkbox" id="checkbox">Hiking</input></li>
+                        <li><input onclick="boxChecked($(this));" name="Movie" type="checkbox" id="checkbox">Movie</input></li>
+                        <li><input onclick="boxChecked($(this));" name="GoingOut" type="checkbox" id="checkbox">Going Out</input></li>
+                        <li><input onclick="boxChecked($(this));" name="Hanging" type="checkbox" id="checkbox">Hanging</input></li>
+                        <li><input onclick="boxChecked($(this));" name="Hiking" type="checkbox" id="checkbox">Hiking</input></li>
                     </ul>
                 </li>
                 <li>
                     <a href="#">Search</a>
                     <ul>
-                        <li><input type="text" name="search" placeholder="Search.." style="width: 100%;"></input></li>
+                        <li><input type="text" name="search" placeholder="Search.." style="width: 100%;"></input>
+                            <button onclick="displaysearch()">Submit</button></li>
                     </ul>
                 </li>
             </ul>
