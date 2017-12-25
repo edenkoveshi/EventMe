@@ -12,3 +12,5 @@
 my-app/img/join\.jpg
 
 \.idea/
+
+node_modules/

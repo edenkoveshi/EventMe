@@ -11,11 +11,15 @@ router.get('/', function (req, res) {
     res.render('frontpage');
 });
 
+router.get('/createEvent', function (req, res) {
+    res.render('createevent');
+});
+
 router.get('/event/:event_id', function(req, res){
     let p = es.getEvent(req.params.event_id);
     p.then((event) =>
     {   console.log(event);
-        if (event != undefined) {
+        if (event !== undefined) {
             res.render('event', {
                 title: event["title"], // 'my event',
                 event_img: event["image"],//'restaurant.jpeg',
@@ -86,6 +90,10 @@ router.get('/showMeUsers', (req, res) => {
                 resolve()
             }).catch(err => reject(err))
     })
+});
+
+router.get('*', function(req, res){
+    res.status(404).send('what???');
 });
 
 
