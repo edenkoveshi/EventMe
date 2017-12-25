@@ -13,8 +13,8 @@ router.get('/event/:event_id', function(req, res){
     {   console.log(event);
         if (event != undefined) {
             res.render('event', {
-                title: 'my event',
-                event_img: 'restaurant.jpeg',
+                title: event["title"], // 'my event',
+                event_img: event["image"],//'restaurant.jpeg',
                 event_time: event["time"],
                 event_place: event["location"],
                 event_type: event["type"],
@@ -26,18 +26,5 @@ router.get('/event/:event_id', function(req, res){
         }
     });
 });
-
-router.get('/hello', (req, res) => {
-    res.send('Hello World!')
-});
-
-
-router.get('/hello/:name/:lastName', (req, res) => {
-    console.log(req.params);
-    let name = req.params.name;
-    let lastName = req.params.lastName;
-    res.send('Hello ' + name + ' ' + lastName +'!')
-});
-
 
 module.exports = router;

@@ -13,9 +13,9 @@ router.get('/', function(req, res) {
 
 router.get('/addOpenEvent/:owner_id', (req, res) => {
     return new Promise( (resolve, reject) => {
-        es.addOpenEvent(req.params.owner_id,'1','2','3','4')
+        es.addOpenEvent(req.params.owner_id,'Tel Aviv','Eat Out','more info','20:30','My Event','restaurant.jpeg')
             .then(_=> {
-                res.redirect('/')
+                res.redirect('/');
                 resolve()
             }).catch(err => reject(err))
     })
@@ -23,10 +23,10 @@ router.get('/addOpenEvent/:owner_id', (req, res) => {
 
 router.get('/newUser/:fb_id/:f_name/:l_name', (req, res) => {
     return new Promise( (resolve, reject) => {
-        var friend_list = ["0001"]
+        let friend_list = ["0001"];
         us.addUser(req.params.fb_id, req.params.f_name, req.params.l_name, friend_list)
             .then(_=> {
-                res.redirect('/')
+                res.redirect('/');
                 resolve()
             }).catch(err => reject(err))
     })
