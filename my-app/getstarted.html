@@ -68,40 +68,39 @@
                 xfbml            : true,
                 version          : 'v2.11'
             });
-           /* FB.getLoginStatus(function(response) {
-                if (response.status === 'connected') {
-                    window.location.href="frontpage.html";
-                    window.alert("Welcome");
-                }
-                else {*/
-                    FB.login(function(response){
-                        if(response.authResponse)
-                        {
+            FB.login(function(response){
+                    if(response.authResponse)
+                    {
+                        var fb_id;
+                        var first_name;
+                        var last_name;
+                        var friend_list;
+                        var FBPromise=new Promise(function(resolve,reject) {
                             window.alert("Welcome");
-                            window.location.href="frontpage.html";
-                            FB.api('/me',function(response)
-                            {
-                                //window.alert(response.name+response.id)
-                                user.name=response.name;
-                                user.ID=response.id;
+                            FB.api('/me', function (response) {
+                                window.alert(response.name + ' ' +response.id);
+                                var name=response.name.split(" ");
+                                fb_id=response.id;
+                                resolve(response.id);
                             });
-
-                            FB.api('/me/friends',function(response)
-                            {
-                                window.alert(JSON.stringify(response));
-                                window.alert(JSON.stringify(response.data));
-                                user.friends=response;
-
+                            FB.api('/me/friends', function (response) {
+                                friend_list=response.data;
                             });
-                            //ADD HERE - INSERT USER TO DB
+                            first_name=name[0];
+                            last_name=name[1];
+                            });
+                        FBPromise.then(function(result)
+                        {
+                            //addUser(fb_id,first_name,last_name,friend_list);
+                            window.location.href = "createevent.html" + '#' + result;});
 
-                        }
-                        else {
-                            window.alert("Login cancelled");
-                        }
-                    },{scope:'user_friends'});
-                //}
-            //});
+                        //ADD HERE - INSERT USER TO DB
+
+                    }
+                    else {
+                        window.alert("Login cancelled");
+                    }
+                },{scope:'user_friends'});
         };
 
         (function(d, s, id){
@@ -189,5 +188,6 @@
 		</div><!-- /container -->
         <script src="js/rAF.js"></script>
         <script src="js/getstarted.js"></script>
+        <script src="mydb/.idea/userService.js"
 	</body>
 </html>
