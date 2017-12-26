@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <meta name="description" content="Examples for creative website header animations using Canvas and JavaScript" />
+        <meta name="keywords" content="header, canvas, animated, creative, inspiration, javascript" />
+        <meta name="author" content="Codrops" />
+        <link rel="shortcut icon" href="../favicon.ico">
+        <link rel="stylesheet" type="text/css" href="../../css/normalize.css" />
+        <link rel="stylesheet" type="text/css" href="../css/component.css" />
+        <link href='http://fonts.googleapis.com/css?family=Raleway:200,400,800|Londrina+Outline' rel='stylesheet' type='text/css'>
+        <!--[if IE]>
+        	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" media="screen"
+        href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
+        <style>
+            .center{
+                margin:auto;
+                padding:150px 0;
+                width:50%;
+            }
+            #googleMap
+            {
+                width:100%;
+                height:500px;
+            }
+
+            #event-properties ul {
+                background: white;
+                float: left;
+                -webkit-transition: .5s;
+                transition: .5s;
+            }
+
+            #event-properties li {
+                float: left;
+                position: relative;
+                width: 352px;
+                list-style: none;
+                -webkit-transition: .5s;
+                transition: .5s;
+            }
+
+            #event-properties > ul > li > a, h1 {
+                text-transform: uppercase;
+            }
+
+            #event-properties a {
+                display: block;
+                text-decoration: none;
+                padding: 5px 15px;
+                color: #000;
+            }
+
+            #event-properties ul ul {
+                position: absolute;
+                left: 30%;
+                top: 100%;
+                visibility: hidden;
+                opacity: 0;
+            }
+
+            #event-properties ul ul ul {
+                left: 100%;
+                top: 0;
+            }
+
+            #event-properties ul ul ul ul{
+                left: 100%;
+                top: 0;
+            }
+
+            #event-properties li:hover, #main_nav li:hover li {
+                background: #ddd;
+            }
+
+            #event-properties li li:hover, #main_nav li li:hover li {
+                background: #bbb;
+            }
+
+            #event-properties li li li:hover, #main_nav li li li:hover li {
+                background: #bbb;
+            }
+
+            #event-properties li li li:hover {
+                background: #999;
+            }
+
+            #event-properties li li li li:hover {
+                background: #999;
+            }
+
+            #event-properties li:hover > ul {
+                visibility: visible;
+                opacity: 1;
+            }
+        </style>
+	</head>
+	<body>
+		<div class="container demo-2">
+            <div class="content">
+                <div id="large-header" class="large-header">
+                    <div><!--header-->
+                       <button type="button" id="homepage">Homepage</button>
+                        <button type="button" id="my_activities">My Activities</button>
+                        <script>
+                            var homepage=document.getElementById("homepage");
+                            var my_activities=document.getElementById("my_activities");
+                            homepage.addEventListener('click',function(){window.location.href="frontpage.html"});
+                            //my_activities.onclick=function(){window.location.href("eventpage.html")};
+                        </script>
+                    </div>
+                    <div id="event-properties" class="center" ><!--event creation form-->
+                    <form style="background:cornflowerblue" action="\addOpenEvent\fakeID" method="post">
+                        Activity name:
+                        <input type="text" name="Activity_name"/><br>
+                        Date and time:
+                        <input type="datetime-local" name="Activity_time"/><br>
+                        Location (Current location will be taken as default):
+                        <input type="button" name="Activity_location" value="Click here" onclick="ChooseLocation()"/><br>
+                        <!-- Google Maps modal-->
+                        <div id="maps-modal" class="modal" style="display:none">
+                            <!-- Modal content -->
+                            <div class="modal-content">
+                                <span class="close">&times;</span>
+                                <div id="googleMap"></div>
+                            </div>
+                        </div>
+                        <br>
+                        Select your activity type:
+                        <input type="button" name="Type_selection" value="Click here" onclick="SelectType()"/>
+                        <div id="activity-type" style="display: none;">
+                        <ul>
+                            <li><a>Food</a>
+                                <ul>
+                                    <li><input type="checkbox" name="cb">Mexican</input></li>
+                                    <li><input type="checkbox" name="cb">Hamburger</input></li>
+                                    <li><input type="checkbox" name="cb">Italian</input></li>
+                                    <li><input type="checkbox" name="cb">Israeli</input></li>
+                                    <li><input type="checkbox" name="cb">Sushi</input></li>
+                                    <li><input type="checkbox" name="cb">Viatnamise</input></li>
+                                    <li><input type="checkbox" name="cb">Chinese</input></li>
+                                    <li><input type="checkbox" name="cb">Other</input></li>
+                                </ul>
+                            </li>
+
+                            <li><a>Party</a>
+                                <ul>
+                                    <li><input type="checkbox" name="cb">Techno</input></li>
+                                    <li><input type="checkbox" name="cb">Salsa</input></li>
+                                    <li><input type="checkbox" name="cb">Main-Stream</input></li>
+                                    <li><input type="checkbox" name="cb">Other</input></li>
+                                </ul>
+                            </li>
+                            <li><a>Shopping</a>
+                                <ul>
+                                    <li><input type="checkbox" name="cb">Groceries</input></li>
+                                    <li><input type="checkbox" name="cb">Clothes</input></li>
+                                    <li><input type="checkbox" name="cb">Home Decore</input></li>
+                                    <li><input type="checkbox" name="cb">Other</input></li>
+                                </ul>
+                            </li>
+                            <li><a>Entertainment</a>
+                            <ul>
+                                <li><input type="checkbox" name="cb">Movie</input></li>
+                                <li><input type="checkbox" name="cb">Theater</input></li>
+                                <li><input type="checkbox" name="cb">Concert</input></li>
+                                <li><input type="checkbox" name="cb">Stand-up show</input></li>
+                                <li><input type="checkbox" name="cb">Other</input></li>
+
+                            </ul>
+                            </li>
+                            <li><a>Sports</a>
+                                <ul>
+                                    <li><input type="checkbox" name="cb">Soccer</input></li>
+                                    <li><input type="checkbox" name="cb">Basketball</input></li>
+                                    <li><input type="checkbox" name="cb">Football</input></li>
+                                    <li><input type="checkbox" name="cb">Handball</input></li>
+                                    <li><input type="checkbox" name="cb">Tennis</input></li>
+                                    <li><input type="checkbox" name="cb">Jogging</input></li>
+                                    <li><input type="checkbox" name="cb">Training at the gym</input></li>
+                                    <li><input type="checkbox" name="cb">Athletics</input></li>
+                                    <li><input type="checkbox" name="cb">Other</input></li>
+                                </ul>
+                            </li>
+                            <li><a>Adventure</a>
+                            <ul>
+                                <li><input type="checkbox" name="cb">Hiking</input></li>
+                                <li><input type="checkbox" name="cb">Road-trip</input></li>
+                                <li><input type="checkbox" name="cb">Diving</input></li>
+                                <li><input type="checkbox" name="cb">Ski</input></li>
+                                <li><input type="checkbox" name="cb">Other</input></li>
+                            </ul>
+                            </li>
+                            <li><input type="checkbox" name="cb">Other</input></li>
+                        </ul>
+                        </div>
+                        <br>
+                        Description (optional):
+                        <input type="text" name="description"/><br>
+                        <input type="button" name="Create" value="Create!" onclick="CreateEvent()"/>
+                    </form>
+                    </div>
+              </div>
+            </div>
+            <!-- Related demos -->
+		</div><!-- /container -->
+        <script>
+            //var location;
+            function ChooseLocation() {
+                // Get the modal
+                var modal = document.getElementById('maps-modal');
+
+                // Get the <span> element that closes the modal
+                var span = document.getElementsByClassName("close")[0];
+
+                // When the user clicks the button, open the modal
+                modal.style.display = "block";
+
+                // When the user clicks on <span> (x), close the modal
+                span.onclick = function() {
+                    modal.style.display = "none";
+                }
+
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function() {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+            }
+            function SelectType(){
+                //change button label
+                var but=document.getElementsByName("Type_selection")[0];
+                but.value= (but.value=="Click here") ? "Close list" : "Click here";
+                //toggle list view
+                var list=document.getElementById("activity-type");
+                list.style.display = (list.style.display=="none") ? list.style.display="inline" : list.style.display ="none";
+            }
+            //Google Maps function
+            function initMap(event) {
+                $(document).ready(function() {
+                    var default_location = {lat: 51.508742, lng: -0.120850};
+                    var map = new google.maps.Map(document.getElementById('googleMap'), {
+                        zoom: 15,
+                        center: default_location,
+                    });
+                    var marker = new google.maps.Marker({
+                        position: default_location,
+                        map: map,
+                    });
+                    //google.maps.event.trigger(map,"resize");
+                    // Try HTML5 geolocation.
+                    //Get current location
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(function (position) {
+                            var pos = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude
+                            };
+                            //Adjust map
+                            map.setCenter(pos);
+                            marker.setPosition(pos);
+                            marker.setMap(map);
+                            //location = pos;
+                        }, function () {
+                            handleLocationError();
+                        });
+                        //Change location on click
+                        google.maps.event.addListener(map, 'click', function (event) {
+                            window.alert("I'm here");
+                            window.alert(event.latLng);
+                            marker.setPosition(event.latLng);
+                            map.setCenter(event.latLng);
+                            location = event.latLng;
+                        })
+                    } else {
+                        // Browser doesn't support Geolocation
+                        handleLocationError();
+
+                    }
+                    ;
+                });}
+
+            function handleLocationError()
+            {
+                window.alert("We have a problem fetching your location.Please check it and try again later.");
+            }
+
+
+            function CreateEvent()
+            {
+                var all_fields_set=1;
+                var form_input=$("form").serializeArray();
+                for(i=0;i<form_input.length-1;i++)
+                {
+                    if(form_input[i].value=="")
+                        all_fields_set=0;
+                }
+                var check=$('event-properties#filter input:checked').length;
+                if(all_fields_set==1)
+                {
+                    window.alert("Event created successfully!");
+                    //window.location.href="myevents.html";
+                    $("form").submit();
+                }
+                else{
+                    window.alert("Please fill all non-optional fields.");
+                }
+            }
+        </script>
+        <!-- Import Google Maps -->
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu3KurWBoVaFCgz3J6jjoYcnmIVY2i6B0&callback=initMap"></script>
+        <!--Import jQuery-->
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="../../js/TweenLite.min.js"></script>
+        <script src="../../js/EasePack.min.js"></script>
+        <script src="../../js/rAF.js"></script>
+        <script src="../../js/getstarted.js"></script>
+        <script type="text/javascript"
+         src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js">
+        </script> 
+        <script type="text/javascript"
+         src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js">
+        </script>
+        <script type="text/javascript"
+         src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
+        </script>
+        <script type="text/javascript"
+         src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.pt-BR.js">
+        </script>
+	</body>
+</html>
