@@ -15,6 +15,10 @@ router.get('/createEvent', function (req, res) {
     res.render('createevent');
 });
 
+router.get('/login',function(req,res){
+    res.render('getstarted');
+});
+
 router.get('/event/:event_id', function(req, res){
     let p = es.getEvent(req.params.event_id);
     p.then((event) =>

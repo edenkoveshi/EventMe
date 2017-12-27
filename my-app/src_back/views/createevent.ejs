@@ -110,12 +110,19 @@
                         <script>
                             var homepage=document.getElementById("homepage");
                             var my_activities=document.getElementById("my_activities");
-                            homepage.addEventListener('click',function(){window.location.href="frontpage.html"});
+                            var url = window.location.href;
+                            var user_id=url.split('#')[1];
+                            homepage.addEventListener('click',function(){window.location.href="frontpage.html"+'#'+user_id});
                             //my_activities.onclick=function(){window.location.href("eventpage.html")};
                         </script>
                     </div>
                     <div id="event-properties" class="center" ><!--event creation form-->
-                    <form style="background:cornflowerblue" action="\addOpenEvent\fakeID" method="post">
+                    <form id="event-form" style="background:cornflowerblue" action="" method="post">
+                        <script>
+                            var url = window.location.href;
+                            var user_id=url.split('#')[1];
+                            document.getElementById("event-form").action="/eventMe/addOpenEvent/"+user_id;
+                        </script>
                         Activity name:
                         <input type="text" name="Activity_name"/><br>
                         Date and time:
@@ -128,76 +135,77 @@
                             <div class="modal-content">
                                 <span class="close">&times;</span>
                                 <div id="googleMap"></div>
+                                <input type="text" id="google-location" style="display:none"/>
                             </div>
                         </div>
                         <br>
                         Select your activity type:
                         <input type="button" name="Type_selection" value="Click here" onclick="SelectType()"/>
                         <div id="activity-type" style="display: none;">
-                        <ul>
-                            <li><a>Food</a>
-                                <ul>
-                                    <li><input type="checkbox" name="cb">Mexican</input></li>
-                                    <li><input type="checkbox" name="cb">Hamburger</input></li>
-                                    <li><input type="checkbox" name="cb">Italian</input></li>
-                                    <li><input type="checkbox" name="cb">Israeli</input></li>
-                                    <li><input type="checkbox" name="cb">Sushi</input></li>
-                                    <li><input type="checkbox" name="cb">Viatnamise</input></li>
-                                    <li><input type="checkbox" name="cb">Chinese</input></li>
-                                    <li><input type="checkbox" name="cb">Other</input></li>
-                                </ul>
-                            </li>
-
-                            <li><a>Party</a>
-                                <ul>
-                                    <li><input type="checkbox" name="cb">Techno</input></li>
-                                    <li><input type="checkbox" name="cb">Salsa</input></li>
-                                    <li><input type="checkbox" name="cb">Main-Stream</input></li>
-                                    <li><input type="checkbox" name="cb">Other</input></li>
-                                </ul>
-                            </li>
-                            <li><a>Shopping</a>
-                                <ul>
-                                    <li><input type="checkbox" name="cb">Groceries</input></li>
-                                    <li><input type="checkbox" name="cb">Clothes</input></li>
-                                    <li><input type="checkbox" name="cb">Home Decore</input></li>
-                                    <li><input type="checkbox" name="cb">Other</input></li>
-                                </ul>
-                            </li>
-                            <li><a>Entertainment</a>
                             <ul>
-                                <li><input type="checkbox" name="cb">Movie</input></li>
-                                <li><input type="checkbox" name="cb">Theater</input></li>
-                                <li><input type="checkbox" name="cb">Concert</input></li>
-                                <li><input type="checkbox" name="cb">Stand-up show</input></li>
-                                <li><input type="checkbox" name="cb">Other</input></li>
+                                <li><input type="checkbox" name="cb">Food</input>
+                                    <ul>
+                                        <li><input type="checkbox" name="cb">Mexican</input></li>
+                                        <li><input type="checkbox" name="cb">Hamburger</input></li>
+                                        <li><input type="checkbox" name="cb">Italian</input></li>
+                                        <li><input type="checkbox" name="cb">Israeli</input></li>
+                                        <li><input type="checkbox" name="cb">Sushi</input></li>
+                                        <li><input type="checkbox" name="cb">Viatnamise</input></li>
+                                        <li><input type="checkbox" name="cb">Chinese</input></li>
+                                        <li><input type="checkbox" name="cb">Other</input></li>
+                                    </ul>
+                                </li>
 
-                            </ul>
-                            </li>
-                            <li><a>Sports</a>
-                                <ul>
-                                    <li><input type="checkbox" name="cb">Soccer</input></li>
-                                    <li><input type="checkbox" name="cb">Basketball</input></li>
-                                    <li><input type="checkbox" name="cb">Football</input></li>
-                                    <li><input type="checkbox" name="cb">Handball</input></li>
-                                    <li><input type="checkbox" name="cb">Tennis</input></li>
-                                    <li><input type="checkbox" name="cb">Jogging</input></li>
-                                    <li><input type="checkbox" name="cb">Training at the gym</input></li>
-                                    <li><input type="checkbox" name="cb">Athletics</input></li>
-                                    <li><input type="checkbox" name="cb">Other</input></li>
-                                </ul>
-                            </li>
-                            <li><a>Adventure</a>
-                            <ul>
-                                <li><input type="checkbox" name="cb">Hiking</input></li>
-                                <li><input type="checkbox" name="cb">Road-trip</input></li>
-                                <li><input type="checkbox" name="cb">Diving</input></li>
-                                <li><input type="checkbox" name="cb">Ski</input></li>
+                                <li><input type="checkbox" name="cb">Party</input>
+                                    <ul>
+                                        <li><input type="checkbox" name="cb">Techno</input></li>
+                                        <li><input type="checkbox" name="cb">Salsa</input></li>
+                                        <li><input type="checkbox" name="cb">Main-Stream</input></li>
+                                        <li><input type="checkbox" name="cb">Other</input></li>
+                                    </ul>
+                                </li>
+                                <li><input type="checkbox" name="cb">Shopping</input>
+                                    <ul>
+                                        <li><input type="checkbox" name="cb">Groceries</input></li>
+                                        <li><input type="checkbox" name="cb">Clothes</input></li>
+                                        <li><input type="checkbox" name="cb">Home Decore</input></li>
+                                        <li><input type="checkbox" name="cb">Other</input></li>
+                                    </ul>
+                                </li>
+                                <li><input type="checkbox" name="cb">Entertainment</input>
+                                    <ul>
+                                        <li><input type="checkbox" name="cb">Movie</input></li>
+                                        <li><input type="checkbox" name="cb">Theater</input></li>
+                                        <li><input type="checkbox" name="cb">Concert</input></li>
+                                        <li><input type="checkbox" name="cb">Stand-up show</input></li>
+                                        <li><input type="checkbox" name="cb">Other</input></li>
+
+                                    </ul>
+                                </li>
+                                <li><input type="checkbox" name="cb">Sports</input>
+                                    <ul>
+                                        <li><input type="checkbox" name="cb">Soccer</input></li>
+                                        <li><input type="checkbox" name="cb">Basketball</input></li>
+                                        <li><input type="checkbox" name="cb">Football</input></li>
+                                        <li><input type="checkbox" name="cb">Handball</input></li>
+                                        <li><input type="checkbox" name="cb">Tennis</input></li>
+                                        <li><input type="checkbox" name="cb">Jogging</input></li>
+                                        <li><input type="checkbox" name="cb">Training at the gym</input></li>
+                                        <li><input type="checkbox" name="cb">Athletics</input></li>
+                                        <li><input type="checkbox" name="cb">Other</input></li>
+                                    </ul>
+                                </li>
+                                <li><input type="checkbox" name="cb">Adventure</input>
+                                    <ul>
+                                        <li><input type="checkbox" name="cb">Hiking</input></li>
+                                        <li><input type="checkbox" name="cb">Road-trip</input></li>
+                                        <li><input type="checkbox" name="cb">Diving</input></li>
+                                        <li><input type="checkbox" name="cb">Ski</input></li>
+                                        <li><input type="checkbox" name="cb">Other</input></li>
+                                    </ul>
+                                </li>
                                 <li><input type="checkbox" name="cb">Other</input></li>
                             </ul>
-                            </li>
-                            <li><input type="checkbox" name="cb">Other</input></li>
-                        </ul>
                         </div>
                         <br>
                         Description (optional):
@@ -266,25 +274,26 @@
                             map.setCenter(pos);
                             marker.setPosition(pos);
                             marker.setMap(map);
-                            //location = pos;
+                            document.getElementById("google-location").value = pos;
                         }, function () {
                             handleLocationError();
                         });
                         //Change location on click
                         google.maps.event.addListener(map, 'click', function (event) {
                             window.alert("I'm here");
-                            window.alert(event.latLng);
-                            marker.setPosition(event.latLng);
-                            map.setCenter(event.latLng);
-                            location = event.latLng;
-                        })
+                            var loc=event.latLng;
+                            window.alert(loc);
+                            marker.setPosition(loc);
+                            map.setCenter(loc);
+                            document.getElementById("google-location").value = loc;
+                        });
                     } else {
                         // Browser doesn't support Geolocation
                         handleLocationError();
 
                     }
-                    ;
-                });}
+                });
+            }
 
             function handleLocationError()
             {
@@ -301,12 +310,12 @@
                     if(form_input[i].value=="")
                         all_fields_set=0;
                 }
-                var check=$('event-properties#filter input:checked').length;
-                if(all_fields_set==1)
+                var check=document.querySelectorAll('input[type="checkbox"]:checked').length;
+                if(all_fields_set==1 && check>0)
                 {
                     window.alert("Event created successfully!");
                     //window.location.href="myevents.html";
-                    $("form").submit();
+                    document.getElementById("event-form").submit();
                 }
                 else{
                     window.alert("Please fill all non-optional fields.");
