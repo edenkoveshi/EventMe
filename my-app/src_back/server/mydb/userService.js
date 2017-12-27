@@ -1,5 +1,6 @@
 const DB = require('../data/DB')
 const userDAO = require('./userDAO')
+const eventDAO = require('./eventDAO')
 var User = require('./user')
 
 
@@ -22,7 +23,6 @@ class userService {
             console.log('addUser')
             let new_user = new User(fb_id, first_name, last_name, friends_list);
             var friends_count = friends_list.length
-            var friends_updated_counter = 0
             var promises = []
             var a_promise
             for (var i = 0; i < friends_count; i++)
@@ -62,6 +62,40 @@ class userService {
             userDAO.get_all_users()
                 .then(all_user=>{
                     resolve(all_user)
+                }).catch(err=> reject(err))
+        })
+    }
+
+    approve_participation(event_id,user_id ){
+        return new Promise((resolve, reject) => {
+            var promises = []
+            var user_promise = eventDAO.get_event(event_id)
+                .then(event=>{
+                    updated_accepted_user(event[0], user_id)
+                    resolve()
+            }).catch(err=> reject(err))
+            promises.push(user_promise)
+            var event_service = userDAO.get_User_by_fb_id(user_id)
+                .then(user=>{
+                    save_accepted_event(user[0], event_id)
+                    resolve()
+                }).catch(err=> reject(err))
+            promises.push(event_service)
+            Promise.all(promises).then(_=>{
+                console.log('event participation saved')
+                resolve()
+            }).catch(err=> reject(err))
+        })
+    }
+
+    get_my_invited_events(user_id){
+        return new Promise((resolve, reject) => {
+            userDAO.get_User_by_fb_id(user_id)
+                .then(user=>{
+                    var a_promise = get_all_my_full_events(user[0].invited_events)
+                    a_promise.then(full_events_array=>{
+                        resolve(full_events_array)
+                    }).catch(err=> reject(err))
                 }).catch(err=> reject(err))
         })
     }
@@ -108,5 +142,46 @@ function funcGetUserByFb(fb_id) {
                 console.log(user)
                 resolve(user)
             }).catch(err=> reject(err))
+    })
+}
+
+
+
+function save_accepted_event(user, event_id){
+    user.invited_events.splice(user.invited_events.indexOf(event_id),1)
+    user.going_events.push(event_id)
+    return new Promise((resolve, reject) => {
+        userDAO.update_user(user.fb_id, user)
+            .then(user=>{
+                resolve()
+            }).catch(err=> reject(err))
+    })
+}
+
+function updated_accepted_user(event, user_id){
+    event.invited_users.splice(event.invited_users.indexOf(user_id),1)
+    event.going_users.push(user_id)
+    return new Promise((resolve, reject) => {
+        eventDAO.update_event(event.eventId, event)
+            .then(user=>{
+                resolve()
+            }).catch(err=> reject(err))
+    })
+}
+
+function get_all_my_full_events(user_invited_events){
+    return new Promise((resolve, reject) => {
+        var full_event_list = []
+        var promises = []
+        var a_promise
+        for (var i = 0; i < user_invited_events.length ; i++){
+            a_promise = eventDAO.get_event(user_invited_events[i]).then(full_event=>{
+                full_event_list.push(full_event)
+            }).catch(err => reject(err))
+            promises.push(a_promise)
+        }
+        Promise.all(promises).then(_=>{
+            resolve(full_event_list)
+        }).catch(err=> reject(err))
     })
 }
