@@ -51,9 +51,28 @@ router.get('/event/:event_id/:user_id', function(req, res){
     });
 });
 
+router.get('/joinEvent/:event_id/:user_id', function(req, res) {
+    let p =us.approve_participation(req.params.event_id, req.params.user_id );
+    p.then((event) => {
+        console.log(event);
+        res.redirect('/eventMe/event/'+req.params.event_id+'/'+req.params.user_id);
+    });
+});
+
 
 // adds a new event in the DB for an existing user
 router.get('/addOpenEvent/:owner_id', (req, res) => {
+    return new Promise((resolve, reject) => {
+        es.addOpenEvent(req.params.owner_id, 'Tel Aviv', 'Eat Out', 'more info', '20:30', 'My Event', 'restaurant.jpeg')
+            .then(_ => {
+                res.redirect('/eventMe/');
+                resolve()
+            }).catch(err => reject(err))
+    })
+});
+
+// adds a new event in the DB for an existing user
+router.post('/addOpenEvent/:owner_id', (req, res) => {
     return new Promise((resolve, reject) => {
         es.addOpenEvent(req.params.owner_id, 'Tel Aviv', 'Eat Out', 'more info', '20:30', 'My Event', 'restaurant.jpeg')
             .then(_ => {
@@ -114,14 +133,7 @@ router.get('/showMeUsers', (req, res) => {
 router.get('*', function(req, res){
     res.status(404).send('404 : The page you have requested does not exist.');
 });
-router.get('/joinEvent/:event_id/:user_id', (req, res) => {
-    return new Promise( (resolve, reject) => {
-        us.approve_participation(req.params.event_id, req.params.user_id )
-            .then(_=> {
-                resolve()
-            }).catch(err => reject(err))
-    })
-})
+
 
 router.get('/getMyInvitedEvents/:user_id', (req, res) => {
     return new Promise( (resolve, reject) => {
