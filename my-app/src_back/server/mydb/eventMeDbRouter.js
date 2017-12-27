@@ -8,13 +8,15 @@ let User = require('./user');
 
 /* GET home page. */
 router.get('/', function (req, res) {
-    res.render('frontpage');
+    res.render('getstarted');
 });
+
 
 router.get('/createEvent', function (req, res) {
     res.render('createevent');
 });
 
+/* render single event page, of the event with the given event_id */
 router.get('/event/:event_id', function(req, res){
     let p = es.getEvent(req.params.event_id);
     p.then((event) =>
@@ -35,16 +37,19 @@ router.get('/event/:event_id', function(req, res){
     });
 });
 
+
+// adds a new event in the DB for an existing user
 router.get('/addOpenEvent/:owner_id', (req, res) => {
     return new Promise((resolve, reject) => {
         es.addOpenEvent(req.params.owner_id, 'Tel Aviv', 'Eat Out', 'more info', '20:30', 'My Event', 'restaurant.jpeg')
             .then(_ => {
-                res.redirect('/');
+                res.redirect('/eventMe/');
                 resolve()
             }).catch(err => reject(err))
     })
 });
 
+// create a new user in the DB
 router.get('/newUser/:fb_id/:f_name/:l_name', (req, res) => {
     return new Promise((resolve, reject) => {
         let friend_list = ["0001"];
@@ -55,7 +60,7 @@ router.get('/newUser/:fb_id/:f_name/:l_name', (req, res) => {
             }).catch(err => reject(err))
     })
 });
-
+/*
 router.get('/getEventById/:event_id', (req, res) => {
     return new Promise((resolve, reject) => {
         es.getEvent(req.params.event_id)
@@ -66,6 +71,7 @@ router.get('/getEventById/:event_id', (req, res) => {
             }).catch(err => reject(err))
     })
 });
+*/
 
 router.get('/getUserByFbId/:user_fb_id', (req, res) => {
     return new Promise((resolve, reject) => {
@@ -92,8 +98,9 @@ router.get('/showMeUsers', (req, res) => {
     })
 });
 
+// 404 routing
 router.get('*', function(req, res){
-    res.status(404).send('what???');
+    res.status(404).send('404 : The page you have requested does not exist.');
 });
 
 
