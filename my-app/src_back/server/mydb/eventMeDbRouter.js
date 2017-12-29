@@ -85,9 +85,10 @@ router.get('/addOpenEvent/:owner_id', (req, res) => {
 */
 
 // adds a new event in the DB for an existing user
-router.post('/addOpenEvent/:owner_id', (req, res) => {
+router.get('/addOpenEvent/:owner_id', (req, res) => {
     return new Promise((resolve, reject) => {
-        es.addOpenEvent(req.params.owner_id, 'Tel Aviv', 'Eat Out', 'more info', '20:30', 'My Event', 'restaurant.jpeg')
+        console.log(' is trying to create new event')
+        es.addOpenEvent(req.params.owner_id, req.params.owner_id, 'Tel Aviv', 'Eat Out', 'more info', '20:30', 'My Event', 'restaurant.jpeg')
             .then(_ => {
                 res.redirect('/eventMe/');
                 resolve()
@@ -96,10 +97,11 @@ router.post('/addOpenEvent/:owner_id', (req, res) => {
 });
 
 // create a new user in the DB
-router.get('/newUserTest/:fb_id/:f_name/:l_name', (req, res) => {
+router.get('/newUserTest/:fb_id/:f_name', (req, res) => {
     return new Promise( (resolve, reject) => {
+        console.log('trying to create new user',req.params.fb_id)
         var friend_list = ["0001"]
-        us.addUser(req.params.fb_id, req.params.f_name, req.params.l_name, friend_list)
+        us.addUser(req.params.fb_id, req.params.f_name, friend_list)
             .then(_=> {
                 resolve()
             }).catch(err => reject(err))
@@ -109,23 +111,40 @@ router.get('/newUserTest/:fb_id/:f_name/:l_name', (req, res) => {
 router.post('/newUser', (req, res) => {
     console.log('trying to add new user')
     return new Promise( (resolve, reject) => {
+        console.log(req.body)
         var fb_id = req.body.fb_id
         var f_name = req.body.f_name
-        var l_name = req.body.l_name
+        var location = req.body.location
         var friend_list = req.body.friend_list
+        console.log(fb_id, f_name, friend_list)
         var frontpage = '/eventMe/frontpage/'+ fb_id
-        us.checkIfUserExist(fb_id)
-            .then(user_exist=>{
-                if(user_exist)
+        us.getUserByFb(fb_id)
+            .then(user=>{
+                if(user.length > 0 )
                 {
-                    res.redirect(frontpage);
-                    resolve()
+                    us.get_my_invited_events( req.params.user_id )
+                        .then(events_array=> {
+                            res.redirect(frontpage);
+                            res.render('frontpage',{
+                                                    invited_events : events_array,
+                                                    user_id : fb_id,
+                                                    location : location})
+                            resolve()
+                        }).catch(err => reject(err))
+
                 }else
                 {
-                    us.addUser(fb_id, f_name, l_name, friend_list)
+                    us.addUser(fb_id, f_name, friend_list)
                         .then(_=>{
-                            res.redirect(frontpage);
-                            resolve()
+                            us.get_my_invited_events( req.params.user_id )
+                                .then(events_array=> {
+                                    res.redirect(frontpage);
+                                    res.render('frontpage',{
+                                                            invited_events : events_array,
+                                                            user_id : fb_id,
+                                                            location : location})
+                                    resolve()
+                                }).catch(err => reject(err))
                         }).catch(err => reject(err))
                 }
             })
@@ -178,7 +197,7 @@ module.exports = router;
 
 // router.post('/newEvent/:owner_name', (req, res) => {
 //     return new Promise( (resolve, reject) => {
-//         us.addUser(req.params.owner_name, req.params.l_name)
+//         us.addUser(req.params.owner_name)
 //             .then(_=> {
 //                 res.redirect('/')
 //                 resolve()

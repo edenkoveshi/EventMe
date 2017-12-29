@@ -21,6 +21,7 @@ class userService {
         return new Promise((resolve, reject) => {
             userDAO.get_User_by_fb_id(fb_id)
                 .then(user_array=>{
+                    console.log('checkIfUserExist - trying to get user array')
                     if(user_array.length > 0)
                     {
                         resolve(true)
@@ -32,10 +33,12 @@ class userService {
                 }).catch(err => reject(err))
         })
     }
-    addUser(fb_id, first_name, last_name, friends_list) {
+    addUser(fb_id, f_name, friends_list) {
         return new Promise((resolve, reject) => {
-            console.log('addUser')
-            let new_user = new User(fb_id, first_name, last_name, friends_list);
+            console.log('adding user')
+            let new_user = new User(fb_id, f_name, friends_list);
+            console.log('the use is:')
+            console.log(new_user)
             var friends_count = friends_list.length
             var promises = []
             var a_promise
@@ -85,6 +88,7 @@ class userService {
             var promises = []
             var user_promise = eventDAO.get_event(event_id)
                 .then(event=>{
+                    console.log('approve_participation-. my event list:',event )
                     if(event.length>0)
                     {
                         var am_i_invited_in_event = event[0].invited_users.indexOf(user_id)
