@@ -81,9 +81,9 @@ router.post('/addOpenEvent/:owner_id', (req, res) => {
             }).catch(err => reject(err))
     })
 });
-/*
+
 // create a new user in the DB
-router.get('/newUser/:fb_id/:f_name/:l_name', (req, res) => {
+router.get('/newUserTest/:fb_id/:f_name/:l_name', (req, res) => {
     return new Promise( (resolve, reject) => {
         var friend_list = ["0001"]
         us.addUser(req.params.fb_id, req.params.f_name, req.params.l_name, friend_list)
@@ -92,19 +92,30 @@ router.get('/newUser/:fb_id/:f_name/:l_name', (req, res) => {
             }).catch(err => reject(err))
     })
 });
-*/
 
-router.post('/newUser/:fb_id/:f_name/:l_name', (req, res) => {
+
+router.post('/newUser', (req, res) => {
     return new Promise( (resolve, reject) => {
         var fb_id = req.body.fb_id
         var f_name = req.body.f_name
         var l_name = req.body.l_name
         var friend_list = req.body.friend_list
-
-        us.addUser(fb_id, f_name, l_name, friend_list)
-            .then(_=> {
-                resolve()
-            }).catch(err => reject(err))
+        var frontpage = '/eventMe/frontpage/'+ fb_id
+        us.checkIfUserExist(fb_id)
+            .then(user_exist=>{
+                if(user_exist)
+                {
+                    res.redirect(frontpage);
+                    resolve()
+                }else
+                {
+                    us.addUser(fb_id, f_name, l_name, friend_list)
+                        .then(_=>{
+                            res.redirect(frontpage);
+                            resolve()
+                        }).catch(err => reject(err))
+                }
+            })
     })
 });
 

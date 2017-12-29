@@ -17,7 +17,21 @@ class userService {
                 }).catch(err => reject(err))
         })
     }
-
+    checkIfUserExist(fb_id){
+        return new Promise((resolve, reject) => {
+            userDAO.get_User_by_fb_id(fb_id)
+                .then(user_array=>{
+                    if(user_array.length > 0)
+                    {
+                        resolve(true)
+                    }
+                    else
+                    {
+                        resolve(false)
+                    }
+                }).catch(err => reject(err))
+        })
+    }
     addUser(fb_id, first_name, last_name, friends_list) {
         return new Promise((resolve, reject) => {
             console.log('addUser')
@@ -71,14 +85,51 @@ class userService {
             var promises = []
             var user_promise = eventDAO.get_event(event_id)
                 .then(event=>{
-                    updated_accepted_user(event[0], user_id)
-                    resolve()
+                    if(event.length>0)
+                    {
+                        var am_i_invited_in_event = event[0].invited_users.indexOf(user_id)
+                        if(am_i_invited_in_event > -1)
+                        {
+                            updated_accepted_user(event[0], user_id)
+                            resolve()
+                        }
+                        else
+                            {
+                            console.log('approve_participation - user is not invited in event')
+                            resolve()
+                        }
+
+                    }
+                    else
+                    {
+                        console.log('approve_participation - couldent find event')
+                        resolve()
+                    }
+
             }).catch(err=> reject(err))
             promises.push(user_promise)
             var event_service = userDAO.get_User_by_fb_id(user_id)
                 .then(user=>{
-                    save_accepted_event(user[0], event_id)
-                    resolve()
+                    if(user.length>0)
+                    {
+                        var am_i_invited_in_user = event[0].invited_users.indexOf(user_id)
+                        if(am_i_invited_in_user > -1)
+                        {
+                            save_accepted_event(user[0], event_id)
+                            resolve()
+                        }
+                        else
+                        {
+                            console.log('approve_participation - user is not invited in user')
+                            resolve()
+                        }
+
+                    }else
+                    {
+                        console.log('approve_participation - couldent find user')
+                        resolve()
+                    }
+
                 }).catch(err=> reject(err))
             promises.push(event_service)
             Promise.all(promises).then(_=>{
