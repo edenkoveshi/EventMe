@@ -1,13 +1,12 @@
-var myList = [
-  { "Category": "Food_Mexican", "Location": 345, "Date": "10.10.12" },
-  { "Category": "Food_Hamburger", "Location": 645 },
-  { "Category": "Food_Italian", "Location": 375 },
-  { "Category": "Food_Israeli", "Location": 385 },
-  { "Category": "Food_Sushi", "Location": 349 },
-  { "Category": "Food_Chinese", "Location": 335 }
-];
+// var myList = [
+//   { "Category": "Food_Mexican", "Location": 345, "Date": "10.10.12" },
+//   { "Category": "Food_Hamburger", "Location": 645 },
+//   { "Category": "Food_Italian", "Location": 375 },
+//   { "Category": "Food_Israeli", "Location": 385 },
+//   { "Category": "Food_Sushi", "Location": 349 },
+//   { "Category": "Food_Chinese", "Location": 335 }
+// ];
 
-var myList = <%= invited_events %>;
 
 function boxChecked() {
     var myCurrentList = [];
@@ -39,7 +38,7 @@ function displaysearch() {
     buildEventsTable('#excelDataTable', myCurrentList);
 }
 
-function buildEventsTableMain(selector) {
+function buildEventsTableMain(selector, myList) {
   buildEventsTable(selector, myList);
 }
 
