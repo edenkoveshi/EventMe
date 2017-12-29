@@ -2,10 +2,9 @@
 
 class  user
 {
-    constructor(fb_id, first_name, last_name, friends_list){
+    constructor(fb_id, f_name, friends_list){
         this.fb_id = fb_id
-        this.first_name = first_name
-        this.last_name = last_name
+        this.f_name = f_name
         this.friends_list = friends_list
         this.open_friends_events = []
         this.invited_events = []
