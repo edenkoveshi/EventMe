@@ -64,8 +64,7 @@ router.get('/event/:event_id/:user_id', function(req, res){
 
 router.get('/joinEvent/:event_id/:user_id', function(req, res) {
     let p =us.approve_participation(req.params.event_id, req.params.user_id );
-    p.then((event) => {
-        console.log(event);
+    p.then(_ => {
         res.redirect('/eventMe/event/'+req.params.event_id+'/'+req.params.user_id);
     });
 });
@@ -96,18 +95,6 @@ router.get('/addOpenEvent/:owner_id', (req, res) => {
     })
 });
 
-// create a new user in the DB
-router.get('/newUserTest/:fb_id/:f_name', (req, res) => {
-    return new Promise( (resolve, reject) => {
-        console.log('trying to create new user',req.params.fb_id)
-        var friend_list = ["0001"]
-        us.addUser(req.params.fb_id, req.params.f_name, friend_list)
-            .then(_=> {
-                resolve()
-            }).catch(err => reject(err))
-    })
-});
-
 router.post('/newUser', (req, res) => {
     console.log('trying to add new user')
     return new Promise( (resolve, reject) => {
@@ -122,7 +109,7 @@ router.post('/newUser', (req, res) => {
             .then(user=>{
                 if(user.length > 0 )
                 {
-                    us.get_my_invited_events( req.params.user_id )
+                    us.get_my_invited_events( fb_id )
                         .then(events_array=> {
                             res.redirect(frontpage);
                             res.render('frontpage',{
@@ -136,7 +123,7 @@ router.post('/newUser', (req, res) => {
                 {
                     us.addUser(fb_id, f_name, friend_list)
                         .then(_=>{
-                            us.get_my_invited_events( req.params.user_id )
+                            us.get_my_invited_events( fb_id )
                                 .then(events_array=> {
                                     res.redirect(frontpage);
                                     res.render('frontpage',{
@@ -151,10 +138,9 @@ router.post('/newUser', (req, res) => {
     })
 });
 router.get('/newUserTest/:fb_id', (req, res) => {
-    console.log('trying to add new user')
+    console.log('newUserTest - trying to add new user')
     return new Promise( (resolve, reject) => {
-        console.log(req.body)
-        var fb_id = req.paramsfb_id
+        var fb_id = req.params.fb_id
         var f_name = 'somename'
         var location = '111, 111'
         var friend_list = ['0002']
@@ -164,27 +150,31 @@ router.get('/newUserTest/:fb_id', (req, res) => {
             .then(user=>{
                 if(user.length > 0 )
                 {
-                    us.get_my_invited_events( req.params.user_id )
+                    console.log(' user is already in the db')
+                    us.get_my_invited_events( req.params.fb_id )
                         .then(events_array=> {
+                            console.log('redirecting to frontpage')
                             res.redirect(frontpage);
                             res.render('frontpage',{
-                                invited_events : events_array,
-                                user_id : fb_id,
-                                location : location})
+                                                    invited_events : events_array,
+                                                    user_id : fb_id,
+                                                    location : location})
                             resolve()
                         }).catch(err => reject(err))
 
                 }else
                 {
+                    console.log(' user is not  in the db,  i will add him')
                     us.addUser(fb_id, f_name, friend_list)
                         .then(_=>{
-                            us.get_my_invited_events( req.params.user_id )
+                            us.get_my_invited_events( req.params.fb_id )
                                 .then(events_array=> {
+                                    console.log('redirecting to frontpage')
                                     res.redirect(frontpage);
                                     res.render('frontpage',{
-                                        invited_events : events_array,
-                                        user_id : fb_id,
-                                        location : location})
+                                                            invited_events : events_array,
+                                                            user_id : fb_id,
+                                                            location : location})
                                     resolve()
                                 }).catch(err => reject(err))
                         }).catch(err => reject(err))
@@ -196,10 +186,11 @@ router.get('/newUserTest/:fb_id', (req, res) => {
 
 router.get('/getUserByFbId/:user_fb_id', (req, res) => {
     return new Promise( (resolve, reject) => {
+        console.log('requesting user')
         let usr_fb_id = req.params.user_fb_id
         us.getUserByFb(usr_fb_id)
             .then(req_user => {
-                console.log(req_user)
+                console.log('user requested recieved = ', req_user.fb_id)
                 res.render('req_user');
                 resolve()
             }).catch(err => reject(err))
@@ -226,9 +217,10 @@ router.get('*', function(req, res){
 
 router.get('/getMyInvitedEvents/:user_id', (req, res) => {
     return new Promise( (resolve, reject) => {
+        console.log('getting all of my invited arrays:')
         us.get_my_invited_events( req.params.user_id )
             .then(events_array=> {
-                console.log(events_array)
+                console.log('recieved ',events_array.length,' arreys')
                 resolve()
             }).catch(err => reject(err))
     })

@@ -88,7 +88,7 @@ class userService {
             var promises = []
             var user_promise = eventDAO.get_event(event_id)
                 .then(event=>{
-                    console.log('approve_participation-. my event list:',event )
+                    console.log('approve_participation-. my event list:',event[0].eventId )
                     if(event.length>0)
                     {
                         var am_i_invited_in_event = event[0].invited_users.indexOf(user_id)
@@ -173,7 +173,7 @@ function update_my_friend_get_his_events(my_user, my_fb_id, friend_id)
                     a_friend[0].friends_list.push(my_fb_id)
                     console.log( 'trying to update')
                     userDAO.update_friend_list(a_friend[0].fb_id, a_friend[0].friends_list).then(_=>{
-                        console.log('updated', a_friend)
+                        console.log('updated', a_friend[0].fb_id)
                         resolve();
                     }).catch(err => reject(err))
                     var p_events = a_friend[0].own_public_events
@@ -194,7 +194,7 @@ function funcGetUserByFb(fb_id) {
             .then(user=>{
                 console.log('userDAO.get_User_by_fb_id(fb_id).then')
                 console.log('i wil return a :')
-                console.log(user)
+                console.log(user[0].fb_id)
                 resolve(user)
             }).catch(err=> reject(err))
     })
