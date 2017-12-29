@@ -16,8 +16,11 @@ router.get('/welcome', function (req, res) {
 });
 
 
-router.get('/frontpage', function (req, res) {
-    res.render('frontpage');
+router.get('/frontpage/:user_id', function (req, res) {
+
+    res.render('frontpage',{
+        user_id: req.params.user_id
+    });
 });
 
 router.get('/myevents', function (req, res) {
@@ -69,6 +72,7 @@ router.get('/joinEvent/:event_id/:user_id', function(req, res) {
 
 
 // adds a new event in the DB for an existing user
+/*
 router.get('/addOpenEvent/:owner_id', (req, res) => {
     return new Promise((resolve, reject) => {
         es.addOpenEvent(req.params.owner_id, 'Tel Aviv', 'Eat Out', 'more info', '20:30', 'My Event', 'restaurant.jpeg')
@@ -78,6 +82,7 @@ router.get('/addOpenEvent/:owner_id', (req, res) => {
             }).catch(err => reject(err))
     })
 });
+*/
 
 // adds a new event in the DB for an existing user
 router.post('/addOpenEvent/:owner_id', (req, res) => {
