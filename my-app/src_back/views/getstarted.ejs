@@ -8,12 +8,15 @@
     <meta name="keywords" content="header, canvas, animated, creative, inspiration, javascript" />
     <meta name="author" content="Codrops" />
     <link rel="shortcut icon" href="../favicon.ico">
-    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
-    <link rel="stylesheet" type="text/css" href="css/demo.css" />
-    <link rel="stylesheet" type="text/css" href="css/component.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="../../css/component.css" />
     <link href='http://fonts.googleapis.com/css?family=Raleway:200,400,800|Clicker+Script' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="../../css"/>
-    <link href=""
+    <link href="../../js"/>
+    <link href="../../mydb"/>
+    <link href="../../img"/>
+    <link href="../../favicon.ico"/>
     <!--[if IE]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -77,27 +80,35 @@
                     var first_name;
                     var last_name;
                     var friend_list;
-                    var FBPromise=new Promise(function(resolve,reject) {
+                    var FBDetails=new Promise(function(resolve,reject) {
                         window.alert("Welcome");
                         FB.api('/me', function (response) {
                             window.alert(response.name + ' ' +response.id);
-                            var name=response.name.split(" ");
-                            fb_id=response.id;
-                            resolve(response.id);
+                            resolve(response);
                         });
-                        FB.api('/me/friends', function (response) {
-                            friend_list=response.data;
-                        });
+                    });
+                    FBDetails.then(function(result)
+                    {
+                        fb_id=result.id;
+                        var name=response.name.split(" ");
                         first_name=name[0];
                         last_name=name[1];
+                        $('input[id="fb_id"]').val(fb_id);
+                        $('input[id="f_name"]').val(first_name);
+                        $('input[id="l_name"]').val(last_name);
                     });
-                    FBPromise.then(function(result)
+                    var FBFriends=new Promise(function(resolve,reject) {
+                        FB.api('/me/friends', function (response) {
+                            resolve(response);
+                        });
+                    });
+                    FBFriends.then(function(result)
                     {
-                        //addUser(fb_id,first_name,last_name,friend_list);
-                        window.location.href = "createevent.html" + '#' + result;});
+                        $('input[id="friend_list"]').val(friend_list);
+                        document.getElementById("user_info").submit();
+                    });
 
                     //ADD HERE - INSERT USER TO DB
-
                 }
                 else {
                     window.alert("Login cancelled");
@@ -136,16 +147,18 @@
                 <!-- Modal content -->
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <!--<a href="frontpage.html">
-                        <img src="https://www.thenerdmag.com/wp-content/uploads/facebook-login.png" />
-                    </a>-->
                     <!-- Facebook login -->
-                    <a id="fb_login" style="display: none" onclick="return FBLogin()"><img src="img/FB_login.png"></a>
+                    <a id="fb_login" style="display: none" onclick="return FBLogin()"><img src="../../img/FB_login.png"></a>
                     <!-- Checkbox -->
                     <form action="">
                         <input type="checkbox" id="cb"><br>I accept sharing my location
                     </form>
-
+                    <form id="user_info" action="/eventMe/newUser" method="POST">
+                        <input type="text" id="fb_id" style="display:none"/>
+                        <input type="text" id="f_name" style="display:none"/>
+                        <input type="text" id="l_name" style="display:none"/>
+                        <input type="text" id="friend_list" style="display:none"/>
+                    </form>
                 </div>
 
             </div>
@@ -188,8 +201,8 @@
         </a>
     </section>
 </div><!-- /container -->
-<script src="js/rAF.js"></script>
-<script src="js/getstarted.js"></script>
+<script src="../../js/rAF.js"></script>
+<script src="../../js/getstarted.js"></script>
 <script src="mydb/.idea/userService.js"
 </body>
 </html>
