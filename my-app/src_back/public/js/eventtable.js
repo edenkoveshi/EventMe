@@ -26,9 +26,17 @@ function boxChecked() {
 
 
 function displaysearch() {
-  myList.push({ "child": "abc", "age": 50 });
-  $("#excelDataTable tr").remove();
-  buildEventsTable('#excelDataTable', myCurrentList);
+    var myCurrentList = [];
+    $('input[name=search]').each(function () {
+        var x = this.value;
+        for (var listIndex = 0; listIndex < myList.length; listIndex++) {
+            if (myList[listIndex]["Category"] == x) {
+                myCurrentList.push(myList[listIndex]);
+            }
+        }
+    });
+    $("#excelDataTable tr").remove();
+    buildEventsTable('#excelDataTable', myCurrentList);
 }
 
 function buildEventsTableMain(selector) {
