@@ -4,7 +4,7 @@ class userDAO
 {
     update_user(user_fb_id, updeted_user)
     {
-        return DB.db.collection('usrs').updateOne({'fb_id' : user_fb_id},{updeted_user}) //returns a Promise
+        return DB.db.collection('usrs').updateOne({'fb_id' : user_fb_id},updeted_user) //returns a Promise
     }
     update_friend_list(user_fb_id, new_friends_list)
     {
@@ -18,9 +18,9 @@ class userDAO
     {
         return DB.db.collection('usrs').updateOne({'fb_id' : user_fb_id},{$set: {'own_public_events' : own_public_events} }) //returns a Promise
     }
-    update_open_friends_events(user_fb_id, invited_events)
+    update_invited_events(user_fb_id, invited_events)
     {
-        return DB.db.collection('usrs').updateOne({'fb_id' : user_fb_id},{$set: {'open_friends_events' : invited_events}}) //returns a Promise
+        return DB.db.collection('usrs').updateOne({'fb_id' : user_fb_id},{$set: {'invited_events' : invited_events}}) //returns a Promise
     }
 
     insert_user(user)

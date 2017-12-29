@@ -19,8 +19,11 @@ class eventDAO
         return DB.db.collection('events').find().toArray()  //returns a Promise
     }
 
-
-
+    update_event(event_id, updeted_event)
+    {
+        console.log(updeted_event)
+        return DB.db.collection('events').updateOne({'eventId' : event_id},updeted_event) //returns a Promise
+    }
 
 
 
