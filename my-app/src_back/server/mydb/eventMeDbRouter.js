@@ -106,8 +106,8 @@ router.get('/newUserTest/:fb_id/:f_name/:l_name', (req, res) => {
     })
 });
 
-
 router.post('/newUser', (req, res) => {
+    console.log('trying to add new user')
     return new Promise( (resolve, reject) => {
         var fb_id = req.body.fb_id
         var f_name = req.body.f_name
