@@ -10,3 +10,7 @@
 \.idea/workspace\.xml
 
 my-app/img/join\.jpg
+
+\.idea/
+
+node_modules/
