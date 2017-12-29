@@ -89,7 +89,7 @@ router.post('/addOpenEvent/:owner_id', (req, res) => {
             }).catch(err => reject(err))
     })
 });
-
+/*
 // create a new user in the DB
 router.get('/newUser/:fb_id/:f_name/:l_name', (req, res) => {
     return new Promise( (resolve, reject) => {
@@ -100,18 +100,22 @@ router.get('/newUser/:fb_id/:f_name/:l_name', (req, res) => {
             }).catch(err => reject(err))
     })
 });
-/*
-router.get('/getEventById/:event_id', (req, res) => {
+*/
+
+router.post('/newUser/:fb_id/:f_name/:l_name', (req, res) => {
     return new Promise( (resolve, reject) => {
-        es.getEvent(req.params.event_id)
-            .then(req_event => {
-                console.log(req_event)
-                //res.render('req_event');
+        var fb_id = req.body.fb_id
+        var f_name = req.body.f_name
+        var l_name = req.body.l_name
+        var friend_list = req.body.friend_list
+
+        us.addUser(fb_id, f_name, l_name, friend_list)
+            .then(_=> {
                 resolve()
             }).catch(err => reject(err))
     })
 });
-*/
+
 
 router.get('/getUserByFbId/:user_fb_id', (req, res) => {
     return new Promise( (resolve, reject) => {
