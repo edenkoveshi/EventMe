@@ -8,19 +8,27 @@ var User = require('./user');
 
 /* GET home page. */
 router.get('/', function (req, res) {
-    res.render('getstarted');
+    res.render('welcome');
 });
 
-/* GET home page. */
+router.get('/welcome', function (req, res) {
+    res.render('welcome');
+});
+
+
 router.get('/frontpage', function (req, res) {
     res.render('frontpage');
+});
+
+router.get('/myevents', function (req, res) {
+    res.render('myevents');
 });
 
 router.get('/createEvent', function (req, res) {
     res.render('createevent');
 });
 
-router.get('/login', function (req, res) {
+router.get('/getstarted', function (req, res) {
     res.render('getstarted');
 });
 
