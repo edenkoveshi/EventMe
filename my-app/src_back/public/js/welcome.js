@@ -94,11 +94,11 @@
     }
 
     function mouseClick(e) {
-        window.location.href = "getstarted.html";
+        window.location.href = "/eventMe/getstarted";
     }
 
     function alertFunc() {
-        window.location.href = "getstarted.html";
+        window.location.href = "/eventMe/getstarted";
     }
 
     function scrollCheck() {

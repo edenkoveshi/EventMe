@@ -7,19 +7,23 @@ var myList = [
   { "Category": "Food_Chinese", "Location": 335 }
 ];
 
-function boxChecked(t) {
-  if (t.is(':checked')) {
-    var x = t.context.name;
+
+function boxChecked() {
     var myCurrentList = [];
-    for (var listIndex = 0; listIndex < myList.length; listIndex++) {
-      if (myList[listIndex]["Category"] == x) {
-        myCurrentList.push(myList[listIndex]);
-      }
-    }
+    $('input[type=checkbox]').each(function () {
+        if (this.checked) {
+            var x = this.name;
+            for (var listIndex = 0; listIndex < myList.length; listIndex++) {
+                if (myList[listIndex]["Category"] == x) {
+                    myCurrentList.push(myList[listIndex]);
+                }
+            }
+        }
+    });
     $("#excelDataTable tr").remove();
     buildEventsTable('#excelDataTable', myCurrentList);
-  }
 }
+
 
 function displaysearch() {
   myList.push({ "child": "abc", "age": 50 });
@@ -33,7 +37,6 @@ function buildEventsTableMain(selector) {
 
 // Builds the HTML Table out of myList.
 function buildEventsTable(selector, myList) {
-  $(selector).append($('<caption>'+"Events"+'</caption>'));
   var columns = addAllColumnHeaders(myList, selector);
   for (var i = 0; i < myList.length; i++) {
 
@@ -57,6 +60,7 @@ function buildEventsTable(selector, myList) {
 // Need to do union of keys from all records as some records may not contain
 // all records.
 function addAllColumnHeaders(myList, selector) {
+  // $(selector).append($('<caption>'+"Events"+'</caption>'));
   var columnSet = [];
   var headerTr$ = $('<tr/>');
 

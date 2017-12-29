@@ -15,13 +15,37 @@ router.get('/welcome', function (req, res) {
     res.render('welcome');
 });
 
-
+/* render frontpage */
 router.get('/frontpage/:user_id', function (req, res) {
+    let p = es.getEvent(req.params.event_id);
+    p.then((event) =>
+    {
+        console.log(event);
+    if (event !== undefined) {
+        res.render('frontpage',{
+            event_id: req.params.event_id,
+            title: event["title"], // 'my event',
+            event_img: event["image"],//'restaurant.jpeg',
+            event_time: event["time"],
+            event_place: event["location"],
+            event_type: event["type"],
+            event_desc: event["information"],
+            user_id: req.params.user_id,
 
-    res.render('frontpage',{
-        user_id: req.params.user_id
-    });
+        });
+    }
+    else{
+        res.render('404');
+    }
 });
+});
+
+// router.get('/frontpage/:user_id', function (req, res) {
+//
+//     res.render('frontpage',{
+//         user_id: req.params.user_id
+//     });
+// });
 
 router.get('/myevents', function (req, res) {
     res.render('myevents');
