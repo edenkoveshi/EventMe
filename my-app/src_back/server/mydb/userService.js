@@ -36,21 +36,24 @@ class userService {
     addUser(fb_id, f_name, friends_list) {
         return new Promise((resolve, reject) => {
             console.log('adding user')
-            var friends_id_only
+            var friends_id_only=[]
+            console.log(friends_list)
+            var counter
             for(counter = 0; counter < friends_list.length ; counter++)
             {
                 friends_id_only[counter] = friends_list[counter].id
             }
-            let new_user = new User(fb_id, f_name, friends_list);
+            let new_user = new User(fb_id, f_name, friends_id_only);
             console.log('the use is:')
             console.log(new_user)
-            var friends_count = friends_list.length
+            var friends_count = friends_id_only.length
             var promises = []
             var a_promise
-            for (var i = 0; i < friends_count; i++)
+            var i
+            for (i = 0; i < friends_count; i++)
             {
                 console.log('i = '+ i)
-                a_promise = update_my_friend_get_his_events(new_user, fb_id, friends_list[i]).then(_=>
+                a_promise = update_my_friend_get_his_events(new_user, fb_id, friends_id_only[i]).then(_=>
                 {
                     resolve();
                 }).catch(err => reject(err))
@@ -152,6 +155,8 @@ class userService {
         return new Promise((resolve, reject) => {
             userDAO.get_User_by_fb_id(user_id)
                 .then(user=>{
+                    console.log("this is user[0]: ")
+                    console.log(user)
                     var a_promise = get_all_my_full_events(user[0].invited_events)
                     a_promise.then(full_events_array=>{
                         resolve(full_events_array)
@@ -197,9 +202,11 @@ function funcGetUserByFb(fb_id) {
     return new Promise((resolve, reject) => {
         userDAO.get_User_by_fb_id(fb_id)
             .then(user=>{
-                console.log('userDAO.get_User_by_fb_id(fb_id).then')
-                console.log('i wil return a :')
-                console.log(user[0].fb_id)
+                if(user.length > 0) {
+                    console.log('userDAO.get_User_by_fb_id(fb_id).then')
+                    console.log('i wil return a :')
+                    console.log(user[0].fb_id)
+                }
                 resolve(user)
             }).catch(err=> reject(err))
     })
