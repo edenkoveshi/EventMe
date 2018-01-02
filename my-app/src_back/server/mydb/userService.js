@@ -53,10 +53,7 @@ class userService {
             for (i = 0; i < friends_count; i++)
             {
                 console.log('i = '+ i)
-                a_promise = update_my_friend_get_his_events(new_user, fb_id, friends_id_only[i]).then(_=>
-                {
-                    resolve();
-                }).catch(err => reject(err))
+                a_promise = update_my_friend_get_his_events(new_user, fb_id, friends_id_only[i])
                 console.log('try to push a promise')
                 promises.push(a_promise)
                 console.log('i pushed a promise')
