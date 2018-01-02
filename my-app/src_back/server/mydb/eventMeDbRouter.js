@@ -137,6 +137,8 @@ router.post('/newUser', (req, res) => {
             })
     })
 });
+
+
 router.get('/frontpage/:fb_id', (req, res) => {
     console.log('newUserTest - trying to add new user')
     // return new Promise( (resolve, reject) => {

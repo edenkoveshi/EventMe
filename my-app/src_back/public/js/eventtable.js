@@ -1,13 +1,15 @@
-// var myList = [
-//   { "Category": "Food_Mexican", "Location": 345, "Date": "10.10.12" },
-//   { "Category": "Food_Hamburger", "Location": 645 },
-//   { "Category": "Food_Italian", "Location": 375 },
-//   { "Category": "Food_Israeli", "Location": 385 },
-//   { "Category": "Food_Sushi", "Location": 349 },
-//   { "Category": "Food_Chinese", "Location": 335 }
-// ];
+var myList = new Array();
 
+function getList(){
 
+    $('#excelDataTable tr').each(function(row, tr){
+        myList[row]={
+            "Category" : $(tr).find('td:eq(0)').text()
+            , "Location" :$(tr).find('td:eq(1)').text()
+        }
+    });
+    return myList;
+}
 function boxChecked() {
     var myCurrentList = [];
     $('input[type=checkbox]').each(function () {
