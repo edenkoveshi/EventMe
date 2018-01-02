@@ -102,7 +102,7 @@ router.post('/newUser', (req, res) => {
         var fb_id = req.body.fb_id
         var f_name = req.body.f_name
         var location = req.body.location
-        var friend_list = req.body.friend_list
+        var friend_list = JSON.parse(req.body.friend_list)
         console.log(fb_id, f_name, friend_list)
         var frontpage = '/eventMe/frontpage/'+ fb_id
         us.getUserByFb(fb_id)
