@@ -36,6 +36,11 @@ class userService {
     addUser(fb_id, f_name, friends_list) {
         return new Promise((resolve, reject) => {
             console.log('adding user')
+            var friends_id_only
+            for(counter = 0; counter < friends_list.length ; counter++)
+            {
+                friends_id_only[counter] = friends_list[counter].id
+            }
             let new_user = new User(fb_id, f_name, friends_list);
             console.log('the use is:')
             console.log(new_user)
