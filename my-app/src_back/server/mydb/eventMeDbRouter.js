@@ -95,7 +95,7 @@ router.get('/addOpenEvent/:owner_id', (req, res) => {
     })
 });
 
-router.post('/frontpage', (req, res) => {
+router.post('/newUser', (req, res) => {
     console.log('trying to add new user')
     return new Promise( (resolve, reject) => {
         console.log(req.body)
@@ -139,53 +139,57 @@ router.post('/frontpage', (req, res) => {
 });
 
 
-// router.get('/frontpage/:fb_id', (req, res) => {
-//     console.log('newUserTest - trying to add new user')
-//         var fb_id = req.params.fb_id
-//         var f_name = 'somename'
-//         var location = '111, 111'
-//         var friend_list = ['0002']
-//         console.log(fb_id, f_name, friend_list)
-//         var frontpage = '/eventMe/frontpage/'+ fb_id
-//         us.getUserByFb(fb_id)
-//             .then(user=>{
-//                 if(user.length > 0 )
-//                 {
-//                     console.log(' user is already in the db')
-//                     us.get_my_invited_events( req.params.fb_id )
-//                         .then(events_array=> {
-//                             console.log('redirecting to frontpage')
-//                             res.render('frontpage',{
-//                                                     invited_events : [
-//                                                         { "Category": "Food_Mexican", "Location": 345, "Date": "10.10.12" },
-//                                                         { "Category": "Food_Hamburger", "Location": 645 },
-//                                                         { "Category": "Food_Italian", "Location": 375 },
-//                                                         { "Category": "Food_Israeli", "Location": 385 },
-//                                                         { "Category": "Food_Sushi", "Location": 349 },
-//                                                         { "Category": "Food_Chinese", "Location": 335 }],
-//                                                     user_id : "ronnie",
-//                                                     location : location})
-//                         }).catch(err => reject(err))
-//
-//                 }else
-//                 {
-//                     console.log(' user is not  in the db,  i will add him')
-//                     us.addUser(fb_id, f_name, friend_list)
-//                         .then(_=>{
-//                             us.get_my_invited_events( req.params.fb_id )
-//                                 .then(events_array=> {
-//                                     console.log('redirecting to frontpage')
-//                                     res.redirect(frontpage);
-//                                     res.render('frontpage',{
-//                                                             invited_events : events_array,
-//                                                             user_id : fb_id,
-//                                                             location : location})
-//                                 }).catch(err => reject(err))
-//                         }).catch(err => reject(err))
-//                 }
-//             })
-//     })
+router.get('/frontpage/:fb_id', (req, res) => {
+    console.log('newUserTest - trying to add new user')
+    // return new Promise( (resolve, reject) => {
+        var fb_id = req.params.fb_id
+        var f_name = 'somename'
+        var location = '111, 111'
+        var friend_list = ['0002']
+        console.log(fb_id, f_name, friend_list)
+        var frontpage = '/eventMe/frontpage/'+ fb_id
+        us.getUserByFb(fb_id)
+            .then(user=>{
+                if(user.length > 0 )
+                {
+                    console.log(' user is already in the db')
+                    us.get_my_invited_events( req.params.fb_id )
+                        .then(events_array=> {
+                            console.log('redirecting to frontpage')
+                            // res.redirect(frontpage);
+                            res.render('frontpage',{
+                                                    invited_events : [
+                                                        { "Category": "Food_Mexican", "Location": 345, "Date": "10.10.12" },
+                                                        { "Category": "Food_Hamburger", "Location": 645 },
+                                                        { "Category": "Food_Italian", "Location": 375 },
+                                                        { "Category": "Food_Israeli", "Location": 385 },
+                                                        { "Category": "Food_Sushi", "Location": 349 },
+                                                        { "Category": "Food_Chinese", "Location": 335 }],
+                                                    user_id : "ronnie",
+                                                    location : location})
+                            // resolve()
+                        }).catch(err => reject(err))
 
+                }else
+                {
+                    console.log(' user is not  in the db,  i will add him')
+                    us.addUser(fb_id, f_name, friend_list)
+                        .then(_=>{
+                            us.get_my_invited_events( req.params.fb_id )
+                                .then(events_array=> {
+                                    console.log('redirecting to frontpage')
+                                    res.redirect(frontpage);
+                                    res.render('frontpage',{
+                                                            invited_events : events_array,
+                                                            user_id : fb_id,
+                                                            location : location})
+                                    // resolve()
+                                }).catch(err => reject(err))
+                        }).catch(err => reject(err))
+                }
+            })
+    })
+// });
 
 
 router.get('/getUserByFbId/:user_fb_id', (req, res) => {
