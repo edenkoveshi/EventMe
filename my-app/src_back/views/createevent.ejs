@@ -7,9 +7,9 @@
         <meta name="description" content="Examples for creative website header animations using Canvas and JavaScript" />
         <meta name="keywords" content="header, canvas, animated, creative, inspiration, javascript" />
         <meta name="author" content="Codrops" />
-        <link rel="shortcut icon" href="../favicon.ico">
+        <link rel="shortcut icon" href="../../favicon.ico">
         <link rel="stylesheet" type="text/css" href="../../css/normalize.css" />
-        <link rel="stylesheet" type="text/css" href="../css/component.css" />
+        <link rel="stylesheet" type="text/css" href="../../css/component.css" />
         <link href='http://fonts.googleapis.com/css?family=Raleway:200,400,800|Londrina+Outline' rel='stylesheet' type='text/css'>
         <!--[if IE]>
         	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -109,20 +109,11 @@
                         <button type="button" id="my_activities">My Activities</button>
                         <script>
                             var homepage=document.getElementById("homepage");
-                            var my_activities=document.getElementById("my_activities");
-                            var url = window.location.href;
-                            var user_id=url.split('#')[1];
-                            homepage.addEventListener('click',function(){window.location.href="frontpage.html"+'#'+user_id});
-                            //my_activities.onclick=function(){window.location.href("eventpage.html")};
+                            homepage.addEventListener('click',function(){window.location.href="/eventMe/frontpage/<%=user_id%>"});
                         </script>
                     </div>
                     <div id="event-properties" class="center" ><!--event creation form-->
-                    <form id="event-form" style="background:cornflowerblue" action="" method="post">
-                        <script>
-                            var url = window.location.href;
-                            var user_id=url.split('#')[1];
-                            document.getElementById("event-form").action="/eventMe/addOpenEvent/"+user_id;
-                        </script>
+                    <form id="event-form" style="background:cornflowerblue" action="/eventMe/addOpenEvent/<%=user_id%>" method="post">
                         Activity name:
                         <input type="text" name="Activity_name"/><br>
                         Date and time:

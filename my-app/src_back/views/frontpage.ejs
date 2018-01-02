@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html>
-	<head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
-        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-        <link rel="stylesheet" type="text/css" href="../../css/normalize.css" />
-        <link rel="stylesheet" type="text/css" href="../../css/component.css" />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <script src="../../js/eventtable.js"></script>
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="../../css/normalize.css"/>
+    <link rel="stylesheet" type="text/css" href="../../css/component.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="../../js/eventtable.js"></script>
 
 
-<style>
+    <style>
         * {
             margin: 0;
             padding: 0;
         }
-    
+
         body {
             font: 300 15px/1.5 "Helvetica Neue", helvetica, arial, sans-serif;
             background: #333;
             margin: 15px;
         }
-    
+
         article {
             width: 100%;
             margin: 0 auto;
@@ -30,11 +30,11 @@
             border-radius: 5px;
             box-shadow: 0 0 15px 2px #666;
         }
-    
+
         section {
             clear: left;
         }
-    
+
         h1 {
             font-size: 45px;
             font-weight: 100;
@@ -45,19 +45,19 @@
         h1, #main_content, #dog_link {
             padding: 15px;
         }
-    
+
         a {
             color: #06c;
 
         }
-    
+
         #main_nav ul {
             background: white;
             float: left;
             -webkit-transition: .5s;
             transition: .5s;
         }
-    
+
         #main_nav li {
             float: left;
             position: relative;
@@ -66,11 +66,11 @@
             -webkit-transition: .5s;
             transition: .5s;
         }
-    
+
         #main_nav > ul > li > a, h1 {
             text-transform: uppercase;
         }
-    
+
         #main_nav a {
             display: block;
             text-decoration: none;
@@ -85,23 +85,23 @@
             visibility: hidden;
             opacity: 0;
         }
-    
+
         #main_nav ul ul ul {
             left: 100%;
             width: 50px;
             top: 0;
         }
 
-        #main_nav ul ul ul ul{
+        #main_nav ul ul ul ul {
             left: 100%;
             width: 50px;
             top: 0;
         }
-    
+
         #main_nav li:hover, #main_nav li:hover li {
             background: #ddd;
         }
-    
+
         #main_nav li li:hover, #main_nav li li:hover li {
             background: #bbb;
         }
@@ -113,7 +113,7 @@
         #main_nav li li li input:hover, #main_nav li li li:hover input {
             background: #bbb;
         }
-    
+
         #main_nav li li li:hover {
             background: #999;
         }
@@ -121,7 +121,7 @@
         #main_nav li li li li:hover {
             background: #999;
         }
-    
+
         #main_nav li:hover > ul {
             visibility: visible;
             opacity: 1;
@@ -146,111 +146,131 @@
         }
 
     </style>
-	</head>
-	<body onload="getList()">
-		<div class="container demo-2">
+</head>
+<body onload="getList()">
+<div class="container demo-2">
 
 
+    <div class="content">
+        <div id="large-header" class="large-header">
+<!--
+            <nav id="main_nav">
+                <ul>
+                    <li>
+                        <a>Events</a>
+                        <ul>
+                            <li><a href="/eventMe/createevent#"+<%= user_id %>">Create Event</a></li>
+                            <li><a href="myevents.html">My Events</a></li>
+                            <li><a href="#">Events I Attend</a></li>
+                            <li><a href="#">Events I Attended</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a>Starts At</a>
+                        <ul>
+                            <li>
+                                <a>Date</a>
+                                <ul>
+                                    <li><input type="date" style="width:100%"></input></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a>Time</a>
+                                <ul>
+                                    <li><input type="time" style="width:100%"></input></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a>Activity Type</a>
+                        <ul>
+                            <li><a>Food</a>
+                                <ul>
+                                    <li><input onclick="boxChecked();" name="Food_Mexican" type="checkbox"
+                                               id="checkbox">Mexican</input></li>
+                                    <li><input onclick="boxChecked($(this));" name="Food_Hamburger" type="checkbox"
+                                               id="checkbox">Hamburger</input></li>
+                                    <li><input onclick="boxChecked($(this));" name="Food_Italian" type="checkbox"
+                                               id="checkbox">Italian</input></li>
+                                    <li><input onclick="boxChecked($(this));" name="Food_Israeli" type="checkbox"
+                                               id="checkbox">Israeli</input></li>
+                                    <li><input onclick="boxChecked($(this));" name="Food_Sushi" type="checkbox"
+                                               id="checkbox">Sushi</input></li>
+                                    <li><input onclick="boxChecked($(this));" name="Food_Viatnamise" type="checkbox"
+                                               id="checkbox">Viatnamise</input></li>
+                                    <li><input onclick="boxChecked($(this));" name="Food_Chinese" type="checkbox"
+                                               id="checkbox">Chinese</input></li>
+                                </ul>
+                            </li>
 
-			<div class="content">
-                <div id="large-header" class="large-header">
+                            <li><a>Party</a>
+                                <ul>
+                                    <li><input onclick="boxChecked($(this));" name="Party_Techno" type="checkbox"
+                                               id="checkbox">Techno</input></li>
+                                    <li><input onclick="boxChecked($(this));" name="Party_Salsa" type="checkbox"
+                                               id="checkbox">Salsa</input></li>
+                                    <li><input onclick="boxChecked($(this));" name="Party_MainStream" type="checkbox"
+                                               id="checkbox">Main-Stream</input></li>
+                                </ul>
+                            </li>
+                            <li><a>Shopping</a>
+                                <ul>
+                                    <li><input onclick="boxChecked($(this));" name="Shopping_Groceries" type="checkbox"
+                                               id="checkbox">Groceries</input></li>
+                                    <li><input onclick="boxChecked($(this));" name="Shopping_Clothes" type="checkbox"
+                                               id="checkbox">Clothes</input></li>
+                                    <li><input onclick="boxChecked($(this));" name="Shoppinf_HomeDecore" type="checkbox"
+                                               id="checkbox">Home Decore</input></li>
+                                </ul>
+                            </li>
+                            <li><input onclick="boxChecked($(this));" name="Movie" type="checkbox"
+                                       id="checkbox">Movie</input></li>
+                            <li><input onclick="boxChecked($(this));" name="GoingOut" type="checkbox" id="checkbox">Going
+                                Out</input></li>
+                            <li><input onclick="boxChecked($(this));" name="Hanging" type="checkbox" id="checkbox">Hanging</input>
+                            </li>
+                            <li><input onclick="boxChecked($(this));" name="Hiking" type="checkbox"
+                                       id="checkbox">Hiking</input></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#">Search</a>
+                        <ul>
+                            <li><input type="text" id="txt_name" name="search" placeholder="Search.."
+                                       style="width: 100%;"></input>
+                                <button onclick="displaysearch()">Submit</button>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+-->
+            <% include nav %>
 
-                   <nav id="main_nav">
-            <ul>
-                <li>
-                    <a >Events</a>
-                    <ul>
-                        <li><a href="#">Create Event</a></li>
-                        <li><a href="myevents.html">My Events</a></li>
-                        <li><a href="#">Events I Attend</a></li>
-                        <li><a href="#">Events I Attended</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a>Starts At</a>
-                    <ul>
-                        <li>
-                            <a>Date</a>
-                            <ul>
-                                <li><input type="date" style="width:100%"></input></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a>Time</a>
-                            <ul>
-                                <li><input type="time" style="width:100%"></input></li> 
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a>Activity Type</a>
-                    <ul>
-                        <li><a>Food</a>
-                           <ul>
-                                <li><input onclick="boxChecked();" name="Food_Mexican" type="checkbox" id="checkbox">Mexican</input></li>
-                                <li><input onclick="boxChecked($(this));" name="Food_Hamburger" type="checkbox" id="checkbox">Hamburger</input></li>
-                                <li><input onclick="boxChecked($(this));" name="Food_Italian" type="checkbox" id="checkbox">Italian</input></li>
-                                <li><input onclick="boxChecked($(this));" name="Food_Israeli" type="checkbox" id="checkbox">Israeli</input></li>
-                                <li><input onclick="boxChecked($(this));" name="Food_Sushi" type="checkbox" id="checkbox">Sushi</input></li>
-                                <li><input onclick="boxChecked($(this));" name="Food_Viatnamise" type="checkbox" id="checkbox">Viatnamise</input></li>
-                                <li><input onclick="boxChecked($(this));" name="Food_Chinese" type="checkbox" id="checkbox">Chinese</input></li>
-                            </ul>
-                        </li>
+            <canvas id="demo-canvas"></canvas>
 
-                        <li><a>Party</a>
-                           <ul>
-                                <li><input onclick="boxChecked($(this));" name="Party_Techno" type="checkbox" id="checkbox">Techno</input></li>
-                                <li><input onclick="boxChecked($(this));" name="Party_Salsa" type="checkbox" id="checkbox">Salsa</input></li>
-                                <li><input onclick="boxChecked($(this));" name="Party_MainStream" type="checkbox" id="checkbox">Main-Stream</input></li>
-                            </ul>
-                        </li>
-                        <li><a>Shopping</a>
-                           <ul>
-                                <li><input onclick="boxChecked($(this));" name="Shopping_Groceries" type="checkbox" id="checkbox">Groceries</input></li>
-                                <li><input onclick="boxChecked($(this));" name="Shopping_Clothes" type="checkbox" id="checkbox">Clothes</input></li>
-                                <li><input onclick="boxChecked($(this));" name="Shoppinf_HomeDecore" type="checkbox" id="checkbox">Home Decore</input></li>
-                            </ul>
-                        </li>
-                        <li><input onclick="boxChecked($(this));" name="Movie" type="checkbox" id="checkbox">Movie</input></li>
-                        <li><input onclick="boxChecked($(this));" name="GoingOut" type="checkbox" id="checkbox">Going Out</input></li>
-                        <li><input onclick="boxChecked($(this));" name="Hanging" type="checkbox" id="checkbox">Hanging</input></li>
-                        <li><input onclick="boxChecked($(this));" name="Hiking" type="checkbox" id="checkbox">Hiking</input></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#">Search</a>
-                    <ul>
-                        <li><input type="text" id="txt_name" name="search" placeholder="Search.." style="width: 100%;"></input>
-                            <button onclick="displaysearch()">Submit</button></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
+            <table id="excelDataTable"
+                   style="background-color:Black;top: 50%; left: 50%; text-align: center; position: absolute; display: block; height: 200px; overflow-y: scroll; margin-left:auto; margin-right: auto; width: 500px;">
 
+                <tr>
+                    <th>Category</th>
+                    <th>Loction</th>
+                <tr/>
+                <% for (var i = 0; i < invited_events.length; i++) { %>
+                <tr>
+                    <td><%= invited_events[i].Category %></td>
+                    <td><%= invited_events[i].Location %></td>
+                </tr>
+                <% } %>
+            </table>
 
-                <canvas id="demo-canvas"></canvas>
+        </div>
+    </div>
+    <!-- Related demos -->
+</div><!-- /container -->
+<script src="../../js/rAF.js"></script>
+<script src="../../js/getstarted.js"></script>
 
-                  <table id="excelDataTable" style="background-color:Black;top: 50%; left: 50%; text-align: center; position: absolute; display: block; height: 200px; overflow-y: scroll; margin-left:auto; margin-right: auto; width: 500px;">
-
-                      <tr>
-                          <th>Category</th>
-                          <th>Loction</th>
-                      <tr/>
-                      <% for (var i = 0; i < invited_events.length; i++) { %>
-                      <tr>
-                          <td><%= invited_events[i].Category %></td>
-                          <td><%= invited_events[i].Location %></td>
-                      </tr>
-                      <% } %>
-                  </table>
-
-              </div>
-            </div>
-            <!-- Related demos -->
-		</div><!-- /container -->
-        <script src="../../js/rAF.js"></script>
-        <script src="../../js/getstarted.js"></script>
-
-	</body>
+</body>
 </html>
