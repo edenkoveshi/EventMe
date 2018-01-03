@@ -19,7 +19,6 @@ function boxChecked(t) {
   }
 }
 
-
 // Builds the HTML Table out of myList.
 function buildMyEventsTable(selector) {
   $(selector).append($('<caption>'+"My Events"+'</caption>'));
