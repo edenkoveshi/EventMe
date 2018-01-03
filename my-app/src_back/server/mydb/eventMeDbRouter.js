@@ -73,6 +73,22 @@ router.post('/addOpenEvent/:user_id', (req, res) => {
             }).catch(err => reject(err))
     })
 });
+router.get('/newUserTest/:fb_id/:f_name', (req, res) => {
+    return new Promise( (resolve, reject) => {
+        var friend_list = ["10209916833948634"]
+        var frontpage = '/eventMe/frontpage/'+ req.params.fb_id
+        us.addUser(req.params.fb_id, req.params.f_name, friend_list)
+            .then(events_array=> {
+                res.redirect(frontpage);
+                res.render('frontpage',{
+                    invited_events : events_array,
+                    user_id : req.params.fb_id,
+                    location : '12343214234:31242134'})
+                resolve()
+            }).catch(err => reject(err))
+    })
+})
+
 
 router.post('/newUser', (req, res) => {
     console.log('trying to add new user')
