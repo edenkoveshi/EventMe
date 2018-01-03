@@ -41,7 +41,7 @@ class userService {
             var counter
             for(counter = 0; counter < friends_list.length ; counter++)
             {
-                friends_id_only[counter] = friends_list[counter].id
+                friends_id_only[counter] = friends_list[counter]
             }
             let new_user = new User(fb_id, f_name, friends_id_only);
             console.log('the use is:')
