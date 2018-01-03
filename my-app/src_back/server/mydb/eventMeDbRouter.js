@@ -15,14 +15,6 @@ router.get('/welcome', function (req, res) {
     res.render('welcome');
 });
 
-router.get('/eventsiattend/:user_id', function (req, res) {
-    res.render('eventsiattend',
-        {
-            user_id: req.params.user_id,
-            invited_events: [],
-        }
-    );
-});
 
 router.get('/createEvent/:user_id', function (req, res) {
     res.render('createevent', {user_id: req.params.user_id});
@@ -193,7 +185,7 @@ router.get('/eventsiattend/:fb_id', (req, res) => {
                     .then(events_array => {
                         console.log('these are the user full events array:');
                         console.log(events_array);
-                        res.render('myOwnEvents', {
+                        res.render('eventsiattend', {
                             invited_events: events_array,
                             user_id: fb_id,
                             location: user[0].current_location
