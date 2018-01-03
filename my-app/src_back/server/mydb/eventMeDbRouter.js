@@ -15,8 +15,12 @@ router.get('/welcome', function (req, res) {
     res.render('welcome');
 });
 
-router.get('/myevents', function (req, res) {
-    res.render('myevents');
+router.get('/myownevents', function (req, res) {
+    res.render('myownevents');
+});
+
+router.get('/eventsiattend', function (req, res) {
+    res.render('eventsiattend');
 });
 
 router.get('/createEvent/:user_id', function (req, res) {
