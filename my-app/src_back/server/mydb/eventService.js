@@ -60,12 +60,14 @@ function add_an_event_to_user_invited_list(event_id, user_id){
     userDAO.get_User_by_fb_id(user_id).then(invited_friend=>{
         if (invited_friend.length > 0)
         {
-            // console.log('get_User_by_fb_id.then, invited_friend:', invited_friend )
             let updated_events = invited_friend[0].invited_events
-            updated_events.push(event_id)
-            // console.log('updated_events:', updated_events )
-            // console.log('friend to be updated:', invited_friend[0].fb_id )
-            userDAO.update_invited_events(invited_friend[0].fb_id, updated_events)
+            if(updated_events.indexOf(event_id) < 0 )
+            {
+                updated_events.push(event_id)
+                userDAO.update_invited_events(invited_friend[0].fb_id, updated_events)
+            }
         }
+
+
     })
 }
