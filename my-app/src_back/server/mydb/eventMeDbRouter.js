@@ -15,8 +15,13 @@ router.get('/welcome', function (req, res) {
     res.render('welcome');
 });
 
-router.get('/eventsiattend', function (req, res) {
-    res.render('eventsiattend');
+router.get('/eventsiattend/:user_id', function (req, res) {
+    res.render('eventsiattend',
+        {
+            user_id: req.params.user_id,
+            invited_events: [],
+        }
+    );
 });
 
 router.get('/createEvent/:user_id', function (req, res) {
@@ -64,7 +69,7 @@ router.post('/addOpenEvent/:user_id', (req, res) => {
     return new Promise((resolve, reject) => {
         console.log(' is trying to create new event');
         console.log(req.body);
-        es.addOpenEvent(req.params["user_id"],req.body["Activity_name"], req.body["google-location"], req.body["categories"], req.body["description"], req.body["Activity_time"])
+        es.addOpenEvent(req.params["user_id"], req.body["Activity_name"], req.body["google-location"], req.body["categories"], req.body["description"], req.body["Activity_time"])
             .then(_ => {
                 let newUrl = '/eventMe/frontpage/' + req.params["user_id"];
                 console.log(newUrl);
@@ -74,12 +79,15 @@ router.post('/addOpenEvent/:user_id', (req, res) => {
     })
 });
 router.get('/newUserTest/:fb_id/:f_name', (req, res) => {
-    return new Promise( (resolve, reject) => {
-        let friend_list =[{ name: 'barak', id: '10155189617577308' }, { name: 'itay', id: '10209916833948634' }, { name: 'Ronnie Artzi', id: '10155941032798926' },
-            { name: 'Eden Koveshi', id: '2358949860799526' } ]
-        let frontpage = '/eventMe/frontpage/'+ req.params.fb_id
+    return new Promise((resolve, reject) => {
+        let friend_list = [{name: 'barak', id: '10155189617577308'}, {
+            name: 'itay',
+            id: '10209916833948634'
+        }, {name: 'Ronnie Artzi', id: '10155941032798926'},
+            {name: 'Eden Koveshi', id: '2358949860799526'}]
+        let frontpage = '/eventMe/frontpage/' + req.params.fb_id
         us.addUser(req.params.fb_id, req.params.f_name, friend_list)
-            .then(events_array=> {
+            .then(events_array => {
                 res.redirect(frontpage);
                 resolve()
             }).catch(err => reject(err))
@@ -143,8 +151,7 @@ router.get('/frontpage/:fb_id', (req, res) => {
                     }).catch(err => reject(err))
 
             }
-            else
-            {
+            else {
                 console.log(' user is not  in the db!!!!!!!!!!!!!!!!!!!!!');
             }
         })
@@ -169,8 +176,7 @@ router.get('/myOwnEvents/:fb_id', (req, res) => {
                     }).catch(err => reject(err))
 
             }
-            else
-            {
+            else {
                 console.log(' user is not  in the db!!!!!!!!!!!!!!!!!!!!!');
             }
         })
