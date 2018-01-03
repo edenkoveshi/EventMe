@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
+        <meta name="viewport" content="width=device-width, initial-scale=1"> 
+        <meta name="description" content="Examples for creative website header animations using Canvas and JavaScript" />
+        <meta name="keywords" content="header, canvas, animated, creative, inspiration, javascript" />
+        <meta name="author" content="Codrops" />
+        <link rel="shortcut icon" href="../../favicon.ico">
+        <link rel="stylesheet" type="text/css" href="../../css/normalize.css" />
+        <link rel="stylesheet" type="text/css" href="../../css/component.css" />
+        <link href='http://fonts.googleapis.com/css?family=Raleway:200,400,800|Londrina+Outline' rel='stylesheet' type='text/css'>
+        <!--[if IE]>
+        	<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" media="screen"
+        href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
+        <style>
+            .center{
+                margin:auto;
+                padding:150px 0;
+                width:50%;
+            }
+            #googleMap
+            {
+                width:100%;
+                height:500px;
+            }
+
+            #event-properties ul {
+                background: white;
+                float: left;
+                -webkit-transition: .5s;
+                transition: .5s;
+            }
+
+            #event-properties li {
+                float: left;
+                position: relative;
+                width: 120px;
+                list-style: none;
+                -webkit-transition: .5s;
+                transition: .5s;
+            }
+
+            #event-properties > ul > li > a, h1 {
+                text-transform: uppercase;
+            }
+
+            #event-properties a {
+                display: block;
+                text-decoration: none;
+                padding: 5px 15px;
+                color: #000;
+            }
+
+            #event-properties ul ul {
+                position: absolute;
+                left: 75%;
+                top: 0;
+                visibility: hidden;
+                opacity: 0;
+            }
+
+            #event-properties ul ul ul {
+                left: 100%;
+                top: 0;
+            }
+
+            #event-properties ul ul ul ul{
+                left: 100%;
+                top: 0;
+            }
+
+            #event-properties li:hover, #main_nav li:hover li {
+                background: #ddd;
+            }
+
+            #event-properties li li:hover, #main_nav li li:hover li {
+                background: #bbb;
+            }
+
+            #event-properties li li li:hover, #main_nav li li li:hover li {
+                background: #bbb;
+            }
+
+            #event-properties li li li:hover {
+                background: #999;
+            }
+
+            #event-properties li li li li:hover {
+                background: #999;
+            }
+
+            #event-properties li:hover > ul {
+                visibility: visible;
+                opacity: 1;
+            }
+        </style>
+	</head>
+	<body>
+		<div class="container demo-2">
+            <div class="content">
+                <div id="large-header" class="large-header">
+                    <div><!--header-->
+                       <button type="button" id="homepage">Homepage</button>
+                        <button type="button" id="my_activities">My Activities</button>
+                        <script>
+                            var homepage=document.getElementById("homepage");
+                            homepage.addEventListener('click',function(){window.location.href="/eventMe/frontpage/<%=user_id%>"});
+                        </script>
+                    </div>
+                    <div id="event-properties" class="center" ><!--event creation form-->
+                    <form id="event-form" style="background:cornflowerblue" action="/eventMe/addOpenEvent/<%=user_id%>" method="post">
+                        Activity name:
+                        <input type="text" name="Activity_name"/><br>
+                        Date and time:
+                        <input type="datetime-local" name="Activity_time"/><br>
+                        Location (Current location will be taken as default):
+                        <input type="button" id="Activity_location" value="Click here" onclick="ChooseLocation()"/><br>
+                        <!-- Google Maps modal-->
+                        <div id="maps-modal" class="modal" style="display:none">
+                            <!-- Modal content -->
+                            <div class="modal-content">
+                                <span class="close">&times;</span>
+                                <div id="googleMap"></div>
+                                <input type="text" name="google-location" style="display:none"/>
+                            </div>
+                        </div>
+                        <br>
+                        Select your activity type:
+                        <input type="button" id="Type_selection" value="Click here" onclick="SelectType()"/>
+                        <br>
+                        <div id="activity-type" style="display: none;">
+                            <ul>
+                                <li><input type="checkbox" id="Food">Food</input>
+                                    <ul>
+                                        <li><input type="checkbox" id="Food:Mexican">Mexican</input></li>
+                                        <li><input type="checkbox" id="Food:Hamburger">Hamburger</input></li>
+                                        <li><input type="checkbox" id="Food:Italian">Italian</input></li>
+                                        <li><input type="checkbox" id="Food:Israeli">Israeli</input></li>
+                                        <li><input type="checkbox" id="Food:Sushi">Sushi</input></li>
+                                        <li><input type="checkbox" id="Food:Viatnamise">Viatnamise</input></li>
+                                        <li><input type="checkbox" id="Food:Chinese">Chinese</input></li>
+                                        <li><input type="checkbox" id="Food:Other">Other</input></li>
+                                    </ul>
+                                </li>
+                                <br>
+                                <li><input type="checkbox" id="Party">Party</input>
+                                    <ul>
+                                        <li><input type="checkbox" id="Party:Techno">Techno</input></li>
+                                        <li><input type="checkbox" id="Party:Salsa">Salsa</input></li>
+                                        <li><input type="checkbox" id="Party:Main-Stream">Main-Stream</input></li>
+                                        <li><input type="checkbox" id="Party:Other">Other</input></li>
+                                    </ul>
+                                </li>
+                                <br>
+                                <li><input type="checkbox" id="Shopping">Shopping</input>
+                                    <ul>
+                                        <li><input type="checkbox" id="Shopping:Groceries">Groceries</input></li>
+                                        <li><input type="checkbox" id="Shopping:Clothes">Clothes</input></li>
+                                        <li><input type="checkbox" id="Shopping:Home Decore">Home Decore</input></li>
+                                        <li><input type="checkbox" id="Shopping:Other">Other</input></li>
+                                    </ul>
+                                </li>
+                                <br>
+                                <li><input type="checkbox" id="Entertainment">Entertainment</input>
+                                    <ul>
+                                        <li><input type="checkbox" id="Entertainment:Movie">Movie</input></li>
+                                        <li><input type="checkbox" id="Entertainment:Theater">Theater</input></li>
+                                        <li><input type="checkbox" id="Entertainment:Concert">Concert</input></li>
+                                        <li><input type="checkbox" id="Entertainment:Stand-up show">Stand-up show</input></li>
+                                        <li><input type="checkbox" id="Entertainment:Other">Other</input></li>
+
+                                    </ul>
+                                </li>
+                                <br>
+                                <li><input type="checkbox" id="Sports">Sports</input>
+                                    <ul>
+                                        <li><input type="checkbox" id="Sports:Soccer">Soccer</input></li>
+                                        <li><input type="checkbox" id="Sports:Basketball">Basketball</input></li>
+                                        <li><input type="checkbox" id="Sports:Football">Football</input></li>
+                                        <li><input type="checkbox" id="Sports:Handball">Handball</input></li>
+                                        <li><input type="checkbox" id="Sports:Tennis">Tennis</input></li>
+                                        <li><input type="checkbox" id="Sports:Jogging">Jogging</input></li>
+                                        <li><input type="checkbox" id="Sports:Training">Training at the gym</input></li>
+                                        <li><input type="checkbox" id="Sports:Athletics">Athletics</input></li>
+                                        <li><input type="checkbox" id="Sports:Other">Other</input></li>
+                                    </ul>
+                                </li>
+                                <br>
+                                <li><input type="checkbox" id="Adventure">Adventure</input>
+                                    <ul>
+                                        <li><input type="checkbox" id="Adventure:Hiking">Hiking</input></li>
+                                        <li><input type="checkbox" id="Adventure:Road-trip">Road-trip</input></li>
+                                        <li><input type="checkbox" id="Adventure:Diving">Diving</input></li>
+                                        <li><input type="checkbox" id="Adventure:Ski">Ski</input></li>
+                                        <li><input type="checkbox" id="Adventure:Other">Other</input></li>
+                                    </ul>
+                                </li>
+                                <br>
+                                <li><input type="checkbox" id="Other">Other</input></li>
+                                <br>
+                            </ul>
+                        </div>
+                        <input type="hidden" name="categories"/>
+                        Description (optional):
+                        <input type="text" name="description"/><br>
+                        <input type="button" id="Create" value="Create!" onclick="CreateEvent()"/>
+                    </form>
+                    </div>
+              </div>
+            </div>
+            <!-- Related demos -->
+		</div><!-- /container -->
+        <script>
+            //var location;
+            function ChooseLocation() {
+                // Get the modal
+                var modal = document.getElementById('maps-modal');
+
+                // Get the <span> element that closes the modal
+                var span = document.getElementsByClassName("close")[0];
+
+                // When the user clicks the button, open the modal
+                modal.style.display = "block";
+
+                // When the user clicks on <span> (x), close the modal
+                span.onclick = function() {
+                    modal.style.display = "none";
+                }
+
+                // When the user clicks anywhere outside of the modal, close it
+                window.onclick = function() {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+                    }
+                }
+            }
+            function SelectType(){
+                //change button label
+                var but=document.getElementById("Type_selection");
+                but.value= (but.value=="Click here") ? "Close list" : "Click here";
+                //toggle list view
+                var list=document.getElementById("activity-type");
+                list.style.display = (list.style.display=="none") ? list.style.display="inline" : list.style.display ="none";
+            }
+            //Google Maps function
+            function initMap(event) {
+                window.onload = function() {
+                    var default_location = {lat: 51.508742, lng: -0.120850};
+                    var map = new google.maps.Map(document.getElementById('googleMap'), {
+                        zoom: 15,
+                        center: default_location,
+                    });
+                    var marker = new google.maps.Marker({
+                        position: default_location,
+                        map: map,
+                    });
+                    //google.maps.event.trigger(map,"resize");
+                    // Try HTML5 geolocation.
+                    //Get current location
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(function (position) {
+                            var pos = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude
+                            };
+                            //Adjust map
+                            map.setCenter(pos);
+                            marker.setPosition(pos);
+                            marker.setMap(map);
+                            google.maps.event.trigger(map,"resize");
+                            document.getElementsByName("google-location")[0].value = pos;
+                        }, function () {
+                            handleLocationError();
+                        });
+                        //Change location on click
+                        google.maps.event.addListener(map, 'click', function (event) {
+                            window.alert("I'm here");
+                            var loc=event.latLng;
+                            window.alert(loc);
+                            marker.setPosition(loc);
+                            map.setCenter(loc);
+                            google.maps.event.trigger(map,"resize");
+                            document.getElementsByName("google-location")[0].value = loc;
+                        });
+                    } else {
+                        // Browser doesn't support Geolocation
+                        handleLocationError();
+
+                    }
+                };
+            }
+
+            function handleLocationError()
+            {
+                window.alert("We have a problem fetching your location.Please check it and try again later.");
+            }
+
+
+            function CreateEvent()
+            {
+                var all_fields_set=1;
+                var form_input=document.querySelectorAll('input:not([name="description"])');
+                for(i=0;i<form_input.length-1;i++)
+                {
+                    if(form_input[i].value=="")
+                        all_fields_set=0;
+                }
+                var cblist=document.querySelectorAll('input[type="checkbox"]:checked');
+                for(i=0;i<cblist.length;i++)
+                {
+                    document.getElementsByName("categories")[0].value+=","+cblist[i].id;
+                }
+                console.log(document.getElementsByName("categories")[0]);
+                if(all_fields_set==1 && cblist.length>0)
+                {
+                    window.alert("Event created successfully!");
+                    //window.location.href="myevents.html";
+                    document.getElementById("event-form").submit();
+                }
+                else{
+                    window.alert("Please fill all non-optional fields.");
+                }
+            }
+        </script>
+        <!-- Import Google Maps -->
+        <script async defer
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu3KurWBoVaFCgz3J6jjoYcnmIVY2i6B0&callback=initMap"></script>
+        <!--Import jQuery-->
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="../../js/TweenLite.min.js"></script>
+        <script src="../../js/EasePack.min.js"></script>
+        <script src="../../js/rAF.js"></script>
+        <script src="../../js/getstarted.js"></script>
+        <script type="text/javascript"
+         src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js">
+        </script> 
+        <script type="text/javascript"
+         src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js">
+        </script>
+        <script type="text/javascript"
+         src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
+        </script>
+        <script type="text/javascript"
+         src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.pt-BR.js">
+        </script>
+	</body>
+</html>
