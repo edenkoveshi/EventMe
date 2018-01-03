@@ -4,12 +4,8 @@ function getList(){
 
     $('#excelDataTable tr').each(function(row, tr){
         myList[row]={
-            "type" : $(tr).find('td:eq(0)').text(),
-            "eventId" : $(tr).find('td:eq(1)').text(),
-            "title" :$(tr).find('td:eq(2)').text(),
-            "distance" :$(tr).find('td:eq(3)').text(),
-            "time" :$(tr).find('td:eq(4)').text(),
-            "owner" :$(tr).find('td:eq(5)').text()
+            "Category" : $(tr).find('td:eq(0)').text()
+            , "Location" :$(tr).find('td:eq(1)').text()
         }
     });
     return myList;
@@ -20,7 +16,7 @@ function boxChecked() {
         if (this.checked) {
             var x = this.name;
             for (var listIndex = 0; listIndex < myList.length; listIndex++) {
-                if (myList[listIndex]["type"] == x) {
+                if (myList[listIndex]["Category"] == x) {
                     myCurrentList.push(myList[listIndex]);
                 }
             }
@@ -30,20 +26,6 @@ function boxChecked() {
     buildEventsTable('#excelDataTable', myCurrentList);
 }
 
-function displaytime() {
-    var date = document.getElementById("date").value;
-    var time = document.getElementById("time").value;
-    var myCurrentList = [];
-    var x = (date + "T" + time);
-    for (var listIndex = 0; listIndex < myList.length; listIndex++) {
-        if (myList[listIndex]["time"] == x) {
-            myCurrentList.push(myList[listIndex]);
-
-        }
-    }
-    $("#excelDataTable tr").remove();
-    buildEventsTable('#excelDataTable', myCurrentList);
-}
 
 function displaysearch() {
     var myCurrentList = [];
@@ -72,12 +54,8 @@ function buildEventsTable(selector, myList) {
     for (var colIndex = 0; colIndex < columns.length; colIndex++) {
       var cellValue = myList[i][columns[colIndex]];
       if (cellValue == null) cellValue = "";
-      var myHref = window.location.href;
-      var arrayHref = myHref.split("/");
-      var user_id = arrayHref[5];
-      var link = "/eventMe/event/" + myList[i]["eventId"]+ "/" + user_id;
-      if (columns[colIndex] == "title") {
-        row$.append($('<td>'+'<a href='+link+'>'+cellValue+'</a>'+'</td>'+'</tr>'));
+      if (columns[colIndex] == "name") {
+        row$.append($('<td>'+'<a href="event/11113/1111">'+cellValue+'</a>'+'</td>'+'</tr>'));
       } else {
         row$.append($('<td>'+cellValue+'</td>'+'</tr>'));
       }

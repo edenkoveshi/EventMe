@@ -5,7 +5,7 @@
             <ul>
                 <li><a href="/eventMe/createevent/<%= user_id %>">Create Event</a></li>
                 <li><a href="/eventMe/myownevents/<%= user_id %>">My Own Events</a></li>
-                <li><a href="/eventMe/eventsiattend/<%= user_id %>">Events I Attend</a></li>
+                <li><a href="/eventMe/eventsiattend/<%= user_id %>">">Events I Attend</a></li>
             </ul>
         </li>
         <li>
@@ -14,17 +14,14 @@
                 <li>
                     <a>Date</a>
                     <ul>
-                        <li><input id="date" type="date" style="width:100%"></input></li>
+                        <li><input type="date" style="width:100%"></input></li>
                     </ul>
                 </li>
                 <li>
                     <a>Time</a>
                     <ul>
-                        <li><input id="time" type="time" style="width:100%"></input></li>
+                        <li><input type="time" style="width:100%"></input></li>
                     </ul>
-                </li>
-                <li>
-                    <button onclick="displaytime()">Get Time</button>
                 </li>
             </ul>
         </li>
@@ -78,8 +75,6 @@
                 </li>
                 <li><input onclick="boxChecked($(this));" name="Hiking" type="checkbox"
                            id="checkbox">Hiking</input></li>
-                <li><input onclick="boxChecked($(this));" name="Other" type="checkbox"
-                           id="checkbox">Other</input></li>
             </ul>
         </li>
         <li>
