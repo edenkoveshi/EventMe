@@ -154,6 +154,32 @@ router.get('/frontpage/:fb_id', (req, res) => {
         })
 });
 
+router.get('/myOwnEvents/:fb_id', (req, res) => {
+    console.log('------myOwnEvents page---------')
+    let fb_id = req.params.fb_id;
+    us.getUserByFb(fb_id)
+        .then(user => {
+            if (user.length > 0) {
+                console.log(' good job - user is in the DB');
+                us.get_my_owned_events(req.params.fb_id)
+                    .then(events_array => {
+                        console.log('these are the user full events array:');
+                        console.log(events_array);
+                        res.render('myOwnEvents', {
+                            invited_events: events_array,
+                            user_id: fb_id,
+                            location: user[0].current_location
+                        })
+                    }).catch(err => reject(err))
+
+            }
+            else
+            {
+                console.log(' user is not  in the db!!!!!!!!!!!!!!!!!!!!!');
+            }
+        })
+});
+
 
 router.get('/getUserByFbId/:user_fb_id', (req, res) => {
     return new Promise((resolve, reject) => {
