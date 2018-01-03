@@ -276,7 +276,7 @@
                             document.getElementsByName("google-location")[0].value = pos;
                         }, function () {
                             handleLocationError();
-                        });
+                        });//
                         //Change location on click
                         google.maps.event.addListener(map, 'click', function (event) {
                             window.alert("I'm here");
