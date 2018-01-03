@@ -7,16 +7,6 @@ var User = require('./user')
 
 class userService {
 
-    addUserthin(fb_id, first_name, last_name, friends_list) {
-        return new Promise((resolve, reject) => {
-            let new_user = new User(fb_id, first_name, last_name, friends_list)
-            userDAO.insert_user(new_user)
-                .then(_=> {
-                    console.log('saved! ', new_user)
-                    resolve()
-                }).catch(err => reject(err))
-        })
-    }
     checkIfUserExist(fb_id){
         return new Promise((resolve, reject) => {
             userDAO.get_User_by_fb_id(fb_id)
@@ -33,7 +23,7 @@ class userService {
                 }).catch(err => reject(err))
         })
     }
-    addUser(fb_id, f_name, friends_list) {
+    addUser(fb_id, f_name, friends_list, location) {
         return new Promise((resolve, reject) => {
             console.log('adding user')
             var friends_id_only=[]
@@ -41,9 +31,9 @@ class userService {
             var counter
             for(counter = 0; counter < friends_list.length ; counter++)
             {
-                friends_id_only[counter] = friends_list[counter]
+                friends_id_only[counter] = friends_list[counter].id
             }
-            let new_user = new User(fb_id, f_name, friends_id_only);
+            let new_user = new User(fb_id, f_name, friends_id_only, location);
             console.log('the use is:')
             console.log(new_user)
             var friends_count = friends_id_only.length
@@ -162,6 +152,18 @@ class userService {
                 }).catch(err=> reject(err))
         })
     }
+
+    update_user(user){
+        return new Promise((resolve, reject) => {
+            console.log('trying to update user')
+            console.log(user)
+            userDAO.update_user(user.fb_id, user)
+                .then(user=>{
+                    console.log('user updated')
+                    resolve()
+                }).catch(err=> reject(err))
+        })
+    }
 }
 
 module.exports = new userService()
@@ -178,12 +180,22 @@ function update_my_friend_get_his_events(my_user, my_fb_id, friend_id)
 
                 if(a_friend.length >0)
                 {
-                    a_friend[0].friends_list.push(my_fb_id)
-                    console.log( 'trying to update')
-                    userDAO.update_friend_list(a_friend[0].fb_id, a_friend[0].friends_list).then(_=>{
-                        console.log('updated', a_friend[0].fb_id)
+                    if(a_friend[0].friends_list.indexOf(my_fb_id) < 0)
+                    {
+                        a_friend[0].friends_list.push(my_fb_id)
+                        console.log( 'trying to update')
+                        userDAO.update_friend_list(a_friend[0].fb_id, a_friend[0].friends_list).then(_=>{
+                            console.log('updated', a_friend[0].fb_id)
+                            resolve();
+                        }).catch(err => reject(err))
+                    }
+                    else
+                    {
+                        console.log('I am already on my friend frends list, no need to update')
                         resolve();
-                    }).catch(err => reject(err))
+                    }
+
+
                     var p_events = a_friend[0].own_public_events
                     if (p_events.length > 0)
                     {
