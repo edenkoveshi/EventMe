@@ -83,18 +83,19 @@ router.post('/newUser', (req, res) => {
         var location = req.body.location
         var friend_list = JSON.parse(req.body.friend_list)
         console.log(fb_id, f_name, friend_list)
-        var frontpage = '/eventMe/frontpage/' + fb_id
+        var frontpage = '/eventMe/frontpage/' +fb_id
         us.getUserByFb(fb_id)
             .then(user => {
                 if (user.length > 0) {
                     us.get_my_invited_events(fb_id)
                         .then(events_array => {
                             res.redirect(frontpage);
-                            res.render('frontpage', {
-                                invited_events: events_array,
-                                user_id: fb_id,
-                                location: location
-                            })
+                            res.render('frontpage',{
+                                                    invited_events : [],
+                                                    user_id : fb_id,
+                                                    location : location})
+                            console.log("inivted_events: "+events_array+
+                            " user_id: "+fb_id+" location: "+location)
                             resolve()
                         }).catch(err => reject(err))
 
@@ -104,11 +105,12 @@ router.post('/newUser', (req, res) => {
                             us.get_my_invited_events(fb_id)
                                 .then(events_array => {
                                     res.redirect(frontpage);
-                                    res.render('frontpage', {
-                                        invited_events: events_array,
-                                        user_id: fb_id,
-                                        location: location
-                                    })
+                                    res.render('frontpage',{
+                                                            invited_events : [],
+                                                            user_id : fb_id,
+                                                            location : location})
+                                    console.log("inivted_events: "+events_array+
+                                        " user_id: "+fb_id+" location: "+location)
                                     resolve()
                                 }).catch(err => reject(err))
                         }).catch(err => reject(err))
