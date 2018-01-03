@@ -152,10 +152,11 @@ class userService {
         return new Promise((resolve, reject) => {
             userDAO.get_User_by_fb_id(user_id)
                 .then(user=>{
-                    console.log("this is user[0]: ")
-                    console.log(user)
-                    var a_promise = get_all_my_full_events(user[0].invited_events)
+                    console.log("this is user[0]: ");
+                    console.log(user);
+                    let a_promise = get_all_my_full_events(user[0].invited_events);
                     a_promise.then(full_events_array=>{
+                        console.log("GET EVENTS TEST:"+full_events_array);
                         resolve(full_events_array)
                     }).catch(err=> reject(err))
                 }).catch(err=> reject(err))
@@ -234,14 +235,16 @@ function updated_accepted_user(event, user_id){
 }
 
 function get_all_my_full_events(user_invited_events){
+    console.log("USER INVITED EVENTS:"+user_invited_events);
     return new Promise((resolve, reject) => {
-        var full_event_list = []
-        var promises = []
-        var a_promise
-        for (var i = 0; i < user_invited_events.length ; i++){
+        let full_event_list = [];
+        let promises = [];
+        let a_promise;
+        for (let i = 0; i < user_invited_events.length ; i++){
             a_promise = eventDAO.get_event(user_invited_events[i]).then(full_event=>{
-                full_event_list.push(full_event)
-            }).catch(err => reject(err))
+                console.log("Pushed an event, "+ full_event[0].eventId);
+                full_event_list.push(full_event[0])
+            }).catch(err => reject(err));
             promises.push(a_promise)
         }
         Promise.all(promises).then(_=>{
