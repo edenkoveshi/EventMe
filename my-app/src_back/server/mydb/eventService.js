@@ -7,12 +7,12 @@ var Event = require('./event')
 
 class eventService {
 
-    addOpenEvent(owner_id, location, type, info, time) {
+    addOpenEvent(owner_id, title ,location, type, info, time) {
         return new Promise((resolve, reject) => {
             userDAO.get_User_by_fb_id(owner_id).then(own_user=>{
                 own_user[0].created_events+=1
                 var event_id = owner_id + own_user[0].created_events
-                let new_event = new Event(event_id, owner_id, location, type, info, time, own_user[0].friends_list)
+                let new_event = new Event(event_id, owner_id, title, location, type, info, time, own_user[0].friends_list)
                 eventDAO.create_event(new_event)
                     .then(_=> {
                         let updated_own_open_event_list = own_user[0].own_public_events
