@@ -29,6 +29,7 @@
                 height:400px;
             }
 
+
             #event-properties ul {
                 background: white;
                 float: left;
@@ -203,9 +204,17 @@
                                 </li>
                                 <br>
                                 <li><input type="checkbox" id="Other">Other</input></li>
-                                <br>
                             </ul>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
                         </div>
+
                         <input type="hidden" name="categories"/>
                         Description (optional):
                         <input type="text" name="description"/><br>
@@ -301,7 +310,6 @@
                         //-------------- CHANGE LOCATION ON CLICK ------
                         google.maps.event.addListener(map, 'click', function (event) {
                             window.alert("I'm here");
-                            map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
                             var loc = event.latLng;
                             window.alert(loc);
                             marker.setPosition(loc);
