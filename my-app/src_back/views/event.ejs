@@ -13,6 +13,11 @@
             margin: 0;
             padding: 0;
         }
+        #googleMap
+        {
+            width:100%;
+            height:400px;
+        }
 
         body {
             font: 300 15px/1.5 "Helvetica Neue", helvetica, arial, sans-serif;
@@ -240,8 +245,87 @@
                     </td>
                     <td style="border-width: 0;width: 466.889px; height: 124px;">
                         <span style="color:black">
-                        <p>Where: <%= event_time %></p>
-                        <p>When: <%= event_place %></p>
+                           <p id="location-premable" style="display: none">Where:<a id="location" style="display: none"><%= event_place %></a> </p>
+                            <!-- Google Maps modal-->
+                        <div id="maps-modal" class="modal" style="display:none">
+                            <!-- Modal content -->
+                            <div class="modal-content">
+                                <span class="close">&times;</span>
+                                <div id="googleMap"></div>
+                            </div>
+                        </div>
+                            <script>
+                                var coords;
+                                var map;
+                                $(document).ready(function() {
+                                    //----- PARSE COORDIANTES INTO ADDRESS ---------
+                                    var coordinates = document.getElementById("location").innerHTML;
+                                    var latlng = coordinates.substring(1, coordinates.length - 1);
+                                    coords = latlng.split(" ");
+                                    latlng = coords[0] + coords[1];
+                                    var xmlHttp = new XMLHttpRequest();
+                                    var url = "https:maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&key=AIzaSyCu3KurWBoVaFCgz3J6jjoYcnmIVY2i6B0";
+                                    xmlHttp.open("GET", url, true);
+                                    xmlHttp.onreadystatechange = function () {
+                                        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                                            var address = JSON.parse(xmlHttp.responseText).results[0].formatted_address;
+                                            document.getElementById('location-premable').style = "display:block";
+                                            document.getElementById('location').innerHTML = address;
+                                            document.getElementById('location').style = "display:block";
+                                        }
+                                    }
+                                    xmlHttp.send();
+                                });
+                                document.getElementById('location').onclick=function(){
+                                //--- SET MODAL ----
+                                var modal = document.getElementById('maps-modal');
+
+                                // Get the <span> element that closes the modal
+                                var span = document.getElementsByClassName("close")[0];
+
+                                // When the user clicks the button, open the modal
+                                modal.style.display = "block";
+                                //google.maps.event.trigger(map,'resize');
+                                //$(document).ready(function() {
+                                    //$(window).resize(function() {
+                                        google.maps.event.trigger(map, 'resize');
+                                    //});
+                                //});
+                                    // When the user clicks on <span> (x), close the modal
+                                    span.onclick = function () {
+                                        modal.style.display = "none";
+                                    }
+                                    // When the user clicks anywhere outside of the modal, close it
+                                    window.onclick = function () {
+                                        if (event.target == modal) {
+                                            modal.style.display = "none";
+                                        }
+                                    }
+                                };
+
+
+                                //------- SET GOOGLE MAPS------------
+                                function initMap(event) {
+                                    $(document).ready(function () {
+                                        // ----- MAP CREATION -------
+                                        var _lat = parseInt(coords[0].split(",")[0]);
+                                        var _lng = parseInt(coords[1]);
+                                        var default_location = {lat: _lat, lng: _lng};
+                                        map = new google.maps.Map(document.getElementById('googleMap'), {
+                                            zoom: 15,
+                                            center: default_location,
+                                        });
+
+                                        //---MARKER CREATION ----
+                                        var marker = new google.maps.Marker({
+                                            position: default_location,
+                                            map: map,
+                                        });
+                                        marker.setMap(map);
+                                    });
+                                }
+                            </script>
+                        <p>When: <%= event_time %></p>
                         <p>What: <%= event_type %></p>
                         </span>
                     </td>
@@ -261,6 +345,8 @@
     </div>
 
 </div>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu3KurWBoVaFCgz3J6jjoYcnmIVY2i6B0&libraries=places&callback=initMap"></script>
 <script src="../../../js/rAF.js"></script>
 <script src="../../../js/getstarted.js"></script>
 
