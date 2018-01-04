@@ -83,19 +83,20 @@ class userService {
             var promises = []
             var user_promise = eventDAO.get_event(event_id)
                 .then(event=>{
-                    console.log('approve_participation-. my event list:',event[0].eventId )
+                    console.log('approve_participation-. my event:',event[0])
                     if(event.length>0)
                     {
                         var am_i_invited_in_event = event[0].invited_users.indexOf(user_id)
                         if(am_i_invited_in_event > -1)
                         {
                             updated_accepted_user(event[0], user_id)
-                            resolve()
                         }
                         else
                             {
                             console.log('approve_participation - user is not invited in event')
-                            resolve()
+                            console.log('approve_participation-. my event:',event[0])
+                            console.log('approve_participation-. user if:',user_id)
+                            console.log('approve_participation-. am i invited:',am_i_invited_in_event)
                         }
 
                     }
