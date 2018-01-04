@@ -125,6 +125,7 @@
                             <!-- Modal content -->
                             <div class="modal-content">
                                 <span class="close">&times;</span>
+                                <input id="pac-input" class="controls" type="text" placeholder="Enter Location Here" style="left:0px"/>
                                 <div id="googleMap"></div>
                                 <input type="text" name="google-location" style="display:none"/>
                             </div>
@@ -208,6 +209,8 @@
                         <input type="hidden" name="categories"/>
                         Description (optional):
                         <input type="text" name="description"/><br>
+                        Picture (optional): (JPG,PNG formats)
+                        <input type="file" name="picture"/><br>
                         <input type="button" id="Create" value="Create!" onclick="CreateEvent()"/>
                     </form>
                     </div>
@@ -249,49 +252,111 @@
             }
             //Google Maps function
             function initMap(event) {
-                window.onload = function() {
-                    var default_location = {lat: 51.508742, lng: -0.120850};
-                    var map = new google.maps.Map(document.getElementById('googleMap'), {
-                        zoom: 15,
-                        center: default_location,
-                    });
-                    var marker = new google.maps.Marker({
-                        position: default_location,
-                        map: map,
-                    });
-                    //google.maps.event.trigger(map,"resize");
-                    // Try HTML5 geolocation.
-                    //Get current location
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(function (position) {
-                            var pos = {
-                                lat: position.coords.latitude,
-                                lng: position.coords.longitude
-                            };
-                            //Adjust map
-                            map.setCenter(pos);
-                            marker.setPosition(pos);
-                            marker.setMap(map);
-                            google.maps.event.trigger(map,"resize");
-                            document.getElementsByName("google-location")[0].value = pos;
-                        }, function () {
+                window.onload = function () {
+                    $(document).ready(function () {
+                        // ----- MAP CREATION -------
+                        var default_location = {lat: 51.508742, lng: -0.120850};
+                        var map = new google.maps.Map(document.getElementById('googleMap'), {
+                            zoom: 15,
+                            center: default_location,
+                        });
+
+                        //---MARKER CREATION ----
+                        var marker = new google.maps.Marker({
+                            position: default_location,
+                            map: map,
+                        });
+
+                        //----- SEARCH BAR CREATION -----
+                        //--creation--
+                        var input = document.getElementById('pac-input');
+                        var searchBox = new google.maps.places.SearchBox(input);
+                        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                        map.addListener('bounds_changed', function () {
+                            searchBox.setBounds(map.getBounds());
+                        });
+
+                        // ------ GET CURRENT LOCATION ------
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(function (position) {
+                                var pos = {
+                                    lat: position.coords.latitude,
+                                    lng: position.coords.longitude
+                                };
+                                //Adjust map
+                                map.setCenter(pos);
+                                marker.setPosition(pos);
+                                marker.setMap(map);
+                                google.maps.event.trigger(map, "resize");
+                                document.getElementsByName("google-location")[0].value = (pos.lat,pos.lng);
+                            }, function () {
+                                handleLocationError();
+                            });
+                        } else {
+                            // Browser doesn't support Geolocation
                             handleLocationError();
-                        });//
-                        //Change location on click
+
+                        }
+                        //-------------- CHANGE LOCATION ON CLICK ------
                         google.maps.event.addListener(map, 'click', function (event) {
                             window.alert("I'm here");
-                            var loc=event.latLng;
+                            map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                            var loc = event.latLng;
                             window.alert(loc);
                             marker.setPosition(loc);
                             map.setCenter(loc);
-                            google.maps.event.trigger(map,"resize");
+                            //google.maps.event.trigger(map,"resize");
                             document.getElementsByName("google-location")[0].value = loc;
                         });
-                    } else {
-                        // Browser doesn't support Geolocation
-                        handleLocationError();
 
-                    }
+                        //-------------- SEARCH BAR HANDLING --------------------
+                        //--response to user choice--
+                        //var markers = [];
+                        searchBox.addListener('places_changed', function () {
+                            var places = searchBox.getPlaces();
+                            if (places.length == 0) {
+                                return;
+                            }
+                            //clear old markers
+                            /*markers.forEach(function(marker) {
+                                marker.setMap(null);
+                            });
+                            markers = [];*/
+                            //get details of each place
+                            var bounds = new google.maps.LatLngBounds();
+                            places.forEach(function (place) {
+                                if (!place.geometry) {
+                                    console.log("Returned place contains no geometry");
+                                    return;
+                                }
+                                var icon = {
+                                    url: place.icon,
+                                    size: new google.maps.Size(71, 71),
+                                    origin: new google.maps.Point(0, 0),
+                                    anchor: new google.maps.Point(17, 34),
+                                    scaledSize: new google.maps.Size(25, 25)
+                                };
+                                // Create a marker for each place.
+                                /*markers.push(new google.maps.Marker({
+                                    map: map,
+                                    icon: icon,
+                                    title: place.name,
+                                    position: place.geometry.location
+
+                                }));*/
+                                marker.setPosition(place.geometry.location);
+                                map.setCenter(place.geometry.location);
+                                document.getElementsByName("google-location")[0].value = place.geometry.location;
+                                if (place.geometry.viewport) {
+                                    // Only geocodes have viewport.
+                                    bounds.union(place.geometry.viewport);
+                                } else {
+                                    bounds.extend(place.geometry.location);
+                                }
+                            });
+                            map.fitBounds(bounds);
+                        });
+                    });
                 };
             }
 
@@ -304,7 +369,7 @@
             function CreateEvent()
             {
                 var all_fields_set=1;
-                var form_input=document.querySelectorAll('input:not([name="description"])');
+                var form_input=document.querySelectorAll('input:not([name="description"]).input:not([name="picture"])');
                 for(i=0;i<form_input.length-1;i++)
                 {
                     if(form_input[i].value=="")
@@ -316,6 +381,15 @@
                     document.getElementsByName("categories")[0].value+=","+cblist[i].id;
                 }
                 console.log(document.getElementsByName("categories")[0]);
+                var file=document.getElementsByName("picture")[0].value;
+                if(file!="")
+                {
+                    file=file.split(".")[1];
+                    if(file!="png" && file!="jpg") {
+                        window.alert("Picture format is not valid");
+                        all_fields_set = 0;
+                    }
+                }
                 if(all_fields_set==1 && cblist.length>0)
                 {
                     window.alert("Event created successfully!");
@@ -329,7 +403,7 @@
         </script>
         <!-- Import Google Maps -->
         <script async defer
-                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu3KurWBoVaFCgz3J6jjoYcnmIVY2i6B0&callback=initMap"></script>
+                src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu3KurWBoVaFCgz3J6jjoYcnmIVY2i6B0&libraries=places&callback=initMap"></script>
         <!--Import jQuery-->
         <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
         <script src="../../js/TweenLite.min.js"></script>
