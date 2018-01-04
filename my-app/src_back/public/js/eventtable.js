@@ -4,28 +4,35 @@ function getList(){
 
     $('#excelDataTable tr').each(function(row, tr){
         myList[row]={
-            "type" : $(tr).find('td:eq(0)').text(),
-            "eventId" : $(tr).find('td:eq(1)').text(),
-            "title" :$(tr).find('td:eq(2)').text(),
-            "distance" :$(tr).find('td:eq(3)').text(),
-            "time" :$(tr).find('td:eq(4)').text(),
-            "owner" :$(tr).find('td:eq(5)').text()
+            "Type" : $(tr).find('td:eq(0)').text(),
+            "EventId" : $(tr).find('td:eq(1)').text(),
+            "Title" :$(tr).find('td:eq(2)').text(),
+            "Distance" :$(tr).find('td:eq(3)').text(),
+            "Time" :$(tr).find('td:eq(4)').text(),
+            "Owner" :$(tr).find('td:eq(5)').text()
         }
     });
     return myList;
 }
 function boxChecked() {
     var myCurrentList = [];
+    var numberchecked = 0;
     $('input[type=checkbox]').each(function () {
         if (this.checked) {
+            numberchecked += 1;
             var x = this.name;
             for (var listIndex = 0; listIndex < myList.length; listIndex++) {
-                if (myList[listIndex]["type"] == x) {
+                if (myList[listIndex]["Type"] == x) {
                     myCurrentList.push(myList[listIndex]);
                 }
             }
         }
     });
+    if (numberchecked == 0){
+        for (var listIndex = 2; listIndex < myList.length; listIndex++) {
+            myCurrentList.push(myList[listIndex]);
+        }
+    }
     $("#excelDataTable tr").remove();
     buildEventsTable('#excelDataTable', myCurrentList);
 }
@@ -36,10 +43,16 @@ function displaytime() {
     var myCurrentList = [];
     var x = (date + "T" + time);
     for (var listIndex = 0; listIndex < myList.length; listIndex++) {
-        if (myList[listIndex]["time"] == x) {
+        if (myList[listIndex]["Time"] == x) {
             myCurrentList.push(myList[listIndex]);
 
         }
+    }
+    if (x == "T"){
+        for (var listIndex = 2; listIndex < myList.length; listIndex++) {
+            myCurrentList.push(myList[listIndex]);
+        }
+
     }
     $("#excelDataTable tr").remove();
     buildEventsTable('#excelDataTable', myCurrentList);
@@ -47,11 +60,17 @@ function displaytime() {
 
 function displaysearch() {
     var myCurrentList = [];
-        var x = $("#txt_name").val();
+    var x = $("#txt_name").val();
+    if (x != "") {
         for (var listIndex = 0; listIndex < myList.length; listIndex++) {
-            if (myList[listIndex]["Category"] == x) {
+            if (myList[listIndex]["Type"] == x) {
                 myCurrentList.push(myList[listIndex]);
-
+            }
+        }
+    }
+    else if (x == "") {
+        for (var listIndex = 2; listIndex < myList.length; listIndex++) {
+            myCurrentList.push(myList[listIndex]);
         }
     }
     $("#excelDataTable tr").remove();
@@ -76,7 +95,7 @@ function buildEventsTable(selector, myList) {
       var arrayHref = myHref.split("/");
       var user_id = arrayHref[5];
       var link = "/eventMe/event/" + myList[i]["eventId"]+ "/" + user_id;
-      if (columns[colIndex] == "title") {
+      if (columns[colIndex] == "Title") {
         row$.append($('<td>'+'<a href='+link+'>'+cellValue+'</a>'+'</td>'+'</tr>'));
       } else {
         row$.append($('<td>'+cellValue+'</td>'+'</tr>'));
