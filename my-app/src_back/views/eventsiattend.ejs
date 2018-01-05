@@ -162,6 +162,7 @@
 
                 <tr>
                     <th>Type</th>
+                    <th>Event Id</th>
                     <th>Title</th>
                     <th>Distance</th>
                     <th>Time</th>
@@ -170,6 +171,7 @@
                 <% for (var i = 0; i < invited_events.length; i++) { %>
                 <tr>
                     <td><%= invited_events[i]["type"] %></td>
+                    <td><%= invited_events[i]["eventId"] %></td>
                     <td>
                         <a href="/eventMe/event/<%= invited_events[i]["eventId"] %>/<%= user_id%>">
                             <%= invited_events[i]["title"] %>
