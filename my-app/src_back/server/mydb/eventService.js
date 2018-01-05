@@ -24,13 +24,28 @@ class eventService {
                     }).catch(err => reject(err))
                 })
 
-
-
-
-
         })
     }
-
+    delete_my_event(event_id, user_id){
+        console.log('--------delete_my_event--------')
+        return new Promise((resolve, reject) => {
+            userDAO.get_User_by_fb_id(user_id).then(user=>{
+                var do_i_own_this_event = user[0].own_public_events.indexOf(event_id)
+                if(do_i_own_this_event > -1)
+                {
+                    user[0].own_public_events.splice(do_i_own_this_event,1)
+                    userDAO.update_user(user[0].fb_id, user[0])
+                    console.log('delete_my_event - updating user')
+                    console.log( user[0])
+                    //todo - create a function that delete the event and remove all the participants
+                }
+                else
+                {
+                    console.log('delete_my_event - user does not own this event')
+                }
+            }).catch(err => reject(err))
+        })
+    }
     getEvent(event_id) {
         return new Promise((resolve, reject) => {
             eventDAO.get_event(event_id)
