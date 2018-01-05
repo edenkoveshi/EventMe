@@ -25,6 +25,12 @@ class eventDAO
         return DB.db.collection('events').updateOne({'eventId' : event_id},updeted_event) //returns a Promise
     }
 
+    remove_event(event_id)
+    {
+        console.log('DAO - deleting event:', event_id)
+        return DB.db.collection('events').deleteOne(
+            {"eventId" :  event_id})
+    }
 
 
 

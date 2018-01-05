@@ -33,11 +33,24 @@ class eventService {
                 var do_i_own_this_event = user[0].own_public_events.indexOf(event_id)
                 if(do_i_own_this_event > -1)
                 {
-                    user[0].own_public_events.splice(do_i_own_this_event,1)
-                    userDAO.update_user(user[0].fb_id, user[0])
-                    console.log('delete_my_event - updating user')
-                    console.log( user[0])
-                    //todo - create a function that delete the event and remove all the participants
+
+                    console.log('delete_my_event - geting the event')
+                    eventDAO.get_event(event_id).then(event=>{
+                        let promises = [];
+                        let a_promise;
+                        a_promise = remove_my_owned_event_from_my_list(user[0],do_i_own_this_event)
+                        promises.push(a_promise)
+                        for (let i = 0; i < event[0].going_users.length ; i++)
+                        {
+                            a_promise = remove_attending_event_from_my_list(user[0].fb_id,event_id)
+                            promises.push(a_promise)
+                        }
+                        a_promise =eventDAO.remove_event(event_id)
+                        promises.push(a_promise)
+                        Promise.all(promises).then(_=>{
+                            resolve()
+                        }).catch(err=> reject(err))
+                    }).catch(err => reject(err))
                 }
                 else
                 {
@@ -60,6 +73,28 @@ class eventService {
 
 module.exports = new eventService()
 
+function remove_my_owned_event_from_my_list(user,event_location_in_my_array){
+    console.log('remove_my_owned_event_from_my_list - going to deleting event at owner')
+    return new Promise((resolve, reject) => {
+        user.own_public_events.splice(event_location_in_my_array,1)
+        userDAO.update_user(user.fb_id, user).then(_=>{
+            console.log('user got his owned event removed')
+            resolve()
+        }).catch(err => reject(err))
+    })
+}
+
+function remove_attending_event_from_my_list(user_id,event_id){
+    console.log('remove_attending_event_from_my_list - going to deleting event at attending user')
+    return new Promise((resolve, reject) => {
+        userDAO.get_user(user_id).then(user=>{
+            user[0].own_public_events.splice(user[0].going_events.indexOf(event_id),1)
+            userDAO.update_user(user[0].fb_id, user[0]).then(_=>{
+                resolve()
+            }).catch(err => reject(err))
+        }).catch(err => reject(err))
+    })
+}
 
 function invite_users_to_my_open_event(event_id, invited_list){
     // console.log('invite_users_to_my_open_event')
