@@ -34,7 +34,7 @@ router.get('/event/:event_id/:user_id', function (req, res) {
             res.render('event', {
                 event_id: req.params.event_id,
                 title: event["title"], // 'my event',
-                event_img: event["image"],//'restaurant.jpeg',
+                event_img: ( event["image"] == "" ? event["image"]:'restaurant.jpeg'),
                 event_time: event["time"],
                 event_place: event["location"],
                 event_type: event["type"],
@@ -62,8 +62,7 @@ router.get('/unattend/:event_id/:user_id', function (req, res) {
     console.log('user_id:',req.params.user_id)
     let p = us.leave_event(req.params.event_id, req.params.user_id);
     p.then(_ => {
-        let frontpage = '/eventMe/frontpage/' + req.params.user_id
-        res.redirect(frontpage);
+        res.redirect('/eventMe/event/' + req.params.event_id + '/' + req.params.user_id);
     });
 });
 
