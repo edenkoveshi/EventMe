@@ -107,10 +107,13 @@
                 <div id="large-header" class="large-header">
                     <div><!--header-->
                        <button type="button" id="homepage">Homepage</button>
-                        <button type="button" id="my_activities">My Activities</button>
+                        <button type="button" id="my_events">My Events</button>
                         <script>
                             var homepage=document.getElementById("homepage");
                             homepage.addEventListener('click',function(){window.location.href="/eventMe/frontpage/<%=user_id%>"});
+                            var myevents=document.getElementById('my_events');
+                            myevents.addEventListener('click', function(){window.location.href="/eventMe/myOwnEvents/<%=user_id%>"});
+
                         </script>
                     </div>
                     <div id="event-properties" class="center" ><!--event creation form-->
