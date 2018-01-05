@@ -56,6 +56,14 @@ router.get('/joinEvent/:event_id/:user_id', function (req, res) {
     });
 });
 
+router.get('/unattend/:event_id/:user_id', function (req, res) {
+    let p = us.leave_event(req.params.event_id, req.params.user_id);
+    p.then(_ => {
+        let frontpage = '/eventMe/frontpage/' + req.params.user_id
+        res.redirect(frontpage);
+    });
+});
+
 // adds a new event in the DB for an existing user
 router.post('/addOpenEvent/:user_id', (req, res) => {
     return new Promise((resolve, reject) => {
