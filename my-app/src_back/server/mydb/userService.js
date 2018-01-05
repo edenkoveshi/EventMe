@@ -138,6 +138,7 @@ class userService {
 
     leave_event(event_id,user_id ){
         return new Promise((resolve, reject) => {
+            console.log('--------leave_event------')
             var promises = []
             var user_promise = eventDAO.get_event(event_id)
                 .then(event=>{
@@ -147,7 +148,7 @@ class userService {
                         var do_i_participate = event[0].going_users.indexOf(user_id)
                         if(do_i_participate > -1)
                         {
-                            updated_accepted_user(event[0], user_id)
+                            updated_left_user(event[0], user_id)
                         }
                         else
                         {
@@ -169,10 +170,11 @@ class userService {
                 .then(user=>{
                     if(user.length>0)
                     {
-                        var do_i_participate_in_user = user[0].going_events.indexOf(user_id)
+                        console.log('leave_event-. my user:',user[0])
+                        var do_i_participate_in_user = user[0].going_events.indexOf(event_id)
                         if(do_i_participate_in_user > -1)
                         {
-                            save_accepted_event(user[0], event_id)
+                            save_left_event(user[0], event_id)
                         }
                         else
                         {
@@ -304,13 +306,35 @@ function funcGetUserByFb(fb_id) {
     })
 }
 
-
+function save_left_event(user, event_id){
+    user.going_events.splice(user.invited_events.indexOf(event_id),1)
+    user.invited_events.push(event_id)
+    return new Promise((resolve, reject) => {
+        userDAO.update_user(user.fb_id, user)
+            .then(user=>{
+                resolve()
+            }).catch(err=> reject(err))
+    })
+}
 
 function save_accepted_event(user, event_id){
     user.invited_events.splice(user.invited_events.indexOf(event_id),1)
     user.going_events.push(event_id)
     return new Promise((resolve, reject) => {
         userDAO.update_user(user.fb_id, user)
+            .then(user=>{
+                resolve()
+            }).catch(err=> reject(err))
+    })
+}
+
+function updated_left_user(event, user_id){
+    event.going_users.splice(event.invited_users.indexOf(user_id),1)
+    event.invited_users.push(user_id)
+    console.log('going to save the event:')
+    console.log(event)
+    return new Promise((resolve, reject) => {
+        eventDAO.update_event(event.eventId, event)
             .then(user=>{
                 resolve()
             }).catch(err=> reject(err))

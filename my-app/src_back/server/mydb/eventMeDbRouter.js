@@ -57,6 +57,9 @@ router.get('/joinEvent/:event_id/:user_id', function (req, res) {
 });
 
 router.get('/unattend/:event_id/:user_id', function (req, res) {
+    console.log('-------unattend--------')
+    console.log('event_id:',req.params.event_id)
+    console.log('user_id:',req.params.user_id)
     let p = us.leave_event(req.params.event_id, req.params.user_id);
     p.then(_ => {
         let frontpage = '/eventMe/frontpage/' + req.params.user_id
