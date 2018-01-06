@@ -37,6 +37,11 @@ function boxChecked() {
     buildEventsTable('#excelDataTable', myCurrentList);
 }
 
+function displayarrange() {
+    var newArrangeList = myList.sort(function (a, b) { myList[a]["distance"]-myList[b]["distance"] });
+    buildEventsTable('#excelDataTable', newArrangeList);
+}
+
 function displaytime() {
     var date = document.getElementById("date").value;
     var time = document.getElementById("time").value;
