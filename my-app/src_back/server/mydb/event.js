@@ -14,6 +14,7 @@ class  event
         this.going_users = []
         this.ownerName = owner_name
         this.invitedName = invited_name
+        this.goingName = []
     }
 }
 

@@ -168,7 +168,7 @@ router.get('/frontpage/:fb_id', (req, res) => {
             else {
                 console.log(' user is not  in the db!!!!!!!!!!!!!!!!!!!!!');
             }
-        })
+        }).catch(err=> reject(err))
 });
 
 router.get('/myOwnEvents/:fb_id', (req, res) => {

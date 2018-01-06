@@ -21,7 +21,7 @@ class userService {
                         resolve(false)
                     }
                 }).catch(err => reject(err))
-        })
+        }).catch(err=> reject(err))
     }
     addUser(fb_id, f_name, friends_list, location) {
         return new Promise((resolve, reject) => {
@@ -54,8 +54,8 @@ class userService {
                         console.log('saved! ', new_user)
                         resolve()
                     }).catch(err => reject(err))
-            })
-        })
+            }).catch(err=> reject(err))
+        }).catch(err=> reject(err))
     }
 
 
@@ -66,7 +66,7 @@ class userService {
                 .then(user=>{
                     resolve(user)
                 }).catch(err=> reject(err))
-        })
+        }).catch(err=> reject(err))
     }
 
     getAllUsers() {
@@ -75,39 +75,12 @@ class userService {
                 .then(all_user=>{
                     resolve(all_user)
                 }).catch(err=> reject(err))
-        })
+        }).catch(err=> reject(err))
     }
 
     approve_participation(event_id,user_id ){
         return new Promise((resolve, reject) => {
-            var promises = []
-            var user_promise = eventDAO.get_event(event_id)
-                .then(event=>{
-                    console.log('approve_participation-. my event:',event[0])
-                    if(event.length>0)
-                    {
-                        var am_i_invited_in_event = event[0].invited_users.indexOf(user_id)
-                        if(am_i_invited_in_event > -1)
-                        {
-                            updated_accepted_user(event[0], user_id)
-                        }
-                        else
-                            {
-                            console.log('approve_participation - user is not invited in event')
-                            console.log('approve_participation-. my event:',event[0])
-                            console.log('approve_participation-. user if:',user_id)
-                            console.log('approve_participation-. am i invited:',am_i_invited_in_event)
-                        }
-
-                    }
-                    else
-                    {
-                        console.log('approve_participation - couldent find event')
-                    }
-
-            }).catch(err=> reject(err))
-            promises.push(user_promise)
-            var event_service = userDAO.get_User_by_fb_id(user_id)
+            userDAO.get_User_by_fb_id(user_id)
                 .then(user=>{
                     if(user.length>0)
                     {
@@ -115,6 +88,33 @@ class userService {
                         if(am_i_invited_in_user > -1)
                         {
                             save_accepted_event(user[0], event_id)
+                            eventDAO.get_event(event_id)
+                                .then(event=>{
+                                    console.log('approve_participation-. my event:',event[0])
+                                    console.log('approve_participation - event.length:', event.length)
+                                    if(event.length>0)
+                                    {
+                                        console.log('approve_participation - event length is good')
+                                        var am_i_invited_in_event = event[0].invited_users.indexOf(user_id)
+                                        console.log('approve_participation - my index in the invited list is:', am_i_invited_in_event)
+                                        if(am_i_invited_in_event > -1)
+                                        {
+                                            updated_accepted_user(event[0], user_id, user[0].f_name)
+                                        }
+                                        else
+                                        {
+                                            console.log('approve_participation - user is not invited in event')
+                                            console.log('approve_participation-. my event:',event[0])
+                                            console.log('approve_participation-. user if:',user_id)
+                                            console.log('approve_participation-. am i invited:',am_i_invited_in_event)
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        console.log('approve_participation - couldent find event')
+                                    }
+                            }).catch(err=> reject(err))
                         }
                         else
                         {
@@ -125,48 +125,18 @@ class userService {
                     {
                         console.log('approve_participation - couldent find user')
                     }
+                    console.log('event participation saved')
+                    resolve()
 
                 }).catch(err=> reject(err))
-            promises.push(event_service)
-            Promise.all(promises).then(_=>{
-                console.log('event participation saved')
-                resolve()
-            }).catch(err=> reject(err))
-        })
+        }).catch(err=> reject(err))
     }
 
 
     leave_event(event_id,user_id ){
         return new Promise((resolve, reject) => {
             console.log('--------leave_event------')
-            var promises = []
-            var user_promise = eventDAO.get_event(event_id)
-                .then(event=>{
-                    console.log('leave_event-. my event:',event[0])
-                    if(event.length>0)
-                    {
-                        var do_i_participate = event[0].going_users.indexOf(user_id)
-                        if(do_i_participate > -1)
-                        {
-                            updated_left_user(event[0], user_id)
-                        }
-                        else
-                        {
-                            console.log('leave_event - the user does not participate in this event')
-                            console.log('leave_event-. my event:',event[0])
-                            console.log('leave_event-. user if:',user_id)
-                            console.log('leave_event-. do i participate?:',do_i_participate)
-                        }
-
-                    }
-                    else
-                    {
-                        console.log('leave_event - couldent find event')
-                    }
-
-                }).catch(err=> reject(err))
-            promises.push(user_promise)
-            var event_service = userDAO.get_User_by_fb_id(user_id)
+            userDAO.get_User_by_fb_id(user_id)
                 .then(user=>{
                     if(user.length>0)
                     {
@@ -175,6 +145,31 @@ class userService {
                         if(do_i_participate_in_user > -1)
                         {
                             save_left_event(user[0], event_id)
+                            eventDAO.get_event(event_id)
+                                .then(event=>{
+                                    console.log('leave_event-. my event:',event[0])
+                                    if(event.length>0)
+                                    {
+                                        var do_i_participate = event[0].going_users.indexOf(user_id)
+                                        if(do_i_participate > -1)
+                                        {
+                                            updated_left_user(event[0], user_id, user[0].f_name)
+                                        }
+                                        else
+                                        {
+                                            console.log('leave_event - the user does not participate in this event')
+                                            console.log('leave_event-. my event:',event[0])
+                                            console.log('leave_event-. user if:',user_id)
+                                            console.log('leave_event-. do i participate?:',do_i_participate)
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        console.log('leave_event - couldent find event')
+                                    }
+
+                                }).catch(err=> reject(err))
                         }
                         else
                         {
@@ -185,14 +180,10 @@ class userService {
                     {
                         console.log('leave_event - couldent find user')
                     }
-
+                    console.log('left the event')
+                    resolve()
                 }).catch(err=> reject(err))
-            promises.push(event_service)
-            Promise.all(promises).then(_=>{
-                console.log('left the event')
-                resolve()
-            }).catch(err=> reject(err))
-        })
+        }).catch(err=> reject(err))
     }
 
     get_my_invited_events(user_id){
@@ -206,7 +197,7 @@ class userService {
                         resolve(full_events_array)
                     }).catch(err=> reject(err))
                 }).catch(err=> reject(err))
-        })
+        }).catch(err=> reject(err))
     }
 
     get_my_owned_events(user_id){
@@ -220,7 +211,7 @@ class userService {
                         resolve(full_events_array)
                     }).catch(err=> reject(err))
                 }).catch(err=> reject(err))
-        })
+        }).catch(err=> reject(err))
     }
 
     get_my_attending_events(user_id){
@@ -281,9 +272,9 @@ function update_my_friend_get_his_events(my_user, my_fb_id, friend_id)
                     }
 
                     var p_events = a_friend[0].own_public_events
-                    if (p_events.length > 0)
+                    for(var i=0; i < p_events.length; i++)
                     {
-                        my_user.open_friends_events.push(p_events)
+                        my_user.open_friends_events.push(p_events[i])
                     }
                 }
                 resolve()
@@ -328,10 +319,12 @@ function save_accepted_event(user, event_id){
     })
 }
 
-function updated_left_user(event, user_id){
+function updated_left_user(event, user_id, user_name){
     event.going_users.splice(event.invited_users.indexOf(user_id),1)
+    event.goingName.splice(event.invited_users.indexOf(user_name),1)
     event.invited_users.push(user_id)
-    console.log('going to save the event:')
+    event.invitedName.push(user_name)
+    console.log('updated_left_user - going to save the event:')
     console.log(event)
     return new Promise((resolve, reject) => {
         eventDAO.update_event(event.eventId, event)
@@ -341,9 +334,11 @@ function updated_left_user(event, user_id){
     })
 }
 
-function updated_accepted_user(event, user_id){
+function updated_accepted_user(event, user_id, user_name){
     event.invited_users.splice(event.invited_users.indexOf(user_id),1)
+    event.invitedName.splice(event.invitedName.indexOf(user_name),1)
     event.going_users.push(user_id)
+    event.goingName.push(user_name)
     return new Promise((resolve, reject) => {
         eventDAO.update_event(event.eventId, event)
             .then(user=>{
@@ -368,5 +363,5 @@ function get_all_my_full_events(user_invited_events){
         Promise.all(promises).then(_=>{
             resolve(full_event_list)
         }).catch(err=> reject(err))
-    })
+    }).catch(err=> reject(err))
 }
