@@ -270,7 +270,44 @@
                             <%= invited_events[i]["title"] %>
                         </a>
                     </td>
-                    <td><%= invited_events[i]["distance"] %></td>
+                    <td id="distance"></td>
+                    <p id="user_location" style="display: none"><%= location%></p>
+                    <p id="event_location" style="display: none"><%= invited_events[i]["location"] %></p>
+                    <script>
+                        //-----------Calculate distance between event and user locations---------------
+                        var R = 6371e3; // metres
+                        var coords=document.getElementById('user_location').innerHTML;
+                        /*
+                           var latlng=coords.split(',');
+                           var lat1=parseFloat(latlng[0].substr(1,latlng[0].length-1));
+                           var lon1=parseFloat(latlng[1].substr(1,latlng[1].length));
+                        */
+                        var lat1=JSON.parse(coords).lat;
+                        var lon1=JSON.parse(coords).lng;
+                        coords=document.getElementById('event_location').innerHTML;
+                        var latlng=coords.split(',');
+                        var lat2=parseFloat(latlng[0].substr(1,latlng[0].length-1));
+                        var lon2=parseFloat(latlng[1].substr(1,latlng[1].length));
+                        var φ1 = radians(lat1);
+                        var φ2 = radians(lat2);
+                        var Δφ = radians(lat2-lat1);
+                        var Δλ = radians(lon2-lon1);
+
+                        var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                            Math.cos(φ1) * Math.cos(φ2) *
+                            Math.sin(Δλ/2) * Math.sin(Δλ/2);
+                        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+                        var d = R * c;
+                        document.getElementById('distance').innerHTML=Math.round(d*100)/100+'m';
+
+                        function radians(x)
+                        {
+                            var pi = Math.PI;
+                            return x * (pi/180);
+                        }
+
+                    </script>
                     <td><%= invited_events[i]["time"] %></td>
                     <td><%= invited_events[i]["ownerId"] %></td>
                 </tr>
