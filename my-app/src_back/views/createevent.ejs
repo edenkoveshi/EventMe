@@ -380,33 +380,41 @@
             function CreateEvent()
             {
                 var all_fields_set=1;
+                //Look up for all elements that aren't optional
                 var form_input=document.querySelectorAll('input:not([name="description"]).input:not([name="picture"])');
                 for(i=0;i<form_input.length-1;i++)
                 {
+                    //if any of them is empty
                     if(form_input[i].value=="")
                         all_fields_set=0;
                 }
+
+                //Look for checkboxes,make sure at least one is chekced
                 var cblist=document.querySelectorAll('input[type="checkbox"]:checked');
                 var str="";
                 for(i=0;i<cblist.length;i++)
                 {
+                    //concatenate all checked boxes to a string
                     str+=","+cblist[i].id;
                 }
                 document.getElementsByName("categories")[0].value=str.substring(1,str.length);
-                console.log(document.getElementsByName("categories")[0]);
+
+                //Look up for a picture
                 var file=document.getElementsByName("picture")[0].value;
-                if(file!="")
+                if(file!="") //If field isn't empty
                 {
-                    file=file.split(".")[1];
-                    if(file!="png" && file!="jpg") {
+                    var format=file.split(".")[1];
+                    if(format!="png" && format!="jpg") { //make sure format is okay
                         window.alert("Picture format is not valid");
                         all_fields_set = 0;
                     }
                 }
+
+
+                //If everything is okay submit form, err otherwise
                 if(all_fields_set==1 && cblist.length>0)
                 {
                     window.alert("Event created successfully!");
-                    //window.location.href="myevents.html";
                     document.getElementById("event-form").submit();
                 }
                 else{
