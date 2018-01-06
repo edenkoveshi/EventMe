@@ -271,8 +271,8 @@
                         </a>
                     </td>
                     <td id="distance"></td>
-                    <p id="user_location" style="display: none"><%= location%></p>
-                    <p id="event_location" style="display: none"><%= invited_events[i]["location"] %></p>
+                    <p id="user_location"><%= location %></p>
+                    <p id="event_location"><%= invited_events[i]["location"] %></p>
                     <script>
                         //-----------Calculate distance between event and user locations---------------
                         var R = 6371e3; // metres
@@ -283,11 +283,15 @@
                            var lon1=parseFloat(latlng[1].substr(1,latlng[1].length));
                         */
                         var lat1=JSON.parse(coords).lat;
+                        //window.alert(lat1);
                         var lon1=JSON.parse(coords).lng;
+                        //window.alert(lon1);
                         coords=document.getElementById('event_location').innerHTML;
                         var latlng=coords.split(',');
                         var lat2=parseFloat(latlng[0].substr(1,latlng[0].length-1));
+                        //window.alert(lat2);
                         var lon2=parseFloat(latlng[1].substr(1,latlng[1].length));
+                        //window.alert(lon2);
                         var φ1 = radians(lat1);
                         var φ2 = radians(lat2);
                         var Δφ = radians(lat2-lat1);
