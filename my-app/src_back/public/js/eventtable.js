@@ -99,12 +99,13 @@ function buildEventsTable(selector, myList) {
       var myHref = window.location.href;
       var arrayHref = myHref.split("/");
       var user_id = arrayHref[5];
-      var link = "/eventMe/event/" + myList[i]["eventId"]+ "/" + user_id;
+      var link = "/eventMe/event/" + myList[i]["EventId"]+ "/" + user_id;
+      var hrefdelete = "/eventMe/delete_event/" + myList[i]["EventId"]+ "/" +myList[i]["Owner"];
       if (columns[colIndex] == "Title") {
         row$.append($('<td>'+'<a href='+link+'>'+cellValue+'</a>'+'</td>'+'</tr>'));
       } else if (columns[colIndex] == "Owner" && arrayHref[4] == "myownevents") {
           row$.append($('<td>'+cellValue+'</td>'+'</tr>'));
-          row$.append($('<td>'+'<button onclick=>delete</button>'+'</td>'+'</tr>'));
+          row$.append($('<td>'+'<a href='+hrefdelete+'> <button>delete</button> </a>'+'</td>'+'</tr>'));
       } else {
           row$.append($('<td>'+cellValue+'</td>'+'</tr>'));
       }
