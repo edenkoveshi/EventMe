@@ -2,7 +2,7 @@
 
 class  event
 {
-    constructor(event_id, ownerId, Title, location, type, information, time, invited){
+    constructor(event_id, ownerId, Title, location, type, information, time, invited, owner_name, invited_name){
         this.eventId = event_id
         this.ownerId = ownerId
         this.title = Title
@@ -12,6 +12,8 @@ class  event
         this.time = time
         this.invited_users = invited
         this.going_users = []
+        this.ownerName = owner_name
+        this.invitedName = invited_name
     }
 }
 
