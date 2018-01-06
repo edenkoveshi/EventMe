@@ -111,7 +111,7 @@
                             });
                             Location.then(function (result) {
                                 location = result;
-                                document.getElementsByName("location")[0].value = location;
+                                document.getElementsByName("location")[0].value = (location.lat,location.lng);
                                 document.getElementById("user_info").submit();
                             });
                         });

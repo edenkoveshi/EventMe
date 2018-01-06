@@ -282,6 +282,11 @@
                         //-----------Calculate distance between event and user locations---------------
                         var R = 6371e3; // metres
                         var coords=document.getElementById('user_location').innerHTML;
+                        /*
+                            var latlng=coords.split(',');
+                            var lat1=parseFloat(latlng[0].substr(1,latlng[0].length-1));
+                            var lon1=parseFloat(latlng[1].substr(1,latlng[1].length));
+                         */
                         var lat1=JSON.parse(coords).lat;
                         var lon1=JSON.parse(coords).lng;
                         coords=document.getElementById('event_location').innerHTML;
