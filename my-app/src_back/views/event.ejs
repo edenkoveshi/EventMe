@@ -249,7 +249,16 @@
                     </td>
                 </tr>
                 <tr style="height: 124px;background-color:#f9f1e9;border-color: #f9f1e9">
-                    <td style="border-width: 0;">&nbsp;</td>
+                    <td colspan=2 style="border-width: 0; color:black;">&nbsp;
+                        <h3>Going: <br /></h3>
+                        <% for (let i = 0; i < going_users.length; i++) { %>
+                            <%= going_users[i]%><br />
+                        <% } %>
+                        <h3>Invited: <br /></h3>
+                        <% for (let i = 0; i < invited_users.length; i++) { %>
+                            <%= invited_users[i] %><br />
+                        <% } %>
+                    </td>
                     <td style="border-width: 0;width: 466.889px; height: 124px;">&nbsp;
                         <p><span style="color:black">
                             <%= event_desc %>
