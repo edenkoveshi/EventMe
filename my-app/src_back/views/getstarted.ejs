@@ -97,7 +97,7 @@
                         });
                         FBFriends.then(function (result) {
                             friend_list = JSON.stringify(result.data);
-                            document.getElementsByName("friend_list")[0].value = friend_list;
+                                document.getElementsByName("friend_list")[0].value = friend_list;
                             var Location = new Promise(function (resolve, reject) {
                                 if (navigator.geolocation) {
                                     navigator.geolocation.getCurrentPosition(function (position) {

@@ -221,8 +221,8 @@
                         <input type="hidden" name="categories"/>
                         Description (optional):
                         <input type="text" name="description"/><br>
-                        Picture (optional): (JPG,PNG formats)
-                        <input type="file" name="picture"/><br>
+                        <!--Picture (optional): (JPG,PNG formats)
+                        <input type="file" name="picture"/><br>-->
                         <input type="button" id="Create" value="Create!" onclick="CreateEvent()"/>
                     </form>
                     </div>
@@ -301,7 +301,7 @@
                                 marker.setPosition(pos);
                                 marker.setMap(map);
                                 google.maps.event.trigger(map, "resize");
-                                document.getElementsByName("google-location")[0].value = (pos.lat,pos.lng);
+                                document.getElementsByName("google-location")[0].value = "("+pos.lat+", "+pos.lng+')';
                             }, function () {
                                 handleLocationError();
                             });
@@ -400,7 +400,7 @@
                 document.getElementsByName("categories")[0].value=str.substring(1,str.length);
 
                 //Look up for a picture
-                var file=document.getElementsByName("picture")[0].value;
+                /*var file=document.getElementsByName("picture")[0].value;
                 if(file!="") //If field isn't empty
                 {
                     var format=file.split(".")[1];
@@ -408,7 +408,7 @@
                         window.alert("Picture format is not valid");
                         all_fields_set = 0;
                     }
-                }
+                }*/
 
 
                 //If everything is okay submit form, err otherwise
