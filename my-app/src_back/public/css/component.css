@@ -147,25 +147,33 @@
 tr:hover {
     background: #b3d4fc;
 }
+#main_nav {
+    margin: auto;
+    z-index: 100;
 
+}
 #main_nav ul {
     background: white;
-    float: left;
+    float:top;
     -webkit-transition: .5s;
     transition: .5s;
+    z-index: 100;
 }
 
 #main_nav li {
+    background:antiquewhite;
     float: left;
     position: relative;
     width: 200px;
     list-style: none;
     -webkit-transition: .5s;
     transition: .5s;
+    z-index: 100;
 }
 
 #main_nav > ul > li > a, h1 {
     text-transform: uppercase;
+    z-index: 100;
 }
 
 #main_nav a {
@@ -173,6 +181,7 @@ tr:hover {
     text-decoration: none;
     padding: 5px 15px;
     color: #000;
+    z-index: 100;
 }
 
 #main_nav ul ul {
@@ -252,5 +261,44 @@ input[type=text] {
 
 input[type=text]:focus {
     width: 100%;
+}
+
+.button {
+    border-radius: 4px;
+    background-color: #f4511e;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 28px;
+    padding: 20px;
+    width: 200px;
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.button span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.button span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.button:hover span {
+    padding-right: 25px;
+}
+
+.button:hover span:after {
+    opacity: 1;
+    right: 0;
 }
 
