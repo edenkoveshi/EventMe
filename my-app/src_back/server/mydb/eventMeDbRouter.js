@@ -79,7 +79,7 @@ router.get('/delete_event/:event_id/:user_id', function (req, res) {
         console.log('delelted event - event deleted')
         //let frontpage = '/eventMe/frontpage/' + req.params.user_id
         //res.redirect(frontpage);
-            res.redirect(req.get('referer'));
+        res.redirect(req.get('referer'));
     });
 });
 
