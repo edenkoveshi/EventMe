@@ -105,19 +105,10 @@
 		<div class="container demo-2">
             <div class="content">
                 <div id="large-header" class="large-header">
-                    <div><!--header-->
-                       <button type="button" id="homepage">Homepage</button>
-                        <button type="button" id="my_events">My Events</button>
-                        <script>
-                            var homepage=document.getElementById("homepage");
-                            homepage.addEventListener('click',function(){window.location.href="/eventMe/frontpage/<%=user_id%>"});
-                            var myevents=document.getElementById('my_events');
-                            myevents.addEventListener('click', function(){window.location.href="/eventMe/myOwnEvents/<%=user_id%>"});
-
-                        </script>
-                    </div>
+                    <% include nav %>
                     <div id="event-properties" class="center" ><!--event creation form-->
-                    <form id="event-form" style="background:cornflowerblue" action="/eventMe/addOpenEvent/<%=user_id%>" method="post">
+                    <form id="event-form" style="background-color:#f9f1e9;
+            top: 50%; left: 50%;margin-left:auto; margin-right: auto; overflow-y: scroll;" action="/eventMe/addOpenEvent/<%=user_id%>" method="post">
                         Activity name:
                         <input type="text" name="Activity_name"/><br>
                         Date and time:

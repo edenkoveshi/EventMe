@@ -7,6 +7,76 @@
     <link rel="stylesheet" type="text/css" href="../../../css/normalize.css"/>
     <link rel="stylesheet" type="text/css" href="../../../css/component.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script>
+        var coords;
+        var map;
+        $(document).ready(function () {
+            //----- PARSE COORDIANTES INTO ADDRESS ---------
+            var coordinates = document.getElementById("location").innerHTML;
+            var latlng = coordinates.substring(1, coordinates.length - 1);
+            coords = latlng.split(" ");
+            latlng = coords[0] + coords[1];
+            var xmlHttp = new XMLHttpRequest();
+            var url = "https:maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&key=AIzaSyCu3KurWBoVaFCgz3J6jjoYcnmIVY2i6B0";
+            xmlHttp.open("GET", url, true);
+            xmlHttp.onreadystatechange = function () {
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                    var address = JSON.parse(xmlHttp.responseText).results[0].formatted_address;
+                    document.getElementById('location-premable').style = "display:block";
+                    document.getElementById('location').innerHTML = address;
+                    document.getElementById('location').style = "display:block";
+                }
+            }
+            xmlHttp.send();
+        });
+
+        function OpenMap() {
+            // Get the modal
+            var modal = document.getElementById('maps-modal');
+
+            // Get the <span> element that closes the modal
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks the button, open the modal
+            modal.style.display = "block";
+            google.maps.event.trigger(map, 'resize');
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function () {
+                modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function () {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+
+        //Google Maps function
+        function initMap(event) {
+            $(document).ready(function () {
+                // ----- MAP CREATION -------
+                var _lat = parseFloat(coords[0].split(",")[0]);
+                var _lng = parseFloat(coords[1]);
+                var default_location = {lat: _lat, lng: _lng};
+                map = new google.maps.Map(document.getElementById('googleMap'), {
+                    zoom: 15,
+                    center: default_location,
+                });
+
+                //---MARKER CREATION ----
+                var marker = new google.maps.Marker({
+                    position: default_location,
+                    map: map,
+                });
+                marker.setMap(map);
+            });
+        }
+
+
+    </script>
     <title>Event Me : <%= title %></title>
     <style>
         * {
@@ -16,7 +86,7 @@
 
         #googleMap {
             width: 100%;
-            height: 400px;
+            height: 200px;
         }
 
         body {
@@ -54,79 +124,11 @@
 
         }
 
-        #main_nav ul {
-            background: white;
-            float: left;
-            -webkit-transition: .5s;
-            transition: .5s;
-        }
-
-        #main_nav li {
-            float: left;
-            position: relative;
-            width: 352px;
-            list-style: none;
-            -webkit-transition: .5s;
-            transition: .5s;
-        }
-
-        #main_nav > ul > li > a, h1 {
-            text-transform: uppercase;
-        }
-
-        #main_nav a {
-            display: block;
-            text-decoration: none;
-            padding: 5px 15px;
-            color: #000;
-        }
-
-        #main_nav ul ul {
-            position: absolute;
-            left: 0;
-            top: 100%;
-            visibility: hidden;
-            opacity: 0;
-        }
-
-        #main_nav ul ul ul {
-            left: 100%;
-            top: 0;
-        }
-
-        #main_nav ul ul ul ul {
-            left: 100%;
-            top: 0;
-        }
-
-        #main_nav li:hover, #main_nav li:hover li {
-            background: #ddd;
-        }
-
-        #main_nav li li:hover, #main_nav li li:hover li {
-            background: #bbb;
-        }
-
-        #main_nav li li li:hover, #main_nav li li li:hover li {
-            background: #bbb;
-        }
-
-        #main_nav li li li:hover {
-            background: #999;
-        }
-
-        #main_nav li li li li:hover {
-            background: #999;
-        }
-
-        #main_nav li:hover > ul {
-            visibility: visible;
-            opacity: 1;
-        }
-
     </style>
 </head>
 
+
+<body onload="OpenMap()">
 <div class="container demo-2">
     <div class="content">
         <div id="large-header" class="large-header">
@@ -136,36 +138,18 @@
             <canvas id="demo-canvas"></canvas>
 
             <table id="singleEventTable" style="height: 500px; width: 735px; background-color:#f9f1e9;border-width: 0;
-            top: 50%; left: 50%; text-align: center; margin-left:auto; margin-right: auto; overflow-y: scroll;">
+            bottom: 200px; left: 50%; text-align: center; margin-left:auto; margin-right: auto; overflow-y: scroll;">
                 <colgroup>
-                    <col width="15%" />
-                    <col width="15%" />
-                    <col width="70%" />
+                    <col width="15%"/>
+                    <col width="15%"/>
+                    <col width="70%"/>
                 </colgroup>
                 <tr style="background-color:#f9f1e9;border-width: 0">
                     <td colspan=2 style="border-width: 0;"><img height=200px, width=300px
-                                                                                          src="/img/<%= event_img %>">
-                    </td>
-                    <td style="border-width: 0;"><span
-                                style="text-align:center;color:black"><H3><%= title %></H3></span></td>
-                </tr>
-                <tr style="height: 124px;background-color:#f9f1e9;border-width: 0">
-                    <td style="text-align:center;border-width: 0;">
-                        <h4 style="color:black;weight:bold;">Join event<br/></h4>
-                        <a style="border-width: 5px;border-color: #222222;"  href="/eventMe/joinEvent/<%= event_id %>/<%= user_id %>">
-                            <img height=50px, onClick='alert("You have joined: <%= title %> ")' width=50px src="../../../img\tick.png"/>
-                        </a>
-                    </td>
-                    <td style="text-align:center;border-width: 0;">
-                        <h4 style="color:black;weight:bold;">Leave event<br/></h4>
-                        <a href="/eventMe/unattend/<%= event_id %>/<%= user_id %>">
-                            <img height=50px, onClick='alert("You have left: <%= title %> ")' ,width=50px src="../../../img\x.png"/>
-                        </a>
+                                                                src="/img/<%= event_img %>">
                     </td>
                     <td style="border-width: 0;">
-                        <span style="color:black">
-                            <p id="location-premable" style="display: none">Where:<a id="location" style="display: none" onclick="OpenMap()"><%= event_place %></a> </p>
-                            <!-- Google Maps modal-->
+                        <!-- Google Maps modal-->
                         <div id="maps-modal" class="modal" style="display:none">
                             <!-- Modal content -->
                             <div class="modal-content">
@@ -173,96 +157,53 @@
                                 <div id="googleMap"></div>
                             </div>
                         </div>
-                            <script>
-                                var coords;
-                                var map;
-                                $(document).ready(function() {
-                                    //----- PARSE COORDIANTES INTO ADDRESS ---------
-                                    var coordinates = document.getElementById("location").innerHTML;
-                                    var latlng = coordinates.substring(1, coordinates.length - 1);
-                                    coords = latlng.split(" ");
-                                    latlng = coords[0] + coords[1];
-                                    var xmlHttp = new XMLHttpRequest();
-                                    var url = "https:maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&key=AIzaSyCu3KurWBoVaFCgz3J6jjoYcnmIVY2i6B0";
-                                    xmlHttp.open("GET", url, true);
-                                    xmlHttp.onreadystatechange = function () {
-                                        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-                                            var address = JSON.parse(xmlHttp.responseText).results[0].formatted_address;
-                                            document.getElementById('location-premable').style = "display:block";
-                                            document.getElementById('location').innerHTML = address;
-                                            document.getElementById('location').style = "display:block";
-                                        }
-                                    }
-                                    xmlHttp.send();
-                                });
-
-                                function OpenMap() {
-                                    // Get the modal
-                                    var modal = document.getElementById('maps-modal');
-
-                                    // Get the <span> element that closes the modal
-                                    var span = document.getElementsByClassName("close")[0];
-
-                                    // When the user clicks the button, open the modal
-                                    modal.style.display = "block";
-                                    google.maps.event.trigger(map,'resize');
-
-                                    // When the user clicks on <span> (x), close the modal
-                                    span.onclick = function() {
-                                            modal.style.display = "none";
-                                        }
-
-                                        // When the user clicks anywhere outside of the modal, close it
-                                    window.onclick = function() {
-                                        if (event.target == modal) {
-                                            modal.style.display = "none";
-                                        }
-                                     }
-                                }
-
-                                //Google Maps function
-                                function initMap(event) {
-                                    $(document).ready(function () {
-                                        // ----- MAP CREATION -------
-                                        var _lat=parseFloat(coords[0].split(",")[0]);
-                                        var _lng=parseFloat(coords[1]);
-                                        var default_location = {lat: _lat, lng: _lng};
-                                        map = new google.maps.Map(document.getElementById('googleMap'), {
-                                            zoom: 15,
-                                            center: default_location,
-                                        });
-
-                                        //---MARKER CREATION ----
-                                        var marker = new google.maps.Marker({
-                                            position: default_location,
-                                            map: map,
-                                        });
-                                        marker.setMap(map);
-                                    });
-                                }
-
-
-                            </script>
+                    </td>
+                </tr>
+                <tr style="height: 124px;background-color:#f9f1e9;border-width: 0">
+                    <td style="text-align:center;border-width: 0;">
+                        <h4 style="color:black;weight:bold;">Join event<br/></h4>
+                        <a style="border-width: 5px;border-color: #222222;"
+                           href="/eventMe/joinEvent/<%= event_id %>/<%= user_id %>">
+                            <img height=50px, onClick='alert("You have joined: <%= title %> ")' width=50px
+                                 src="../../../img\tick.png"/>
+                        </a>
+                    </td>
+                    <td style="text-align:center;border-width: 0;">
+                        <h4 style="color:black;weight:bold;">Leave event<br/></h4>
+                        <a href="/eventMe/unattend/<%= event_id %>/<%= user_id %>">
+                            <img height=50px, onClick='alert("You have left: <%= title %> ")' ,width=50px
+                                 src="../../../img\x.png"/>
+                        </a>
+                    </td>
+                    <td style="border-width: 0;">
+                        <span style="color:black">
+                        <span style="text-align:center;color:black"><H3>
+                                <%= title %>
+                            </H3></span>
                         <p>When: <%= event_time %></p>
                         <p>What: <%= event_type %></p>
+                                                    <p id="location-premable" style="display: none"><a id="location" style="display: none"
+                                                                                                             onclick="OpenMap()"><%= event_place %></a>
+                        </p>
                         </span>
                     </td>
                 </tr>
                 <tr style="height: 124px;background-color:#f9f1e9;border-color: #f9f1e9">
                     <td colspan=2 style="border-width: 0; color:black;">&nbsp;
-                        <h3>Going: <br /></h3>
+                        <h3>Going: <br/></h3>
                         <% for (let i = 0; i < going_users.length; i++) { %>
-                            <%= going_users[i]%><br />
+                        <%= going_users[i] %><br/>
                         <% } %>
-                        <h3>Invited: <br /></h3>
+                        <h3>Invited: <br/></h3>
                         <% for (let i = 0; i < invited_users.length; i++) { %>
-                            <%= invited_users[i] %><br />
+                        <%= invited_users[i] %><br/>
                         <% } %>
                     </td>
                     <td style="border-width: 0;width: 466.889px; height: 124px;">&nbsp;
                         <p><span style="color:black">
                             <%= event_desc %>
                         </span></p>
+
                     </td>
                 </tr>
 
