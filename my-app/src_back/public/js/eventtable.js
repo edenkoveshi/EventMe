@@ -7,9 +7,9 @@ function getList(){
             "Type" : $(tr).find('td:eq(0)').text(),
             "Title" : $(tr).find('td:eq(1)').text(),
             "Distance" :$(tr).find('td:eq(2)').text(),
-            "Time" :$(tr).find('td:eq(3)').text(),
-            "Owner" :$(tr).find('td:eq(4)').text(),
-            "Event Id" :$(tr).find('td:eq(5)').text()
+            "Time" :$(tr).find('td:eq(4)').text(),
+            "Owner" :$(tr).find('td:eq(5)').text(),
+            "Event Id" :$(tr).find('td:eq(3)').text()
         }
     });
     return myList;
@@ -49,7 +49,7 @@ function displayarrange() {
         distancecurr = Number(newList[listIndextmp]["Distance"].replace("km",""));
         newList[listIndextmp]["Distance"] = distancecurr;
     }
-    var newArrangeList = newList.sort(function (a, b) { (a["Distance"])-(b["Distance"])});
+    var newArrangeList = newList.sort(function(a,b) {return (a["Distance"] > b["Distance"]) ? 1 : ((b["Distance"] > a["Distance"]) ? -1 : 0);} );
     for (var listIndexSec = 2; listIndexSec < myList.length; listIndexSec++) {
         if (myList[listIndexSec]["Distance"].indexOf("km") == -1) {
             newArrangeList.push(myList[listIndexSec]);
@@ -121,8 +121,8 @@ function buildEventsTable(selector, myList) {
             var myHref = window.location.href;
             var arrayHref = myHref.split("/");
             var user_id = arrayHref[5];
-            var link = "/eventMe/event/" + myList[i]["EventId"]+ "/" + user_id;
-            var hrefdelete = "/eventMe/delete_event/" + myList[i]["EventId"]+ "/" +myList[i]["Owner"];
+            var link = "/eventMe/event/" + myList[i]["Event Id"]+ "/" + user_id;
+            var hrefdelete = "/eventMe/delete_event/" + myList[i]["Event Id"]+ "/" +myList[i]["Owner"];
             if (columns[colIndex] == "Title") {
                 row$.append($('<td>'+'<a href='+link+'>'+cellValue+'</a>'+'</td>'+'</tr>'));
             } else if (columns[colIndex] == "Owner" && arrayHref[4] == "myownevents") {
@@ -149,7 +149,7 @@ function addAllColumnHeaders(myList, selector) {
     for (var i = 0; i < myList.length; i++) {
         var rowHash = myList[i];
         for (var key in rowHash) {
-            if ($.inArray(key, columnSet) == -1) {
+            if ($.inArray(key, columnSet) == -1 && key !== "Event Id"){
                 columnSet.push(key);
                 headerTr$.append($('<th/>').html(key));
             }
