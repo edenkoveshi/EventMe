@@ -137,7 +137,6 @@ function buildEventsTable(selector, myList) {
     }
 }
 
-
 // Adds a header row to the table and returns the set of columns.
 // Need to do union of keys from all records as some records may not contain
 // all records.
@@ -149,9 +148,13 @@ function addAllColumnHeaders(myList, selector) {
     for (var i = 0; i < myList.length; i++) {
         var rowHash = myList[i];
         for (var key in rowHash) {
-            if ($.inArray(key, columnSet) == -1 && key !== "Event Id"){
+            if ($.inArray(key, columnSet) == -1 && key !== "Event Id" && key !== "Distance"){
                 columnSet.push(key);
                 headerTr$.append($('<th/>').html(key));
+            }
+            else if ($.inArray(key, columnSet) == -1 && key == "Distance"){
+                columnSet.push(key);
+                headerTr$.append($('<th>' + '<button onclick="displayarrange()"  class="button" ><span>Distance</span></button>' + '</th>' ));
             }
         }
     }
