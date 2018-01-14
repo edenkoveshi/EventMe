@@ -154,7 +154,7 @@ function addAllColumnHeaders(myList, selector) {
             }
             else if ($.inArray(key, columnSet) == -1 && key == "Distance"){
                 columnSet.push(key);
-                headerTr$.append($('<th>' + '<button onclick="displayarrange()"  class="button" ><span>Distance</span></button>' + '</th>' ));
+                headerTr$.append($('<th>' + '<button onclick="displayarrange()"  class="mybutton" ><span>Distance</span></button>' + '</th>' ));
             }
         }
     }

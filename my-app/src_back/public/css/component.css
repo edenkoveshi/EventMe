@@ -263,6 +263,12 @@ input[type=text]:focus {
     width: 100%;
 }
 
+.mybutton {
+    border-radius: 12px;
+    background-color: orange;
+    color: black;
+}
+
 .button {
     border-radius: 4px;
     background-color: #f4511e;
