@@ -89,7 +89,7 @@
                 <tr>
                     <th>Type</th>
                     <th>Title</th>
-                    <th><button onclick="displayarrange()"  class="button" ><span>Distance</span></button></th>
+                    <th><button onclick="displayarrange()"  class="mybutton" ><span>Distance</span></button></th>
                     <th>Time</th>
                     <th>Owner</th>
                 <tr/>
@@ -107,6 +107,7 @@
                     <!--<td class='event_location' style="display:none"><%= invited_events[i]["location"] %></td>-->
                     <td><%= invited_events[i]["time"] %></td>
                     <td><%= invited_events[i]["ownerName"] %></td>
+                    <td><a href="/eventMe/delete_event/<%= invited_events[i]["eventId"] %>/<%= user_id%>" <button>delete</button> </a></td>
                 </tr>
                 <% } %>
             </table>

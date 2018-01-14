@@ -122,12 +122,12 @@ function buildEventsTable(selector, myList) {
             var arrayHref = myHref.split("/");
             var user_id = arrayHref[5];
             var link = "/eventMe/event/" + myList[i]["Event Id"]+ "/" + user_id;
-            var hrefdelete = "/eventMe/delete_event/" + myList[i]["Event Id"]+ "/" +myList[i]["Owner"];
+            var hrefdelete = "/eventMe/delete_event/" + myList[i]["Event Id"]+ "/" +user_id;
             if (columns[colIndex] == "Title") {
                 row$.append($('<td>'+'<a href='+link+'>'+cellValue+'</a>'+'</td>'+'</tr>'));
             } else if (columns[colIndex] == "Owner" && arrayHref[4] == "myownevents") {
                 row$.append($('<td>'+cellValue+'</td>'+'</tr>'));
-                row$.append($('<td>'+'<a href='+hrefdelete+'> <button>delete</button> </a>'+'</td>'+'</tr>'));
+                row$.append($('<td>'+'<a href='+hrefdelete+'> <button>delete</button>'+'</a>'+'</td>'+'</tr>'));
             } else {
                 row$.append($('<td>'+cellValue+'</td>'+'</tr>'));
             }
@@ -154,7 +154,7 @@ function addAllColumnHeaders(myList, selector) {
             }
             else if ($.inArray(key, columnSet) == -1 && key == "Distance"){
                 columnSet.push(key);
-                headerTr$.append($('<th>' + '<button onclick="displayarrange()"  class="button" ><span>Distance</span></button>' + '</th>' ));
+                headerTr$.append($('<th>' + '<button onclick="displayarrange()"  class="mybutton" ><span>Distance</span></button>' + '</th>' ));
             }
         }
     }
