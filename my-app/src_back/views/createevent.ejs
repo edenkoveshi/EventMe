@@ -110,12 +110,31 @@
                     <div id="event-properties" class="center" ><!--event creation form-->
                     <form id="event-form" style="background-color:#f9f1e9;
             top: 50%; left: 50%;margin-left:auto; margin-right: auto; overflow-y: scroll;" action="/eventMe/addOpenEvent/<%=user_id%>" method="post">
+
                         Activity name:
                         <input type="text" name="Activity_name"/><br>
-                        Date and time:
-                        <input type="datetime-local" name="Activity_time"/><br>
-                        Location (Current location will be taken as default):
-                        <input type="button" id="Activity_location" value="Click here" onclick="ChooseLocation()"/><br>
+                        <p id="time-polled" style="display:inline-block">Date and time:</p><input type="datetime-local" name="Activity_time" id="event-time" style="display:inline-block"/>
+                        <br>
+                        Location: <p id="location-polled" style="display:inline">(Current location will be taken as default)</p>
+                        <input type="button" id="Activity_location" value="Click here" onclick="ChooseLocation()"/>
+
+                        <!--Polls-->
+                        &nbsp;&nbsp;&nbsp; <input type="button" id="poll" onclick="Poll()" value="Poll!"/>
+                        <div id="poll-modal" style="display:none">
+                            <div class="modal-content">
+                                <!--<span class="close">&times;</span>-->
+                                <div id="poll">
+                                    <input type="checkbox" id="location-cb">Location</input><br>
+                                    <div>
+                                        <input type="button" id='location-options' onclick="ChooseLocation()" style="display:none" value="Choose Locations"/>
+                                    </div>
+                                    <input type="checkbox" id="time-cb">Time&Date</input>
+                                    <div id="time-options"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+
                         <!-- Google Maps modal-->
                         <div id="maps-modal" class="modal" style="display:none">
                             <!-- Modal content -->
@@ -126,7 +145,7 @@
                                 <input type="text" name="google-location" style="display:none"/>
                             </div>
                         </div>
-                        <br>
+
                         Select your activity type:
                         <input type="button" id="Type_selection" value="Click here" onclick="SelectType()"/>
                         <br>
@@ -258,7 +277,7 @@
             }
             //Google Maps function
             function initMap(event) {
-                    $(document).ready(function () {
+                $(document).ready(function () {
                         // ----- MAP CREATION -------
                         var default_location = {lat: 51.508742, lng: -0.120850};
                         map = new google.maps.Map(document.getElementById('googleMap'), {
@@ -267,10 +286,19 @@
                         });
 
                         //---MARKER CREATION ----
-                        var marker = new google.maps.Marker({
-                            position: default_location,
-                            map: map,
-                        });
+                        var marker;
+                        var markers=[];
+                        if(!PollCheck()) {
+                              marker= new google.maps.Marker({
+                                position: default_location,
+                                map: map,
+                            });
+                        }
+
+                        if(PollCheck())
+                        {
+
+                        }
 
                         //----- SEARCH BAR CREATION -----
                         //--creation--
@@ -290,10 +318,12 @@
                                 };
                                 //Adjust map
                                 map.setCenter(pos);
+                                if(!PollCheck())
+                                {
                                 marker.setPosition(pos);
                                 marker.setMap(map);
+                                document.getElementsByName("google-location")[0].value = "("+pos.lat+", "+pos.lng+')';}
                                 google.maps.event.trigger(map, "resize");
-                                document.getElementsByName("google-location")[0].value = "("+pos.lat+", "+pos.lng+')';
                             }, function () {
                                 handleLocationError();
                             });
@@ -304,13 +334,23 @@
                         }
                         //-------------- CHANGE LOCATION ON CLICK ------
                         google.maps.event.addListener(map, 'click', function (event) {
-                            window.alert("I'm here");
                             var loc = event.latLng;
-                            window.alert(loc);
-                            marker.setPosition(loc);
+                            if(!PollCheck()) {
+                                marker.setPosition(loc);
+                                document.getElementsByName("google-location")[0].value = loc;
+                            }
+                            else
+                            {
+                                if(window.confirm('Choose this location?')) {
+                                    var newMarker = new google.maps.Marker({
+                                        position: loc,
+                                        map: map,
+                                    });
+                                    markers.push(newMarker);
+                                }
+                            }
                             map.setCenter(loc);
-                            //google.maps.event.trigger(map,"resize");
-                            document.getElementsByName("google-location")[0].value = loc;
+                            google.maps.event.trigger(map, "resize");
                         });
 
                         //-------------- SEARCH BAR HANDLING --------------------
@@ -321,11 +361,6 @@
                             if (places.length == 0) {
                                 return;
                             }
-                            //clear old markers
-                            /*markers.forEach(function(marker) {
-                                marker.setMap(null);
-                            });
-                            markers = [];*/
                             //get details of each place
                             var bounds = new google.maps.LatLngBounds();
                             places.forEach(function (place) {
@@ -341,16 +376,22 @@
                                     scaledSize: new google.maps.Size(25, 25)
                                 };
                                 // Create a marker for each place.
-                                /*markers.push(new google.maps.Marker({
-                                    map: map,
-                                    icon: icon,
-                                    title: place.name,
-                                    position: place.geometry.location
+                                if(PollCheck()) {
+                                    if (window.confirm('Choose this location?')) {
+                                        markers.push(new google.maps.Marker({
+                                            map: map,
+                                            //icon: icon,
+                                            title: place.name,
+                                            position: place.geometry.location
 
-                                }));*/
-                                marker.setPosition(place.geometry.location);
+                                        }));
+                                    }
+                                }
+                                else {
+                                    marker.setPosition(place.geometry.location);
+                                    document.getElementsByName("google-location")[0].value = place.geometry.location;
+                                }
                                 map.setCenter(place.geometry.location);
-                                document.getElementsByName("google-location")[0].value = place.geometry.location;
                                 if (place.geometry.viewport) {
                                     // Only geocodes have viewport.
                                     bounds.union(place.geometry.viewport);
@@ -367,6 +408,151 @@
             {
                 window.alert("We have a problem fetching your location.Please check it and try again later.");
             }
+
+            function PollCheck()
+            {
+                return (document.getElementById('poll').value=="Close");
+            }
+
+            function Poll()
+            { // Get the modal
+                var modal = document.getElementById('poll-modal');
+                var button=document.getElementById('poll');
+
+                // When the user clicks the button, open the modal
+                modal.style.display = (modal.style.display=="none") ? "block" : "none";
+                button.value= (button.value=="Poll!") ? "Close" : "Poll!";
+
+
+
+                $(document).ready(function() {
+                    //AddNewLocationButton();
+
+                    $("#location-cb").click(function () {
+                            $("#Activity_location").toggle(!this.checked);
+                            p=document.getElementById('location-polled');
+                            p.innerHTML= (p.innerHTML=="Under poll") ? "(Current location will be taken as default)" : "Under poll";
+                            $('#location-options').toggle(this.checked);
+                        }
+                    )
+                    $('#time-cb').click(function(){
+                        $('#event-time').toggle(!this.checked);
+                        p=document.getElementById('time-polled');
+                        p.innerHTML= (p.innerHTML=="Date and time: Under poll") ? "Date and time" : "Date and time: Under poll";
+                    })
+
+                });
+
+            }
+
+            /*function AddNewLocationButton()
+            {
+                var button=document.createElement('button');
+                button.value="Click Here To Add Location";
+                var location=document.createElement('p');
+                location.style="display:none";
+                location.innerHTML="";
+                button.onclick = function(){
+                    $(document).ready(function () {
+                        // ----- MAP CREATION -------
+                        var default_location = {lat: 51.508742, lng: -0.120850};
+                        map = new google.maps.Map(document.getElementById('googleMap'), {
+                            zoom: 15,
+                            center: default_location,
+                        });
+
+                        //---MARKER CREATION ----
+                        var markers=[];
+
+                        //----- SEARCH BAR CREATION -----
+                        //--creation--
+                        var input = document.getElementById('pac-input');
+                        var searchBox = new google.maps.places.SearchBox(input);
+                        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                        map.addListener('bounds_changed', function () {
+                            searchBox.setBounds(map.getBounds());
+                        });
+
+                        // ------ GET CURRENT LOCATION ------
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(function (position) {
+                                var pos = {
+                                    lat: position.coords.latitude,
+                                    lng: position.coords.longitude
+                                };
+                                //Adjust map
+                                google.maps.event.trigger(map, "resize");
+                            }, function () {
+                                handleLocationError();
+                            });
+                        } else {
+                            // Browser doesn't support Geolocation
+                            handleLocationError();
+
+                        }
+                        //-------------- CHANGE LOCATION ON CLICK ------
+                        google.maps.event.addListener(map, 'click', function (event) {
+                            if(window.confirm("Choose this location?")==true) {
+                                var loc = event.latLng;
+                                var marker = new google.maps.Marker({
+                                    position: loc,
+                                    map: map,
+                                });
+                                map.setCenter(loc);
+                                google.maps.event.trigger(map,"resize");
+                                markers.push(marker);
+                                location.innerHTML+=JSON.stringify(loc)+ " ";
+                            }
+                        });
+
+                        //-------------- SEARCH BAR HANDLING --------------------
+                        //--response to user choice--
+                        searchBox.addListener('places_changed', function () {
+                            if(window.confirm('Choose this location?')) {
+                                var places = searchBox.getPlaces();
+                                if (places.length == 0) {
+                                    return;
+                                }
+
+                                //get details of each place
+                                var bounds = new google.maps.LatLngBounds();
+                                places.forEach(function (place) {
+                                    if (!place.geometry) {
+                                        console.log("Returned place contains no geometry");
+                                        return;
+                                    }
+                                    var icon = {
+                                        url: place.icon,
+                                        size: new google.maps.Size(71, 71),
+                                        origin: new google.maps.Point(0, 0),
+                                        anchor: new google.maps.Point(17, 34),
+                                        scaledSize: new google.maps.Size(25, 25)
+                                    };
+                                    var marker=
+                                        {
+                                            position: place.geometry.location,
+                                            map: map,
+                                        }
+                                    map.setCenter(place.geometry.location);
+                                    markers.push(marker);
+                                    location.innerHTML+=JSON.stringify(place.geometry.location)+" ";
+                                    if (place.geometry.viewport) {
+                                        // Only geocodes have viewport.
+                                        bounds.union(place.geometry.viewport);
+                                    } else {
+                                        bounds.extend(place.geometry.location);
+                                    }
+                                });
+                                map.fitBounds(bounds);
+                            }
+                        });
+                    });
+                }
+                //onclick end
+                $("location-options").append(button,location);
+
+
+            }*/
 
 
             function CreateEvent()
