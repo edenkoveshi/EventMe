@@ -110,12 +110,34 @@
                     <div id="event-properties" class="center" ><!--event creation form-->
                     <form id="event-form" style="background-color:#f9f1e9;
             top: 50%; left: 50%;margin-left:auto; margin-right: auto; overflow-y: scroll;" action="/eventMe/addOpenEvent/<%=user_id%>" method="post">
+
                         Activity name:
                         <input type="text" name="Activity_name"/><br>
-                        Date and time:
-                        <input type="datetime-local" name="Activity_time"/><br>
-                        Location (Current location will be taken as default):
-                        <input type="button" id="Activity_location" value="Click here" onclick="ChooseLocation()"/><br>
+                        <p id="time-polled" style="display:inline-block">Date and time:</p><input type="datetime-local" name="Activity_time" id="event-time" style="display:inline-block"/>
+                        <br>
+                        Location: <p id="location-polled" style="display:inline">(Current location will be taken as default)</p>
+                        <input type="button" id="Activity_location" value="Click here" onclick="ChooseLocation()"/>
+
+                        <!--Polls-->
+                        &nbsp;&nbsp;&nbsp; <input type="button" id="poll" onclick="Poll()" value="Poll!"/>
+                        <div id="poll-modal" style="display:none">
+                            <div class="modal-content">
+                                <!--<span class="close">&times;</span>-->
+                                <div id="poll">
+                                    <input type="checkbox" id="location-cb">Location</input><br>
+                                    <div>
+                                        <input type="button" id='location-options' onclick="ChooseLocation()" style="display:none" value="Choose Locations"/>
+                                        <input type="hidden" id="locations-list"/>
+                                    </div>
+                                    <input type="checkbox" id="time-cb">Time&Date</input>
+                                    <div id="time-options">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+
                         <!-- Google Maps modal-->
                         <div id="maps-modal" class="modal" style="display:none">
                             <!-- Modal content -->
@@ -126,7 +148,7 @@
                                 <input type="text" name="google-location" style="display:none"/>
                             </div>
                         </div>
-                        <br>
+
                         Select your activity type:
                         <input type="button" id="Type_selection" value="Click here" onclick="SelectType()"/>
                         <br>
@@ -258,7 +280,7 @@
             }
             //Google Maps function
             function initMap(event) {
-                    $(document).ready(function () {
+                $(document).ready(function () {
                         // ----- MAP CREATION -------
                         var default_location = {lat: 51.508742, lng: -0.120850};
                         map = new google.maps.Map(document.getElementById('googleMap'), {
@@ -267,11 +289,11 @@
                         });
 
                         //---MARKER CREATION ----
-                        var marker = new google.maps.Marker({
-                            position: default_location,
-                            map: map,
-                        });
-
+                        var marker=new google.maps.Marker({position: default_location,map:null,icon:'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FE7569'});
+                        var markers=[];
+                        if(!LocationPollCheck()) {
+                              marker.setMap(map);
+                        }
                         //----- SEARCH BAR CREATION -----
                         //--creation--
                         var input = document.getElementById('pac-input');
@@ -280,6 +302,10 @@
                         map.addListener('bounds_changed', function () {
                             searchBox.setBounds(map.getBounds());
                         });
+
+                        var location_no_poll=document.getElementsByName("google-location")[0];
+                        var location_poll=document.getElementById('locations-list');
+                        location_poll.value="";
 
                         // ------ GET CURRENT LOCATION ------
                         if (navigator.geolocation) {
@@ -290,10 +316,12 @@
                                 };
                                 //Adjust map
                                 map.setCenter(pos);
+                                if(!LocationPollCheck())
+                                {
                                 marker.setPosition(pos);
                                 marker.setMap(map);
+                                location_no_poll.value = "("+pos.lat+", "+pos.lng+')';}
                                 google.maps.event.trigger(map, "resize");
-                                document.getElementsByName("google-location")[0].value = "("+pos.lat+", "+pos.lng+')';
                             }, function () {
                                 handleLocationError();
                             });
@@ -304,13 +332,36 @@
                         }
                         //-------------- CHANGE LOCATION ON CLICK ------
                         google.maps.event.addListener(map, 'click', function (event) {
-                            window.alert("I'm here");
                             var loc = event.latLng;
-                            window.alert(loc);
-                            marker.setPosition(loc);
+                            if(!LocationPollCheck()) {
+                                marker.setPosition(loc);
+                                marker.setMap(map);
+                                location_no_poll.value = loc;
+                                for (i=0; i<markers.length;i++)
+                                {
+                                    markers[i].setMap(null);
+                                }
+                                location_poll.value="";
+                            }
+                            else
+                            {
+                                if(window.confirm('Choose this location?')) {
+                                    if(markers.length>16)
+                                        window.alert('You have reached maximal number of locations');
+                                    else{
+                                    var newMarker = new google.maps.Marker({
+                                        position: loc,
+                                        map: map,
+                                        icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FFFFFF',
+                                    });
+                                    markers.push(newMarker);
+                                    marker.setMap(null);
+                                    location_no_poll.value="";
+                                    location_poll.value+=loc+" ";
+                                }
+                            }}
                             map.setCenter(loc);
-                            //google.maps.event.trigger(map,"resize");
-                            document.getElementsByName("google-location")[0].value = loc;
+                            google.maps.event.trigger(map, "resize");
                         });
 
                         //-------------- SEARCH BAR HANDLING --------------------
@@ -321,11 +372,6 @@
                             if (places.length == 0) {
                                 return;
                             }
-                            //clear old markers
-                            /*markers.forEach(function(marker) {
-                                marker.setMap(null);
-                            });
-                            markers = [];*/
                             //get details of each place
                             var bounds = new google.maps.LatLngBounds();
                             places.forEach(function (place) {
@@ -333,24 +379,35 @@
                                     console.log("Returned place contains no geometry");
                                     return;
                                 }
-                                var icon = {
-                                    url: place.icon,
-                                    size: new google.maps.Size(71, 71),
-                                    origin: new google.maps.Point(0, 0),
-                                    anchor: new google.maps.Point(17, 34),
-                                    scaledSize: new google.maps.Size(25, 25)
-                                };
                                 // Create a marker for each place.
-                                /*markers.push(new google.maps.Marker({
-                                    map: map,
-                                    icon: icon,
-                                    title: place.name,
-                                    position: place.geometry.location
+                                if(LocationPollCheck()) {
+                                    if (window.confirm('Choose this location?')) {
+                                        if(markers.length>16)
+                                            window.alert('You have reached maximal number of locations');
+                                        else{
+                                        markers.push(new google.maps.Marker({
+                                            map: map,
+                                            icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FFFFFF',
+                                            title: place.name,
+                                            position: place.geometry.location
 
-                                }));*/
-                                marker.setPosition(place.geometry.location);
+                                        }));
+                                        marker.setMap(null);
+                                        location_poll.value+=place.geometry.location+" ";
+                                        location_no_poll.value="";
+                                    }}
+                                }
+                                else {
+                                    marker.setPosition(place.geometry.location);
+                                    marker.setMap(map);
+                                    location_no_poll.value = place.geometry.location;
+                                    location_poll.value="";
+                                    for (i=0; i<markers.length;i++)
+                                    {
+                                        markers[i].setMap(null);
+                                    }
+                                }
                                 map.setCenter(place.geometry.location);
-                                document.getElementsByName("google-location")[0].value = place.geometry.location;
                                 if (place.geometry.viewport) {
                                     // Only geocodes have viewport.
                                     bounds.union(place.geometry.viewport);
@@ -368,13 +425,72 @@
                 window.alert("We have a problem fetching your location.Please check it and try again later.");
             }
 
+            function LocationPollCheck()
+            {
+                return ($('#location-cb').is(':checked'));
+            }
+
+            function Poll()
+            { // Get the modal
+                var modal = document.getElementById('poll-modal');
+                var button=document.getElementById('poll');
+
+                // When the user clicks the button, open the modal
+                modal.style.display = (modal.style.display=="none") ? "block" : "none";
+                button.value= (button.value=="Poll!") ? "Close" : "Poll!";
+
+
+
+                $(document).ready(function() {
+                    $("#location-cb").click(function () {
+                            $("#Activity_location").toggle(!this.checked);
+                            p=document.getElementById('location-polled');
+                            p.innerHTML= (p.innerHTML=="Under poll") ? "(Current location will be taken as default)" : "Under poll";
+                            $('#location-options').toggle(this.checked);
+                        }
+                    )
+                    $('#time-cb').click(function(){
+                        $('#event-time').toggle(!this.checked);
+                        p=document.getElementById('time-polled');
+                        p.innerHTML= (p.innerHTML=="Date and time: Under poll") ? "Date and time" : "Date and time: Under poll";
+                        $('#time-options').toggle(this.checked);
+                        var add_options=document.getElementById('add-options');
+                        if(add_options==undefined) {
+                            var but = document.createElement('input');
+                            but.type = 'button';
+                            but.onclick = AddDateAndTime;
+                            but.value = 'Add more options!';
+                            but.id = 'add-options';
+                            $('#time-options').append(but);
+                            AddDateAndTime();
+                        }
+                    })
+
+                });
+
+            }
+
+            function AddDateAndTime()
+            {
+                $("<input type=datetime-local name='time_poll_option'/>").insertBefore($('#add-options'));
+                $("<input type=datetime-local name='time_poll_option'/>").insertBefore($('#add-options'));
+            }
+
 
             function CreateEvent()
             {
+                var location_under_poll = ($('#location-cb').is(':checked')) ? 1 : 0;
+                var time_under_poll = ($('#time-cb').is(':checked')) ? 1 : 0;
+                var polls=1; //1 iff polls are valid - at least 2 options
                 var all_fields_set=1;
+                var query='input:not([name="description"]).input:not([name="picture"])';
+                if(location_under_poll)
+                    query+='.input:not([name="Activity_location"])';
+                if(time_under_poll)
+                    query+='.input:not([name="Activity_time"])';
                 //Look up for all elements that aren't optional
-                var form_input=document.querySelectorAll('input:not([name="description"]).input:not([name="picture"])');
-                for(i=0;i<form_input.length-1;i++)
+                var form_input=document.querySelectorAll(query);
+                for(i=0;i<form_input.length;i++)
                 {
                     //if any of them is empty
                     if(form_input[i].value=="")
@@ -391,6 +507,42 @@
                 }
                 document.getElementsByName("categories")[0].value=str.substring(1,str.length);
 
+                if(location_under_poll)
+                {
+                    var locations=document.getElementById('locations-list').value;
+                    var res = locations.split(") (");
+                    if(res.length<2)
+                    {
+                        polls=0;
+                    }
+
+                }
+
+                if(time_under_poll)
+                {
+                    var all_options=document.querySelectorAll('input[name="time_poll_option"]');
+                    window.alert('all_options:'+JSON.stringify(all_options));
+                    if(all_options.length<2)
+                    {
+                        polls=0;
+                    }
+                    else
+                    {
+                        for(var i=0;i<all_options.length;i++)
+                        {
+                            for(var j=i+1;j<all_options.length;j++);
+                            {
+                                if (all_options[j].value==all_options[i].value)
+                                {
+                                    window.alert("Poll options must be different!");
+                                    polls=0;
+                                }
+                            }
+                        }
+                    }
+
+                }
+
                 //Look up for a picture
                 /*var file=document.getElementsByName("picture")[0].value;
                 if(file!="") //If field isn't empty
@@ -404,13 +556,17 @@
 
 
                 //If everything is okay submit form, err otherwise
-                if(all_fields_set==1 && cblist.length>0)
+                if(all_fields_set==1 && cblist.length>0 && polls)
                 {
                     window.alert("Event created successfully!");
                     document.getElementById("event-form").submit();
                 }
-                else{
+                else if (polls){
                     window.alert("Please fill all non-optional fields.");
+                }
+                else
+                {
+                    window.alert("Polls require at least 2 options");
                 }
             }
         </script>
