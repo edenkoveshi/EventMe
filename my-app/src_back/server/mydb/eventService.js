@@ -114,25 +114,54 @@ class eventService {
 
             eventDAO.get_event(event_id)
                 .then(requested_events=>{
-                    console.out(' poll before vote:')
-                    console.out(requested_events[0].pollArray[cur_pull])
+                    if(validate_vote(user_id ,event_id ,cur_pull ,my_vote ,requested_events)== false){
+                        console.log('vote validation failed, vote not counted')
+                        resolve()
+                    }
+                    console.log(' poll before vote:')
+                    console.log(requested_events[0].pollArray[cur_pull])
                     requested_events[0].pollArray[cur_pull].voted_users.push({user : user_id, vote : my_vote})
                     requested_events[0].pollArray[cur_pull].options[i].votes++
                     eventDAO.update_event(event_id, requested_events[0])
                         .then(_=>{
-                            console.out(' poll after vote :')
-                            console.out(requested_events[0].pollArray[cur_pull])
+                            console.log(' poll after vote :')
+                            console.log(requested_events[0].pollArray[cur_pull])
                             resolve()
                         }).catch(err => reject(err))
                 }).catch(err => reject(err))
         })
-
     }
-
-
 }
 
 module.exports = new eventService()
+
+function validate_vote(user_id ,event_id ,cur_pull ,my_vote ,event ){
+    console.log('--------validate_vote-------')
+    let valid_vote = true
+    if(event.length == 0){
+        console.log('couldnt find the event')
+        return false
+    }
+    if(event[0].pollArray.length < cur_pull){
+        console.log('the '+ cur_pull +'poll was requested, but there are only '+event[0].pollArray.length+' arrays')
+        valid_vote= false
+    }
+    if(event[0].going_users.indexOf(user_id) < 0){
+        consile.log('the user ' + user_id + ' is not going to event ' + event_id)
+        valid_vote = false
+    }
+    for(var i = 0; i<event[0].pollArray[cur_pull].voted_users.length; i++){
+        if(event[0].pollArray[cur_pull].voted_users[i].user == user_id){
+            console.log('the user '+user_id + 'already voted in event ' + event_id + 'poll '+ cur_pull)
+            valid_vote = false
+        }
+    }
+    if(my_vote > event[0].pollArray[cur_pull].options.length){
+        valid_vote = false
+        console.log('the vote ' + my_vote + 'does not exist in the options, there are only' + event[0].pollArray[cur_pull].options.length + 'options')
+    }
+    return valid_vote
+}
 
 function remove_my_owned_event_from_my_list(user,event_location_in_my_array){
     console.log('remove_my_owned_event_from_my_list - going to deleting event at owner')
