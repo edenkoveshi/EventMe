@@ -130,11 +130,8 @@
                                         <input type="hidden" id="locations-list"/>
                                     </div>
                                     <input type="checkbox" id="time-cb">Time&Date</input>
-                                    <div id="time-options"></div>
-                                    <input type="checkbox" id="free-cb">Another</input>
-                                    <div id="free-options" style="display:none">
-                                        <input type="text" name="poll_question">Poll question:</input>
-                                        <input type=""
+                                    <div id="time-options">
+
                                     </div>
                                 </div>
                             </div>
@@ -262,10 +259,7 @@
                 google.maps.event.trigger(map,'resize');
 
                 // When the user clicks on <span> (x), close the modal
-                span.onclick = function(){
-                    if(PollCheck() && !window.confirm('Would you like to save the locations?')) {
-                        document.getElementById('lcoations-list').value = "";
-                    }
+                span.onclick = function() {
                     modal.style.display = "none";
                 }
 
