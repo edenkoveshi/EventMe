@@ -1,0 +1,108 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/eventMe/frontpage/<%= user_id %>">Home</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Events
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a href="/eventMe/createevent/<%= user_id %>">Create Event</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="/eventMe/myownevents/<%= user_id %>">My Own Events</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="/eventMe/eventsiattend/<%= user_id %>">Events I Attend</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Starts At
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <input id="date" type="date" style="width:100%"></input>
+                    <input id="time" type="time" style="width:100%"></input>
+                    <div class="dropdown-divider"></div>
+                    <button onclick="displaytime()">Get Time</button>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Activity Type
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Food
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <input onclick="boxChecked();" name="Food_Mexican" type="checkbox"
+                               id="checkbox">Mexican</input>
+                        <div class="dropdown-divider"></div>
+                        <input onclick="boxChecked($(this));" name="Food_Hamburger" type="checkbox"
+                               id="checkbox">Hamburger</input>
+                        <div class="dropdown-divider"></div>
+                        <input onclick="boxChecked($(this));" name="Food_Italian" type="checkbox"
+                               id="checkbox">Italian</input>
+                        <div class="dropdown-divider"></div>
+                        <input onclick="boxChecked($(this));" name="Food_Israeli" type="checkbox"
+                               id="checkbox">Israeli</input>
+                        <div class="dropdown-divider"></div>
+                        <input onclick="boxChecked($(this));" name="Food_Sushi" type="checkbox"
+                               id="checkbox">Sushi</input>
+                        <div class="dropdown-divider"></div>
+                        <input onclick="boxChecked($(this));" name="Food_Viatnamise" type="checkbox"
+                               id="checkbox">Viatnamise</input>
+                        <div class="dropdown-divider"></div>
+                        <input onclick="boxChecked($(this));" name="Food_Chinese" type="checkbox"
+                               id="checkbox">Chinese</input>
+                        <div class="dropdown-divider"></div>
+                        <input onclick="boxChecked($(this));" name="Food_Other" type="checkbox"
+                               id="checkbox">Other</input>
+                    </div>
+                    <input class="nav-link dropdown-toggle" onclick="boxChecked();" id="checkbox" name="Party" type="checkbox" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Party
+                    </input>
+                    <!--<input onclick="boxChecked();" name="Party" type="checkbox"-->
+                           <!--id="checkbox">Party</input>-->
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <input onclick="boxChecked($(this));" name="Party_Techno" type="checkbox"
+                               id="checkbox">Techno</input>
+                        <div class="dropdown-divider"></div>
+                        <input onclick="boxChecked($(this));" name="Party_Salsa" type="checkbox"
+                               id="checkbox">Salsa</input>
+                        <div class="dropdown-divider"></div>
+                        <input onclick="boxChecked($(this));" name="Party_MainStream" type="checkbox"
+                               id="checkbox">Main-Stream</input>
+                        <div class="dropdown-divider"></div>
+                        <input onclick="boxChecked($(this));" name="Party_Other" type="checkbox"
+                               id="checkbox">Other</input>
+                    </div>
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Shopping
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <input onclick="boxChecked($(this));" name="Shopping_Groceries" type="checkbox"
+                               id="checkbox">Groceries</input>
+                        <div class="dropdown-divider"></div>
+                        <input onclick="boxChecked($(this));" name="Shopping_Clothes" type="checkbox"
+                               id="checkbox">Clothes</input>
+                        <div class="dropdown-divider"></div>
+                        <input onclick="boxChecked($(this));" name="Shoppinf_HomeDecore" type="checkbox"
+                               id="checkbox">Home Decore</input>
+                        <div class="dropdown-divider"></div>
+                        <input onclick="boxChecked($(this));" name="Shoppinf_Other" type="checkbox"
+                               id="checkbox">Other</input>
+                    </div>
+                </div>
+            </li>
+            <a class="navbar-brand" style="background-color: red;" href="/eventMe/createevent/<%= user_id %>">Create Event</a>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="displaysearch()">Search</button>
+        </form>
+    </div>
+</nav>
