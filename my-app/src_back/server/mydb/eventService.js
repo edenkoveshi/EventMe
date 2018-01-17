@@ -7,7 +7,7 @@ var Event = require('./event')
 
 class eventService {
 
-    addOpenEvent(owner_id, title ,location, type, info, time) {
+    addOpenEvent(owner_id, title ,location, type, info, time, body) {
         return new Promise((resolve, reject) => {
             userDAO.get_User_by_fb_id(owner_id).then(own_user=>{
                 console.log('-----addOpenEvent-----')
@@ -19,7 +19,7 @@ class eventService {
                 var counter = 0
                 for (let i = 0; i < own_user[0].friends_list.length ; i++)
                 {
-                    console.log('trying ti add the user')
+                    console.log('trying to add the user')
                     console.log(own_user[0].friends_list[i])
                     promises.push(userDAO.get_User_by_fb_id(own_user[0].friends_list[i]).then(friend=>{
                         if(friend.length > 0)
@@ -34,9 +34,17 @@ class eventService {
                     }))
 
                 }
+                var polls = []
+                var current_poll
+                for (var poll_counter = 0; poll_counter < body['poll_counter'];poll_counter++)
+                {
+                    current_poll ='pool'+(poll_counter+1)
+                    polls[poll_counter] = body['current_poll']
+                }
+
                 Promise.all(promises).then(_=>{
                     console.log('addOpenEvent - all promises came back')
-                    let new_event = new Event(event_id, owner_id, title, location, type, info, time, own_user[0].friends_list, own_user[0].f_name, friends_list_name)
+                    let new_event = new Event(event_id, owner_id, title, location, type, info, time, own_user[0].friends_list, own_user[0].f_name, friends_list_name,body['poll_counter'],polls  )
                     console.log('the new event is:')
                     console.log(new_event)
                     eventDAO.create_event(new_event)
@@ -98,6 +106,27 @@ class eventService {
                     resolve(requested_events[0])
                 }).catch(err => reject(err))
         })
+    }
+
+    vote(user_id ,event_id ,cur_pull, my_vote){
+        console.log(' -------vote--------')
+        return new Promise((resolve, reject) =>{
+
+            eventDAO.get_event(event_id)
+                .then(requested_events=>{
+                    console.out(' poll before vote:')
+                    console.out(requested_events[0].pollArray[cur_pull])
+                    requested_events[0].pollArray[cur_pull].voted_users.push({user : user_id, vote : my_vote})
+                    requested_events[0].pollArray[cur_pull].options[i].votes++
+                    eventDAO.update_event(event_id, requested_events[0])
+                        .then(_=>{
+                            console.out(' poll after vote :')
+                            console.out(requested_events[0].pollArray[cur_pull])
+                            resolve()
+                        }).catch(err => reject(err))
+                }).catch(err => reject(err))
+        })
+
     }
 
 
