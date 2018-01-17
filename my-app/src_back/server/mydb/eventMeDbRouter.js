@@ -88,7 +88,7 @@ router.post('/addOpenEvent/:user_id', (req, res) => {
     return new Promise((resolve, reject) => {
         console.log(' is trying to create new event');
         console.log(req.body);
-        es.addOpenEvent(req.params["user_id"], req.body["Activity_name"], req.body["google-location"], req.body["categories"], req.body["description"], req.body["Activity_time"])
+        es.addOpenEvent(req.params["user_id"], req.body["Activity_name"], req.body["google-location"], req.body["categories"], req.body["description"], req.body["Activity_time"],req.body)
             .then(_ => {
                 let newUrl = '/eventMe/frontpage/' + req.params["user_id"];
                 console.log(newUrl);
@@ -227,18 +227,6 @@ router.get('/eventsiattend/:fb_id', (req, res) => {
         })
 });
 
-router.get('/getUserByFbId/:user_fb_id', (req, res) => {
-    return new Promise((resolve, reject) => {
-        console.log('requesting user');
-        let usr_fb_id = req.params.user_fb_id;
-        us.getUserByFb(usr_fb_id)
-            .then(req_user => {
-                console.log('user requested recieved = ', req_user[0].fb_id);
-                res.render('req_user');
-                resolve()
-            }).catch(err => reject(err))
-    })
-});
 
 
 router.get('/showMeUsers', (req, res) => {
@@ -269,4 +257,32 @@ router.get('/getMyInvitedEvents/:user_id', (req, res) => {
     })
 });
 
+router.post('/vote/:user_id', (req, res) => {
+   return new Promise((resolve, reject) => {
+       console.log('I am using my right to vote !  go trump!')
+       user_id = req.params.user_id
+       event_id = req.body.eventId
+       cur_pull = req.body.pollNum
+       my_vote = req.body.myVote
+       es.vote(user_id ,event_id ,cur_pull, my_vote).then(_=>{
+           console.log('I voted')
+           resolve()
+       }).catch(err => reject(err))
+   })
+});
+
 module.exports = router;
+
+
+// router.get('/getUserByFbId/:user_fb_id', (req, res) => {
+//     return new Promise((resolve, reject) => {
+//         console.log('requesting user');
+//         let usr_fb_id = req.params.user_fb_id;
+//         us.getUserByFb(usr_fb_id)
+//             .then(req_user => {
+//                 console.log('user requested recieved = ', req_user[0].fb_id);
+//                 res.render('req_user');
+//                 resolve()
+//             }).catch(err => reject(err))
+//     })
+// });
