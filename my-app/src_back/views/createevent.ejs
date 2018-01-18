@@ -130,7 +130,14 @@
                                         <input type="hidden" id="locations-list"/>
                                     </div>
                                     <input type="checkbox" id="time-cb">Time&Date</input>
-                                    <div id="time-options">
+                                    <div id="time-options"></div>
+                                    <input type="checkbox" id="free-poll-cb">Another</input>
+                                    <div id="free-poll-options" style="display: none;">
+                                        Poll Question:<input type="text" name="poll_question"/><br>
+                                        Options: <br>
+                                        <input type="text" name="free-poll-option"/><br>
+                                        <input type="text" name="free-poll-option"/><br>
+                                        <input type="button" id="free-poll-button" onclick="AddFreePollOptions()" value="Add more options!"/>
 
                                     </div>
                                 </div>
@@ -246,6 +253,8 @@
 		</div><!-- /container -->
         <script>
             var map;
+            var markers=[];
+            var location_poll=[];
             //var location;
             function ChooseLocation() {
                 // Get the modal
@@ -260,16 +269,20 @@
 
                 // When the user clicks on <span> (x), close the modal
                 span.onclick = function() {
+                    if(LocationPollCheck() && !window.confirm('Save changes?')) {
+                        document.getElementById('locations-list').value="";
+                        location_poll=[];
+                        for(var i=0;i<markers.length;i++)
+                            markers[i].setMap(null);
+                    }
+                    else if(LocationPollCheck())
+                    {
+                        document.getElementById('locations-list').value=JSON.stringify(location_poll);
+                    }
                     modal.style.display = "none";
                 }
-
-                // When the user clicks anywhere outside of the modal, close it
-                window.onclick = function() {
-                    if (event.target == modal) {
-                        modal.style.display = "none";
-                    }
-                }
             }
+
             function SelectType(){
                 //change button label
                 var but=document.getElementById("Type_selection");
@@ -278,6 +291,7 @@
                 var list=document.getElementById("activity-type");
                 list.style.display = (list.style.display=="none") ? list.style.display="inline" : list.style.display ="none";
             }
+
             //Google Maps function
             function initMap(event) {
                 $(document).ready(function () {
@@ -290,7 +304,6 @@
 
                         //---MARKER CREATION ----
                         var marker=new google.maps.Marker({position: default_location,map:null,icon:'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FE7569'});
-                        var markers=[];
                         if(!LocationPollCheck()) {
                               marker.setMap(map);
                         }
@@ -304,8 +317,6 @@
                         });
 
                         var location_no_poll=document.getElementsByName("google-location")[0];
-                        var location_poll=document.getElementById('locations-list');
-                        location_poll.value="";
 
                         // ------ GET CURRENT LOCATION ------
                         if (navigator.geolocation) {
@@ -341,7 +352,7 @@
                                 {
                                     markers[i].setMap(null);
                                 }
-                                location_poll.value="";
+                                location_poll=[];
                             }
                             else
                             {
@@ -357,7 +368,7 @@
                                     markers.push(newMarker);
                                     marker.setMap(null);
                                     location_no_poll.value="";
-                                    location_poll.value+=loc+" ";
+                                    location_poll.push(loc+" ");
                                 }
                             }}
                             map.setCenter(loc);
@@ -393,7 +404,7 @@
 
                                         }));
                                         marker.setMap(null);
-                                        location_poll.value+=place.geometry.location+" ";
+                                        location_poll.push(place.geometry.location+" ");
                                         location_no_poll.value="";
                                     }}
                                 }
@@ -466,14 +477,25 @@
                         }
                     })
 
+                    $('#free-poll-cb').click(function(){
+                        $('#free-poll-options').toggle(this.checked);
+                    })
+
+
                 });
 
             }
 
             function AddDateAndTime()
             {
-                $("<input type=datetime-local name='time_poll_option'/>").insertBefore($('#add-options'));
-                $("<input type=datetime-local name='time_poll_option'/>").insertBefore($('#add-options'));
+                $("<input type=datetime-local name='time-poll-option'/>").insertBefore($('#add-options'));
+                $("<input type=datetime-local name='time-poll-option'/>").insertBefore($('#add-options'));
+            }
+
+            function AddFreePollOptions()
+            {
+                $("<input type=text name='free-poll-option'/>").insertBefore($('#free-poll-button'));
+                $("<br>").insertBefore($('#free-poll-button'));
             }
 
 
@@ -481,8 +503,9 @@
             {
                 var location_under_poll = ($('#location-cb').is(':checked')) ? 1 : 0;
                 var time_under_poll = ($('#time-cb').is(':checked')) ? 1 : 0;
-                var polls=1; //1 iff polls are valid - at least 2 options
+                var polls_valid=1; //1 iff polls are valid - at least 2 options
                 var all_fields_set=1;
+                var polls=[];
                 var query='input:not([name="description"]).input:not([name="picture"])';
                 if(location_under_poll)
                     query+='.input:not([name="Activity_location"])';
@@ -503,39 +526,85 @@
                 for(i=0;i<cblist.length;i++)
                 {
                     //concatenate all checked boxes to a string
-                    str+=","+cblist[i].id;
+                    if(cblist[i].id!="location-cb" && cblist[i].id!="time-cb" && cblist[i].id!="free-poll-cb") {
+                        str += "," + cblist[i].id;
+                    }
                 }
                 document.getElementsByName("categories")[0].value=str.substring(1,str.length);
 
                 if(location_under_poll)
                 {
                     var locations=document.getElementById('locations-list').value;
-                    var res = locations.split(") (");
+                    var res = JSON.parse(locations);
                     if(res.length<2)
                     {
-                        polls=0;
+                        polls_valid=0;
                     }
 
                 }
 
                 if(time_under_poll)
                 {
-                    var all_options=document.querySelectorAll('input[name="time_poll_option"]');
-                    window.alert('all_options:'+JSON.stringify(all_options));
+                    var all_options=document.getElementsByName('time-poll-option');
                     if(all_options.length<2)
                     {
-                        polls=0;
+                        polls_valid=0;
                     }
                     else
                     {
                         for(var i=0;i<all_options.length;i++)
                         {
-                            for(var j=i+1;j<all_options.length;j++);
+                            if(all_options[i]==undefined) {
+                                polls_valid = 0;
+                                break;
+                            }
+                            for(var j=i+1;j<all_options.length;j++)
                             {
+                                if(all_options[j]==undefined)
+                                {
+                                    polls_valid=0;
+                                    break;
+                                }
                                 if (all_options[j].value==all_options[i].value)
                                 {
                                     window.alert("Poll options must be different!");
-                                    polls=0;
+                                    polls_valid=0;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+
+                if($('#free-poll-cb').is(':checked'))
+                {
+                    var all_options=document.getElementsByName('free-poll-option');
+                    if(all_options.length<2)
+                    {
+                        polls_valid=0;
+                    }
+                    else
+                    {
+                        for(var i=0;i<all_options.length;i++)
+                        {
+                            if(all_options[i]==undefined) {
+                                polls_valid = 0;
+                                break;
+                            }
+                            for(var j=i+1;j<all_options.length;j++)
+                            {
+                                if(all_options[j]==undefined)
+                                {
+                                    polls_valid=0;
+                                    break;
+                                }
+                                if (all_options[j].value==all_options[i].value)
+                                {
+                                    window.alert("Poll options must be different!");
+                                    polls_valid=0;
+                                    break;
                                 }
                             }
                         }
@@ -556,12 +625,41 @@
 
 
                 //If everything is okay submit form, err otherwise
-                if(all_fields_set==1 && cblist.length>0 && polls)
+                if(all_fields_set==1 && cblist.length>0 && polls_valid)
                 {
                     window.alert("Event created successfully!");
+                    var poll_counter=0;
+                    if($('#location-cb').is(':checked'))
+                    {
+                        polls[poll_counter]=document.getElementById('locations-list').value;
+                        poll_counter++;
+                    }
+
+                    if($('#time-cb').is(':checked'))
+                    {
+                        var options=document.getElementsByName('time-poll-option');
+                        window.alert(options);
+                        polls[poll_counter]=options;
+                        poll_counter++;
+                    }
+
+                    if($('#free-cb').is(':checked'))
+                    {
+                        var options=document.getElementsByName('free-poll-option');
+                        var values=[];
+                        for(var i=0; i<options.length;i++)
+                            values[i]=options[i].value;
+                        window.alert(JSON.stringify(values));
+                        polls[poll_counter]=JSON.stringify(values);
+                        poll_counter++;
+                    }
+
+                    $('<input type="hidden" name="polls" value="'+polls+'"/>').insertBefore($('#Create'));
+                    $('<input type="hidden" name="poll_counter" value="'+poll_counter+'"/>').insertBefore($('#Create'));
+
                     document.getElementById("event-form").submit();
                 }
-                else if (polls){
+                else if (polls_valid){
                     window.alert("Please fill all non-optional fields.");
                 }
                 else
