@@ -278,6 +278,7 @@
                     else if(LocationPollCheck())
                     {
                         document.getElementById('locations-list').value=JSON.stringify(location_poll);
+                        window.alert(JSON.stringify(location_poll));
                     }
                     modal.style.display = "none";
                 }
@@ -499,174 +500,166 @@
             }
 
 
-            function CreateEvent()
-            {
+            function CreateEvent() {
                 var location_under_poll = ($('#location-cb').is(':checked')) ? 1 : 0;
                 var time_under_poll = ($('#time-cb').is(':checked')) ? 1 : 0;
-                var polls_valid=1; //1 iff polls are valid - at least 2 options
-                var all_fields_set=1;
-                var polls=[];
-                var query='input:not([name="description"]).input:not([name="picture"])';
-                if(location_under_poll)
-                    query+='.input:not([name="Activity_location"])';
-                if(time_under_poll)
-                    query+='.input:not([name="Activity_time"])';
+                var polls_valid = 1; //1 iff polls are valid - at least 2 options
+                var all_fields_set = 1;
+                var polls = [];
+                var query = 'input[name="Activity_name"]';
+                if (!location_under_poll) {
+                    query += ',input[name="google-location"]';
+                }
+                if (!time_under_poll)
+                    query += ',input[name="Activity_time"]';
                 //Look up for all elements that aren't optional
-                var form_input=document.querySelectorAll(query);
-                for(i=0;i<form_input.length;i++)
-                {
+                var form_input = document.querySelectorAll(query);
+                for (i = 0; i < form_input.length; i++) {
                     //if any of them is empty
-                    if(form_input[i].value=="")
-                        all_fields_set=0;
+                    if (form_input[i].value == "") {
+                        all_fields_set = 0;
+                        window.alert(form_input[i].name);
+                    }
                 }
 
                 //Look for checkboxes,make sure at least one is chekced
-                var cblist=document.querySelectorAll('input[type="checkbox"]:checked');
-                var str="";
-                for(i=0;i<cblist.length;i++)
-                {
+                var cblist = document.querySelectorAll('input[type="checkbox"]:checked');
+                var str = "";
+                for (i = 0; i < cblist.length; i++) {
                     //concatenate all checked boxes to a string
-                    if(cblist[i].id!="location-cb" && cblist[i].id!="time-cb" && cblist[i].id!="free-poll-cb") {
+                    if (cblist[i].id != "location-cb" && cblist[i].id != "time-cb" && cblist[i].id != "free-poll-cb") {
                         str += "," + cblist[i].id;
                     }
                 }
-                document.getElementsByName("categories")[0].value=str.substring(1,str.length);
+                document.getElementsByName("categories")[0].value = str.substring(1, str.length);
 
-                if(location_under_poll)
-                {
-                    var locations=document.getElementById('locations-list').value;
+                if (location_under_poll) {
+                    var locations = document.getElementById('locations-list').value;
                     var res = JSON.parse(locations);
-                    if(res.length<2)
-                    {
-                        polls_valid=0;
+                    if (res.length < 2) {
+                        polls_valid = 0;
                     }
-
                 }
 
-                if(time_under_poll)
-                {
-                    var all_options=document.getElementsByName('time-poll-option');
-                    if(all_options.length<2)
-                    {
-                        polls_valid=0;
+                if (time_under_poll) {
+                    var all_options = document.getElementsByName('time-poll-option');
+                    if (all_options.length < 2) {
+                        polls_valid = 0;
                     }
-                    else
-                    {
-                        for(var i=0;i<all_options.length;i++)
-                        {
-                            if(all_options[i]==undefined) {
+                    else {
+                        var count = 0;
+                        for (var i = 0; i < all_options.length; i++) {
+                            if (all_options[i] == undefined) {
                                 polls_valid = 0;
                                 break;
                             }
-                            for(var j=i+1;j<all_options.length;j++)
-                            {
-                                if(all_options[j]==undefined)
-                                {
-                                    polls_valid=0;
+                            if (all_options[i].value != "") {
+                                count++;
+                            }
+                            for (var j = i + 1; j < all_options.length; j++) {
+                                if (all_options[j] == undefined) {
+                                    polls_valid = 0;
                                     break;
                                 }
-                                if (all_options[j].value==all_options[i].value)
-                                {
+                                if (all_options[j].value == all_options[i].value && all_options[i].value != "") {
                                     window.alert("Poll options must be different!");
-                                    polls_valid=0;
+                                    polls_valid = 0;
                                     break;
                                 }
                             }
                         }
+                        if (count < 2) polls_valid = 0;
                     }
-
                 }
 
 
-                if($('#free-poll-cb').is(':checked'))
-                {
-                    var all_options=document.getElementsByName('free-poll-option');
-                    if(all_options.length<2)
-                    {
-                        polls_valid=0;
-                    }
-                    else
-                    {
-                        for(var i=0;i<all_options.length;i++)
-                        {
-                            if(all_options[i]==undefined) {
-                                polls_valid = 0;
-                                break;
-                            }
-                            for(var j=i+1;j<all_options.length;j++)
-                            {
-                                if(all_options[j]==undefined)
-                                {
-                                    polls_valid=0;
+                    if ($('#free-poll-cb').is(':checked')) {
+                        var all_options = document.getElementsByName('free-poll-option');
+                        if (all_options.length < 2) {
+                            polls_valid = 0;
+                        }
+                        else {
+                            var count = 0;
+                            for (var i = 0; i < all_options.length; i++) {
+                                if (all_options[i] == undefined) {
+                                    polls_valid = 0;
                                     break;
                                 }
-                                if (all_options[j].value==all_options[i].value)
-                                {
-                                    window.alert("Poll options must be different!");
-                                    polls_valid=0;
-                                    break;
+                                if (all_options[i].value != "") {
+                                    count++;
+                                }
+                                for (var j = i + 1; j < all_options.length; j++) {
+                                    if (all_options[j] == undefined) {
+                                        polls_valid = 0;
+                                        break;
+                                    }
+                                    if (all_options[j].value == all_options[i].value && all_options[i].value != "") {
+                                        window.alert("Poll options must be different!");
+                                        polls_valid = 0;
+                                        break;
+                                    }
                                 }
                             }
+                            if (count < 2) polls_valid = 0;
                         }
                     }
 
-                }
-
-                //Look up for a picture
-                /*var file=document.getElementsByName("picture")[0].value;
-                if(file!="") //If field isn't empty
-                {
-                    var format=file.split(".")[1];
-                    if(format!="png" && format!="jpg") { //make sure format is okay
-                        window.alert("Picture format is not valid");
-                        all_fields_set = 0;
-                    }
-                }*/
-
-
-                //If everything is okay submit form, err otherwise
-                if(all_fields_set==1 && cblist.length>0 && polls_valid)
-                {
-                    window.alert("Event created successfully!");
-                    var poll_counter=0;
-                    if($('#location-cb').is(':checked'))
+                    //Look up for a picture
+                    /*var file=document.getElementsByName("picture")[0].value;
+                    if(file!="") //If field isn't empty
                     {
-                        polls[poll_counter]=document.getElementById('locations-list').value;
-                        poll_counter++;
+                        var format=file.split(".")[1];
+                        if(format!="png" && format!="jpg") { //make sure format is okay
+                            window.alert("Picture format is not valid");
+                            all_fields_set = 0;
+                        }
+                    }*/
+
+
+                    //If everything is okay submit form, err otherwise
+                    if (all_fields_set == 1 && cblist.length > 0 && polls_valid) {
+                        window.alert("Event created successfully!");
+                        var poll_counter = 0;
+                        if ($('#location-cb').is(':checked')) {
+                            polls.push(document.getElementById('locations-list').value);
+                            window.alert(document.getElementById('locations-list').value);
+                            poll_counter++;
+                        }
+
+                        if ($('#time-cb').is(':checked')) {
+                            var options = document.getElementsByName('time-poll-option');
+                            var values = [];
+                            for (var i = 0; i < options.length; i++)
+                                if (options[i].value != "")
+                                    values.push(options[i].value);
+                            polls.push(values);
+                            poll_counter++;
+                        }
+
+                        if ($('#free-poll-cb').is(':checked')) {
+                            var options = document.getElementsByName('free-poll-option');
+                            var values = [];
+                            for (var i = 0; i < options.length; i++)
+                                if (options[i].value != "")
+                                    values.push(options[i].value);
+                            polls.push(values);
+                            poll_counter++;
+                        }
+                        var str = JSON.stringify(polls);
+                        //console.log(str);
+
+                        $("<input type='hidden' name='polls' value='" + str + "' />").insertBefore($('#Create'));
+                        $('<input type="hidden" name="poll_counter" value="' + poll_counter + '"/>').insertBefore($('#Create'));
+
+                        document.getElementById("event-form").submit();
                     }
-
-                    if($('#time-cb').is(':checked'))
-                    {
-                        var options=document.getElementsByName('time-poll-option');
-                        window.alert(options);
-                        polls[poll_counter]=options;
-                        poll_counter++;
+                    else if (polls_valid) {
+                        window.alert("Please fill all non-optional fields.");
                     }
-
-                    if($('#free-cb').is(':checked'))
-                    {
-                        var options=document.getElementsByName('free-poll-option');
-                        var values=[];
-                        for(var i=0; i<options.length;i++)
-                            values[i]=options[i].value;
-                        window.alert(JSON.stringify(values));
-                        polls[poll_counter]=JSON.stringify(values);
-                        poll_counter++;
+                    else {
+                        window.alert("Polls require at least 2 options");
                     }
-
-                    $('<input type="hidden" name="polls" value="'+polls+'"/>').insertBefore($('#Create'));
-                    $('<input type="hidden" name="poll_counter" value="'+poll_counter+'"/>').insertBefore($('#Create'));
-
-                    document.getElementById("event-form").submit();
                 }
-                else if (polls_valid){
-                    window.alert("Please fill all non-optional fields.");
-                }
-                else
-                {
-                    window.alert("Polls require at least 2 options");
-                }
-            }
         </script>
         <!-- Import Google Maps -->
         <script async defer
