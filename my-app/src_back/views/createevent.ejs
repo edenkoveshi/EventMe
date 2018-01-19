@@ -645,10 +645,14 @@
                             polls.push(values);
                             poll_counter++;
                         }
-                        var str = JSON.stringify(polls);
+                        var poll_1 = JSON.stringify(polls[0]);
+                        var poll_2 = JSON.stringify(polls[1]);
+                        var poll_3 = JSON.stringify(polls[2]);
                         //console.log(str);
 
-                        $("<input type='hidden' name='polls' value='" + str + "' />").insertBefore($('#Create'));
+                        $("<input type='hidden' name='poll1' value='" + poll_1 + "' />").insertBefore($('#Create'));
+                        $("<input type='hidden' name='poll2' value='" + poll_2 + "' />").insertBefore($('#Create'));
+                        $("<input type='hidden' name='poll3' value='" + poll_3 + "' />").insertBefore($('#Create'));
                         $('<input type="hidden" name="poll_counter" value="' + poll_counter + '"/>').insertBefore($('#Create'));
 
                         document.getElementById("event-form").submit();
