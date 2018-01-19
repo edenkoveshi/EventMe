@@ -621,7 +621,7 @@
                         window.alert("Event created successfully!");
                         var poll_counter = 0;
                         if ($('#location-cb').is(':checked')) {
-                            polls.push(document.getElementById('locations-list').value);
+                            polls.push(JSON.parse(document.getElementById('locations-list').value));
                             window.alert(document.getElementById('locations-list').value);
                             poll_counter++;
                         }
@@ -648,7 +648,10 @@
                         var poll_1 = JSON.stringify(polls[0]);
                         var poll_2 = JSON.stringify(polls[1]);
                         var poll_3 = JSON.stringify(polls[2]);
-                        //console.log(str);
+                        console.log(polls);
+                        console.log(poll_1);
+                        console.log(poll_2);
+                        console.log(poll_3);
 
                         $("<input type='hidden' name='poll1' value='" + poll_1 + "' />").insertBefore($('#Create'));
                         $("<input type='hidden' name='poll2' value='" + poll_2 + "' />").insertBefore($('#Create'));

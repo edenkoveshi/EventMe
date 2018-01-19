@@ -11,30 +11,109 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script>
-        var coords;
+        var coordinates =[];
         var map;
-        $(document).ready(function () {
-            //----- PARSE COORDIANTES INTO ADDRESS ---------
-            var coordinates = document.getElementById("location").innerHTML;
-            var latlng = coordinates.substring(1, coordinates.length - 1);
-            coords = latlng.split(" ");
-            latlng = coords[0] + coords[1];
-            var xmlHttp = new XMLHttpRequest();
-            var url = "https:maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&key=AIzaSyCu3KurWBoVaFCgz3J6jjoYcnmIVY2i6B0";
-            xmlHttp.open("GET", url, true);
-            xmlHttp.onreadystatechange = function () {
-                if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-                    var address = JSON.parse(xmlHttp.responseText).results[0].formatted_address;
-                    document.getElementById('location-premable').style = "display:block";
-                    document.getElementById('location').innerHTML = address;
-                    document.getElementById('location').style = "display:block";
-                }
-            }
-            xmlHttp.send();
+        var addresses=[];
+        var LocationsPoll=[];
+        var TimePoll=[];
+        var FreePoll=[];
+
+        ///---INITALIZE POLLS----
+        $(document).ready(function(){
+        var i=0;
+        if(document.getElementById('location').innerHTML=="")
+        {
+            LocationsPoll=JSON.parse('['+document.getElementById('polls').innerHTML+']')[i];
+            i++;
+            document.getElementById('location').innerHTML="Location is under poll. Click here to view."
+            document.getElementById('location').onclick=ShowPollResults;
+        }
+        if(document.getElementById('event-time').innerHTML=="When: ")
+        {
+            TimePoll=JSON.parse('['+document.getElementById('polls').innerHTML+']')[i];
+            i++;
+            document.getElementById('event-time').style="display:none";
+            $("<a onclick=ShowPollResults()>Time&Date is under poll. Click here to view.</a>").insertBefore($('#event-type'));
+
+        }
+        if(parseInt(document.getElementById('poll-counter').innerHTML)<i)
+        {
+            $('<a>Open-question poll ongoing.Click here to view.</a>').insertAfter($('#event-type'));
+            FreePoll=JSON.parse('['+document.getElementById('polls').innerHTML+']')[i];
+            i++;
+            document.getElementById('event-time').onclick=ShowPollResults;
+        }
         });
 
+        ///----CONTROL CHART DIV----
+        function ShowPollResults()
+        {
+            var chart = document.getElementById('google-chart');
+            var close = document.getElementById('close-chart');
+            chart.style='display:block';
+            close.style='display:block';
+            close.onclick=function(){
+                chart.style='display:none'
+                close.style='display:none'
+            };
+        }
+
+        //----CHECK IF LOCATION IS POLLED----
+        function LocationUnderPoll()
+        {
+            return (document.getElementById('location').innerHTML=="Location is under poll. Click here to view.");
+        }
+
+
+        ///----TRANSLATE COORDS INTO ADDRESSES-----
+        $(document).ready(function () {
+            //----- PARSE COORDIANTES INTO ADDRESS ---------
+            if(!LocationUnderPoll()) {
+                coordinates.push(document.getElementById("location").innerHTML+" ");
+                //window.alert(coordinates);
+            }
+            else {
+                //console.log(document.getElementById('polls'));
+                coordinates =LocationsPoll;
+                //window.alert(coordinates);
+                //window.alert(coordinates.length);
+            }
+            var i=0;
+            coordinates.forEach(function(item,index){
+                var latlng = item.substring(1, coordinates[i].length - 2);
+                //window.alert(latlng);
+                var coords = latlng.split(" ");
+                //window.alert(coords);
+                latlng = coords[0] + coords[1];
+                //window.alert(latlng);
+                var xmlHttp = new XMLHttpRequest();
+                var url = "https:maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&key=AIzaSyCu3KurWBoVaFCgz3J6jjoYcnmIVY2i6B0";
+                xmlHttp.open("GET", url, true);
+                xmlHttp.onreadystatechange = function () {
+                    if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                        var address = JSON.parse(xmlHttp.responseText).results[0].formatted_address;
+                        //window.alert(address);
+                        document.getElementById('location-premable').style = "display:block";
+                        document.getElementById('location').style = "display:block";
+                        if (!LocationUnderPoll()) {
+                            document.getElementById('location').innerHTML = address;
+                        }
+                        else
+                        {
+                            addresses.push(address);
+                        }
+                    }
+                }
+                xmlHttp.send();
+            });
+            //console.log(addresses);
+        });
+
+
+        ///----CONTROL GOOGLE MAP DIV---
         function OpenMap() {
             // Get the modal
             var modal = document.getElementById('maps-modal');
@@ -63,21 +142,77 @@
         function initMap(event) {
             $(document).ready(function () {
                 // ----- MAP CREATION -------
-                var _lat = parseFloat(coords[0].split(",")[0]);
-                var _lng = parseFloat(coords[1]);
+                var coords = coordinates[0].split(" ");
+                //window.alert(coords);
+                var _lat = parseFloat(coords[0].split(",")[0].substring(1));
+                var _lng = parseFloat(coords[1].substring(0, coords[1].length - 1));
                 var default_location = {lat: _lat, lng: _lng};
                 map = new google.maps.Map(document.getElementById('googleMap'), {
                     zoom: 15,
                     center: default_location,
                 });
 
-                //---MARKER CREATION ----
-                var marker = new google.maps.Marker({
-                    position: default_location,
-                    map: map,
+                coordinates.forEach(function (item, index) {
+                    //---MARKER CREATION ----
+                    var coords = item.split(" ");
+                    var _lat = parseFloat(coords[0].split(",")[0].substring(1));
+                    var _lng = parseFloat(coords[1].substring(0, coords[1].length - 1));
+                    var default_location = {lat: _lat, lng: _lng};
+                    console.log(default_location);
+                    var marker = new google.maps.Marker({
+                        position: default_location,
+                        map: map,
+                    });
+                    marker.setMap(map);
                 });
-                marker.setMap(map);
             });
+        }
+
+
+            ////----GOOGLE CHARTS - DISPLAY CHART WITH POLL RESULTS ------
+        $(document).ready(function(){
+            // Load the Visualization API and the corechart package.
+            google.charts.load('current', {'packages':['corechart']});
+
+            // Set a callback to run when the Google Visualization API is loaded.
+            google.charts.setOnLoadCallback(drawChart);
+
+            // Callback that creates and populates a data table,
+            // instantiates the pie chart, passes in the data and
+            // draws it.
+            function drawChart() {
+
+                // Create the data table.
+                var data = new google.visualization.DataTable();
+                data.addColumn('string', 'Topping');
+                data.addColumn('number', 'Slices');
+                data.addRows([
+                    ['Mushrooms', 3],
+                    ['Onions', 1],
+                    ['Olives', 1],
+                    ['Zucchini', 1],
+                    ['Pepperoni', 2]
+                ]);
+
+
+                // Set chart options
+                var options = {'title':'How Much Pizza I Ate Last Night',
+                    'width':400,
+                    'height':300};
+
+                // Instantiate and draw our chart, passing in some options.
+                var chart = new google.visualization.ColumnChart(document.getElementById('google-chart'));
+                chart.draw(data, options);
+            }
+                });
+
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
         }
 
 
@@ -185,13 +320,16 @@
                         <span style="text-align:center;color:black"><H3>
                                 <%= title %>
                             </H3></span>
-                        <p>When: <%= event_time %></p>
-                        <p>What: <%= event_type %></p>
+                        <p id="event-time">When: <%= event_time %></p>
+                        <p id="event-type">What: <%= event_type %></p>
                                                     <p id="location-premable" style="display: none"><a id="location" style="display: none"
                                                                                                              onclick="OpenMap()"><%= event_place %></a>
                         </p>
+                            <span class="close" id="close-chart" style="display:none">&times;</span>
+                        <div id="google-chart" style="display:none"></div>
                         </span>
                     </td>
+                    <td style="display:none" id="polls"><%=pollArray %></td>
                 </tr>
                 <tr style="height: 124px;background-color:#f9f1e9;border-color: #f9f1e9">
                     <td colspan=2 style="border-width: 0; color:black;">&nbsp;
@@ -210,6 +348,7 @@
                         </span></p>
 
                     </td>
+                    <p id="poll-counter" style="display:none"><%= pollCounter %></p>
                 </tr>
 
             </table>
