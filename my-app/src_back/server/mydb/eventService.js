@@ -36,15 +36,16 @@ class eventService {
                 }
                 var polls = []
                 var current_poll
-                for (var poll_counter = 0; poll_counter < body['poll_counter'];poll_counter++)
+                for (var poll_counter = 0; poll_counter < parseInt(body['poll_counter']);poll_counter++)
                 {
-                    current_poll ='pool'+(poll_counter+1)
-                    polls[poll_counter] = body['current_poll']
+                    current_poll ='poll'+(poll_counter+1)
+                    console.log("current_poll "+current_poll);
+                    polls[poll_counter] = body[current_poll]
                 }
 
                 Promise.all(promises).then(_=>{
                     console.log('addOpenEvent - all promises came back')
-                    let new_event = new Event(event_id, owner_id, title, location, type, info, time, own_user[0].friends_list, own_user[0].f_name, friends_list_name,body['poll_counter'],polls  )
+                    let new_event = new Event(event_id, owner_id, title, location, type, info, time, own_user[0].friends_list, own_user[0].f_name, friends_list_name,body['poll_counter'],polls)
                     console.log('the new event is:')
                     console.log(new_event)
                     eventDAO.create_event(new_event)
