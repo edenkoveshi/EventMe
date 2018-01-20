@@ -87,7 +87,7 @@ function displaytime() {
 
 function displaysearch() {
     var myCurrentList = [];
-    var x = $("#txt_name").val();
+    var x = $("#srch-term").val();
     if (x != "") {
         for (var listIndex = 0; listIndex < myList.length; listIndex++) {
             if (myList[listIndex]["Type"] == x) {

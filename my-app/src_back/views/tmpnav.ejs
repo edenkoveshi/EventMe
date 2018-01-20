@@ -9,7 +9,9 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="/eventMe/frontpage/<%= user_id %>">Home</a>
+            <a class="navbar-brand" href="/eventMe/createevent/<%= user_id %>" style="background:orange;"><b>Create Event</b></a>
         </div>
+
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -35,7 +37,22 @@
                         <li><button onclick="displaytime()" style="width:200px">Get Time</button></li>
                     </ul>
                 </li>
-                <a class="navbar-brand" href="/eventMe/createevent/<%= user_id %>" style="background:orange;"><b>Create Event</b></a>
+
+                <li class="dropdown">
+                    <a href="#demo" data-toggle="collapse">Activity Type</a>
+                    <div id="demo" class="collapse">
+                        <% include filterBar %>
+                    </div>
+                    </ul>
+                </li>
+                <form class="navbar-form" role="search">
+                    <div class="input-group add-on">
+                        <input class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit" onclick="displaysearch()"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
