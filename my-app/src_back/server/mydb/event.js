@@ -17,7 +17,6 @@ class  event
         this.goingName = []
         this.pollCounter = poll_counter
         this.pollArray = poll_array
-        this.pollQuestion =poll_question
     }
 }
 
