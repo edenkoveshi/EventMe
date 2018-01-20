@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="href="/eventMe/frontpage/<%= user_id %>"">Home</a>
+            <a class="navbar-brand" href="/eventMe/frontpage/<%= user_id %>">Home</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -28,14 +28,14 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Starts At <span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        <li><input id="date" type="date" style="width:100%"></input></li>
+                        <input id="date" type="date" style="width:100%"></input>
                         <li role="separator" class="divider"></li>
-                        <li><input id="time" type="time" style="width:100%"></input></li>
+                        <input id="time" type="time" style="width:100%"></input>
                         <li role="separator" class="divider"></li>
-                        <li><button onclick="displaytime()">Get Time</button></li>
-                        <li role="separator" class="divider"></li>
+                        <li><button onclick="displaytime()" style="width:200px">Get Time</button></li>
                     </ul>
                 </li>
+                <a class="navbar-brand" href="/eventMe/createevent/<%= user_id %>" style="background:orange;"><b>Create Event</b></a>
             </ul>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
