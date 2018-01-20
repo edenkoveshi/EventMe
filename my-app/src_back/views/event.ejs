@@ -12,6 +12,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
 
     <script>
         var coordinates =[];
@@ -28,37 +30,81 @@
         {
             LocationsPoll=JSON.parse('['+document.getElementById('polls').innerHTML+']')[i];
             i++;
+            //console.log(LocationsPoll);
             document.getElementById('location').innerHTML="Location is under poll. Click here to view."
-            document.getElementById('location').onclick=ShowPollResults;
+            document.getElementById('location').onclick=function(){
+                var addr=[];
+                for(var j=0;j<addresses.length;j++)
+                {
+                    var t=[];
+                    //console.log(temp[j]);
+                    t.push(addresses[j]);
+                    t.push(Math.floor(Math.random()*10)+1);
+                    t.push(getRandomColor());
+                    addr.push(t);
+                }
+                PollChart(addr,'Location');
+                ShowPollResults();
+            };
         }
         if(document.getElementById('event-time').innerHTML=="When: ")
         {
-            TimePoll=JSON.parse('['+document.getElementById('polls').innerHTML+']')[i];
+            var temp2=[];
+            temp2=JSON.parse('['+document.getElementById('polls').innerHTML+']')[i];
+            for(var j=0;j<temp2.length;j++)
+            {
+                var t=[];
+                t.push(temp2[j]);
+                t.push(Math.floor(Math.random()*10)+1);
+                t.push(getRandomColor());
+                TimePoll.push(t);
+            }
             i++;
+            //console.log(TimePoll);
             document.getElementById('event-time').style="display:none";
-            $("<a onclick=ShowPollResults()>Time&Date is under poll. Click here to view.</a>").insertBefore($('#event-type'));
-
+            console.log(TimePoll);
+            $("<a onclick=TimeOnClick()>Time&Date is under poll. Click here to view.</a>").insertBefore($('#event-type'));
         }
         if(parseInt(document.getElementById('poll-counter').innerHTML)<i)
         {
-            $('<a>Open-question poll ongoing.Click here to view.</a>').insertAfter($('#event-type'));
-            FreePoll=JSON.parse('['+document.getElementById('polls').innerHTML+']')[i];
+            $('<a id="free-poll">Open-question poll ongoing.Click here to view.</a>').insertAfter($('#event-type'));
+            var temp3=[];
+            temp3=JSON.parse('['+document.getElementById('polls').innerHTML+']')[i];
+            for(var j=0;j<temp3.length;j++)
+            {
+                var t=[];
+                t.push(temp3[j]);
+                t.push(Math.floor(Math.random()*10)+1);
+                t.push(getRandomColor());
+                FreePoll.push(t);
+            }
             i++;
-            document.getElementById('event-time').onclick=ShowPollResults;
+            document.getElementById('free-poll').onclick= function(){
+                PollChart(FreePoll,'Other');
+                ShowPollResults();
+            }
         }
         });
+
+        function TimeOnClick()
+        {
+            PollChart(TimePoll,'Date-time');
+            ShowPollResults();
+        }
 
         ///----CONTROL CHART DIV----
         function ShowPollResults()
         {
             var chart = document.getElementById('google-chart');
             var close = document.getElementById('close-chart');
-            chart.style='display:block';
-            close.style='display:block';
+            chart.style="display:block";
+            close.style="display:block";
             close.onclick=function(){
-                chart.style='display:none'
-                close.style='display:none'
+                chart.style="display:none";
+                close.style='display:none';
             };
+            console.log(chart);
+            console.log(close);
         }
 
         //----CHECK IF LOCATION IS POLLED----
@@ -77,11 +123,12 @@
             }
             else {
                 //console.log(document.getElementById('polls'));
-                coordinates =LocationsPoll;
+                coordinates =JSON.parse('['+document.getElementById('polls').innerHTML+']')[0];
                 //window.alert(coordinates);
                 //window.alert(coordinates.length);
             }
             var i=0;
+            //console.log(coordinates);
             coordinates.forEach(function(item,index){
                 var latlng = item.substring(1, coordinates[i].length - 2);
                 //window.alert(latlng);
@@ -168,52 +215,96 @@
             });
         }
 
+        $(document).ready(function(){
+        $(function() {
+            // this initializes the dialog (and uses some common options that I do)
+            $("#dialog").dialog({
+                autoOpen: false, modal: true, show: "blind", hide: "blind"
+            });
+        });
+        });
 
             ////----GOOGLE CHARTS - DISPLAY CHART WITH POLL RESULTS ------
-        $(document).ready(function(){
-            // Load the Visualization API and the corechart package.
-            google.charts.load('current', {'packages':['corechart']});
+            function PollChart(x, type) {
+                // Load the Visualization API and the corechart package.
+                google.charts.load('current', {'packages': ['corechart']});
 
-            // Set a callback to run when the Google Visualization API is loaded.
-            google.charts.setOnLoadCallback(drawChart);
+                // Set a callback to run when the Google Visualization API is loaded.
+                google.charts.setOnLoadCallback(drawChart);
+                console.log(x);
 
-            // Callback that creates and populates a data table,
-            // instantiates the pie chart, passes in the data and
-            // draws it.
-            function drawChart() {
+                // Callback that creates and populates a data table,
+                // instantiates the pie chart, passes in the data and
+                // draws it.
+                function drawChart() {
 
-                // Create the data table.
-                var data = new google.visualization.DataTable();
-                data.addColumn('string', 'Topping');
-                data.addColumn('number', 'Slices');
-                data.addRows([
-                    ['Mushrooms', 3],
-                    ['Onions', 1],
-                    ['Olives', 1],
-                    ['Zucchini', 1],
-                    ['Pepperoni', 2]
-                ]);
+                    // Create the data table.
+                    var dataarray = [];
+                    dataarray.push(['Option', 'Votes', {role: 'style'}]);
+                    x.forEach(function (item) {
+                        dataarray.push(item);
+                    });
+
+                    var data = new google.visualization.arrayToDataTable(dataarray);
 
 
-                // Set chart options
-                var options = {'title':'How Much Pizza I Ate Last Night',
-                    'width':400,
-                    'height':300};
+                    // Set chart options
+                    var title;
+                    if (type == "Location") {
+                        title = "Where should we go to?";
+                    }
+                    else if (type == "Date-time") {
+                        title = "When should we do this?";
+                    }
+                    else if (type == "Other") {
+                        title = document.getElementById('poll-question').innerHTML;
+                    }
 
-                // Instantiate and draw our chart, passing in some options.
-                var chart = new google.visualization.ColumnChart(document.getElementById('google-chart'));
-                chart.draw(data, options);
+
+                    var options = {
+                        'title': title,
+                        'width': 400,
+                        'height': 300,
+                        'bar': {groupWidth: "95%"},
+                        'legend': {position: "none"},
+                    };
+
+                    function selectHandler() {
+                        var selectedItem = chart.getSelection()[0];
+                        var location = 0;
+                        var going_users = document.getElementById('going_ids').innerHTML;
+                        var user = document.getElementById('user_id').innerHTML;
+                        if (selectedItem) {
+                            var selection = data.getValue(selectedItem.row, 0);
+                            if (going_users != "") {
+                                going_users = JSON.parse(going_users);
+                                if (type == 'Location' && going_users.contains(user_id)) {
+
+                                }
+                                // next add the onclick handler
+
+                            }
+                            $("#dialog").dialog("open");
+                        }
+                    }
+
+                    var chart = new google.visualization.ColumnChart(document.getElementById('google-chart'));
+
+                    google.visualization.events.addListener(chart, 'select', selectHandler);
+
+                    // Instantiate and draw our chart, passing in some options.
+                    chart.draw(data, options);
+                }
             }
-                });
 
-        function getRandomColor() {
-            var letters = '0123456789ABCDEF';
-            var color = '#';
-            for (var i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
+            function getRandomColor() {
+                var letters = '0123456789abcdef';
+                var color = '#';
+                for (var i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
             }
-            return color;
-        }
 
 
     </script>
@@ -276,9 +367,9 @@
             <% include nav %>
 
             <canvas id="demo-canvas"></canvas>
-
+            <div style="overflow-y:scroll">
             <table id="singleEventTable" style="height: 500px; width: 735px; background-color:#f9f1e9;border-width: 0;
-            bottom: 200px; left: 50%; text-align: center; margin-left:auto; margin-right: auto; overflow-y: scroll;">
+            bottom: 200px; left: 50%; text-align: center; margin-left:auto; margin-right: auto; overflow-y:scroll;">
                 <colgroup>
                     <col width="15%"/>
                     <col width="15%"/>
@@ -325,9 +416,10 @@
                                                     <p id="location-premable" style="display: none"><a id="location" style="display: none"
                                                                                                              onclick="OpenMap()"><%= event_place %></a>
                         </p>
-                            <span class="close" id="close-chart" style="display:none">&times;</span>
-                        <div id="google-chart" style="display:none"></div>
+
                         </span>
+                        <button id="close-chart" style="display:none">Close</button>
+                        <div id="google-chart" style="display:none"></div>
                     </td>
                     <td style="display:none" id="polls"><%=pollArray %></td>
                 </tr>
@@ -349,9 +441,17 @@
 
                     </td>
                     <p id="poll-counter" style="display:none"><%= pollCounter %></p>
+                    <p id="poll-question" style="display:none"><%= pollQuestion%></p>
+                    <p id="invited_ids" style="display:none"><%=invited_ids%></p>
+                    <p id="going_ids" style="display:none"><%=going_ids%></p>
+                    <p id="user_id" style="display:none"><%=user_id%></p>
+                    <div id="dialog">
+                        <p>appear now</p>
+                    </div>
                 </tr>
 
             </table>
+            </div>
 
         </div>
     </div>

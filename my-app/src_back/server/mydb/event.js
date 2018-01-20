@@ -2,7 +2,7 @@
 
 class  event
 {
-    constructor(event_id, ownerId, Title, location, type, information, time, invited, owner_name, invited_name, poll_counter, poll_array){
+    constructor(event_id, ownerId, Title, location, type, information, time, invited, owner_name, invited_name, poll_counter, poll_array,poll_question){
         this.eventId = event_id
         this.ownerId = ownerId
         this.title = Title
@@ -17,6 +17,7 @@ class  event
         this.goingName = []
         this.pollCounter = poll_counter
         this.pollArray = poll_array
+        this.pollQuestion =poll_question
     }
 }
 

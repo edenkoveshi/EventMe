@@ -45,7 +45,8 @@ class eventService {
 
                 Promise.all(promises).then(_=>{
                     console.log('addOpenEvent - all promises came back')
-                    let new_event = new Event(event_id, owner_id, title, location, type, info, time, own_user[0].friends_list, own_user[0].f_name, friends_list_name,body['poll_counter'],polls)
+                    var question=body['poll_question']
+                    let new_event = new Event(event_id, owner_id, title, location, type, info, time, own_user[0].friends_list, own_user[0].f_name, friends_list_name,body['poll_counter'],polls,question)
                     console.log('the new event is:')
                     console.log(new_event)
                     eventDAO.create_event(new_event)
