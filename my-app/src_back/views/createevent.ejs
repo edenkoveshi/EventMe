@@ -656,6 +656,9 @@
                         $("<input type='hidden' name='poll1' value='" + poll_1 + "' />").insertBefore($('#Create'));
                         $("<input type='hidden' name='poll2' value='" + poll_2 + "' />").insertBefore($('#Create'));
                         $("<input type='hidden' name='poll3' value='" + poll_3 + "' />").insertBefore($('#Create'));
+                        $("<input type='hidden' name='poll1_length' value='" + poll_1.length + "' />").insertBefore($('#Create'));
+                        $("<input type='hidden' name='poll2_length' value='" + poll_2.length + "' />").insertBefore($('#Create'));
+                        $("<input type='hidden' name='poll3_length' value='" + poll_3.length + "' />").insertBefore($('#Create'));
                         $('<input type="hidden" name="poll_counter" value="' + poll_counter + '"/>').insertBefore($('#Create'));
 
                         document.getElementById("event-form").submit();

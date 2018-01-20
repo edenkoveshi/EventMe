@@ -48,7 +48,6 @@ router.get('/event/:event_id/:user_id', function (req, res) {
                 pollArray: (event["pollArray"] == undefined ? [] : event["pollArray"]),
                 pollCounter: event["pollCounter"],
                 pollQuestion: event["pollQuestion"],
-
             })
             ;
         }

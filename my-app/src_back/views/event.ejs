@@ -12,8 +12,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
-    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
     <script>
         var coordinates =[];
@@ -23,6 +24,24 @@
         var TimePoll=[];
         var FreePoll=[];
 
+
+        function CenterMap(i)
+        {
+            var coords=LocationsPoll[i].split[0];
+            var _lat = parseFloat(coords[0].split(",")[0].substring(1));
+            var _lng = parseFloat(coords[1].substring(0, coords[1].length - 1));
+            var pos={lat:_lat,lng:_lng};
+            map.setCenter(pos);
+        }
+
+        function CreateTooltip(i)
+        {
+            var func='CenterMap('+i+')';
+            return '<div>'+
+                '<a onclick()='+func+'>View on map</a>'+
+                '</div>'
+        }
+
         ///---INITALIZE POLLS----
         $(document).ready(function(){
         var i=0;
@@ -30,7 +49,7 @@
         {
             LocationsPoll=JSON.parse('['+document.getElementById('polls').innerHTML+']')[i];
             i++;
-            //console.log(LocationsPoll);
+            console.log(LocationsPoll);
             document.getElementById('location').innerHTML="Location is under poll. Click here to view."
             document.getElementById('location').onclick=function(){
                 var addr=[];
@@ -215,14 +234,7 @@
             });
         }
 
-        $(document).ready(function(){
-        $(function() {
-            // this initializes the dialog (and uses some common options that I do)
-            $("#dialog").dialog({
-                autoOpen: false, modal: true, show: "blind", hide: "blind"
-            });
-        });
-        });
+
 
             ////----GOOGLE CHARTS - DISPLAY CHART WITH POLL RESULTS ------
             function PollChart(x, type) {
@@ -233,6 +245,20 @@
                 google.charts.setOnLoadCallback(drawChart);
                 console.log(x);
 
+                // Set chart options
+                var title;
+                var tooltips=[];
+                if (type == "Location") {
+                    title = "Where should we go to?";
+
+                }
+                else if (type == "Date-time") {
+                    title = "When should we do this?";
+                }
+                else if (type == "Other") {
+                    title = document.getElementById('poll-question').innerHTML;
+                }
+
                 // Callback that creates and populates a data table,
                 // instantiates the pie chart, passes in the data and
                 // draws it.
@@ -240,51 +266,50 @@
 
                     // Create the data table.
                     var dataarray = [];
-                    dataarray.push(['Option', 'Votes', {role: 'style'}]);
-                    x.forEach(function (item) {
-                        dataarray.push(item);
-                    });
+                    if(type=='Location') {
+                        dataarray.push(['Option', 'Votes', {role: 'style'}, {
+                            'type': 'string',
+                            'role': 'tooltip',
+                            'p': {'html': true}
+                        }]);
+                    }
+                    else dataarray.push(['Option', 'Votes', {role: 'style'}]);
+                        x.forEach(function (item) {
+                            dataarray.push(item);
+                        });
 
                     var data = new google.visualization.arrayToDataTable(dataarray);
 
 
-                    // Set chart options
-                    var title;
-                    if (type == "Location") {
-                        title = "Where should we go to?";
-                    }
-                    else if (type == "Date-time") {
-                        title = "When should we do this?";
-                    }
-                    else if (type == "Other") {
-                        title = document.getElementById('poll-question').innerHTML;
-                    }
 
 
+
+
+                    //Set options
                     var options = {
                         'title': title,
                         'width': 400,
                         'height': 300,
                         'bar': {groupWidth: "95%"},
                         'legend': {position: "none"},
+                        'tooltip': { isHtml: true },
                     };
+
 
                     function selectHandler() {
                         var selectedItem = chart.getSelection()[0];
-                        var location = 0;
+                        console.log(chart.getSelection());
                         var going_users = document.getElementById('going_ids').innerHTML;
                         var user = document.getElementById('user_id').innerHTML;
+                        var tooltips;
                         if (selectedItem) {
                             var selection = data.getValue(selectedItem.row, 0);
                             if (going_users != "") {
                                 going_users = JSON.parse(going_users);
-                                if (type == 'Location' && going_users.contains(user_id)) {
-
+                                if (going_users.contains(user_id)) {
+                                    window.confirm('Vote?');
                                 }
-                                // next add the onclick handler
-
                             }
-                            $("#dialog").dialog("open");
                         }
                     }
 
@@ -445,9 +470,6 @@
                     <p id="invited_ids" style="display:none"><%=invited_ids%></p>
                     <p id="going_ids" style="display:none"><%=going_ids%></p>
                     <p id="user_id" style="display:none"><%=user_id%></p>
-                    <div id="dialog">
-                        <p>appear now</p>
-                    </div>
                 </tr>
 
             </table>
