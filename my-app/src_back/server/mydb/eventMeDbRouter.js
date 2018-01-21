@@ -19,13 +19,53 @@ router.get('/welcome', function (req, res) {
 router.get('/createEvent/:user_id', function (req, res) {
     res.render('createevent', {user_id: req.params.user_id});
 });
+/*
+************************************
+            getstarted page
+    params : none
+    body : none
+    redirect : ----
+    render page:  getstarted
+    render contant : none
+
+    public page
+    for login to the site
+*************************************
+ */
 
 router.get('/getstarted', function (req, res) {
     res.render('getstarted');
 });
 
+/*
+************************************
+            event page
+    params :
+            event_id
+            user_id
+    body : none
+    redirect : event
+    render page:  event
+    render contant :
+                event_id
+                title
+                event_img
+                event_time
+                event_place
+                event_type
+                event_desc
+                user_id
+                going_users
+                invited_users
+                invited_ids
+                going_ids
+                pollArray
+                pollCounter
 
-/* render single event page, of the event with the given event_id */
+    public page
+    changes user status in an event from, invited to attending
+*************************************
+ */
 router.get('/event/:event_id/:user_id', function (req, res) {
     let p = es.getEvent(req.params.event_id);
     p.then((event) => {
@@ -65,6 +105,23 @@ router.get('/joinEvent/:event_id/:user_id', function (req, res) {
     });
 });
 
+/*
+************************************
+            unattend page
+    params :
+            event_id
+            user_id
+    body : none
+    redirect : event
+    render page:  ---
+    render contant : ----
+
+
+    public page
+    changes user status in an event from, invited to attending
+*************************************
+ */
+
 router.get('/unattend/:event_id/:user_id', function (req, res) {
     console.log('-------unattend--------')
     console.log('event_id:',req.params.event_id)
@@ -75,6 +132,23 @@ router.get('/unattend/:event_id/:user_id', function (req, res) {
     });
 });
 
+/*
+************************************
+            delete_event page
+    params :
+            event_id
+            user_id
+    body : none
+    redirect : sender
+    render page:  ---
+    render contant : ----
+
+
+    public page
+    deletes an event
+*************************************
+ */
+
 router.get('/delete_event/:event_id/:user_id', function (req, res) {
     console.log('-------delete_event--------')
     console.log('event_id:',req.params.event_id)
@@ -82,13 +156,40 @@ router.get('/delete_event/:event_id/:user_id', function (req, res) {
     es.delete_my_event(req.params.event_id, req.params.user_id)
         .then(_ => {
         console.log('delelted event - event deleted')
-        //let frontpage = '/eventMe/frontpage/' + req.params.user_id
-        //res.redirect(frontpage);
         res.redirect(req.get('referer'));
     });
 });
 
-// adds a new event in the DB for an existing user
+/*
+************************************
+            addOpenEvent page
+    params : user_id
+    body :
+            user_id
+            Activity_name
+            google-location
+            categories
+            description
+            Activity_time
+
+            poll_counter   --- tells how many relevant polls exist
+            poll1          --- an array containing the polls possibilities
+            poll1_length   --- tels how many possibilities in the poll
+            poll1_question --- string containing the polls headline/question
+
+            poll2..
+            poll3..
+
+
+    redirect : frontpage
+    render page:  ---
+    render contant : ----
+
+
+    public page
+    creates a new event for a specific user - updated all the orgenizer friends about the event
+*************************************
+ */
 router.post('/addOpenEvent/:user_id', (req, res) => {
     return new Promise((resolve, reject) => {
         console.log(' is trying to create new event');
@@ -102,6 +203,23 @@ router.post('/addOpenEvent/:user_id', (req, res) => {
             }).catch(err => reject(err))
     })
 });
+
+/*
+************************************
+            newUserTest page
+    params :
+            fb_id
+            f_name
+    body : none
+    redirect : frontpage
+    render page:  ---
+    render contant : ----
+
+
+    private page
+    a page for testing - insert fake users that are friends to the website developers
+*************************************
+ */
 router.get('/newUserTest/:fb_id/:f_name', (req, res) => {
     return new Promise((resolve, reject) => {
         let friend_list = [{name: 'barak', id: '10155189617577308'}, {
@@ -117,6 +235,25 @@ router.get('/newUserTest/:fb_id/:f_name', (req, res) => {
             }).catch(err => reject(err))
     })
 })
+
+/*
+************************************
+            newUser page
+    params : none
+    body :
+            fb_id
+            f_name
+            location
+            friend_list
+    redirect : frontpage
+    render page:  ---
+    render contant : ----
+
+
+    public page
+    render the events I am invted to
+*************************************
+ */
 
 
 router.post('/newUser', (req, res) => {
@@ -163,6 +300,22 @@ router.post('/newUser', (req, res) => {
     })
 });
 
+/*
+************************************
+            frontpage page
+    params : fb_id
+    body : none
+    redirect : none
+    render page: frontpage
+    render contant :
+                     invited_events
+                     user_id
+                     location
+
+    public page
+    render the events I am invted to
+*************************************
+ */
 
 router.get('/frontpage/:fb_id', (req, res) => {
     console.log('------frontpage---------')
@@ -189,6 +342,23 @@ router.get('/frontpage/:fb_id', (req, res) => {
         }).catch(err=> reject(err))
 });
 
+/*
+************************************
+            myOwnEvents page
+    params : fb_id
+    body : none
+    redirect : none
+    render page: myOwnEvents
+    render contant :
+                     invited_events
+                     user_id
+                     location
+
+    public page
+    render the events I created
+*************************************
+ */
+
 router.get('/myOwnEvents/:fb_id', (req, res) => {
     console.log('------myOwnEvents page---------')
     let fb_id = req.params.fb_id;
@@ -213,6 +383,23 @@ router.get('/myOwnEvents/:fb_id', (req, res) => {
             }
         })
 });
+
+/*
+************************************
+            eventsiattend page
+    params : fb_id
+    body : none
+    redirect : none
+    render page: eventsiattend
+    render contant :
+                     invited_events
+                     user_id
+                     location
+
+    public page
+    render the events I attend
+*************************************
+ */
 
 router.get('/eventsiattend/:fb_id', (req, res) => {
     console.log('------eventsiattend page---------')
@@ -240,7 +427,17 @@ router.get('/eventsiattend/:fb_id', (req, res) => {
         })
 });
 
+/*
+************************************
+            shoeMeUsers page
+    params : none
+    body : none
+    redirect : none
 
+    private page
+    prints to console my all of the users
+*************************************
+ */
 
 router.get('/showMeUsers', (req, res) => {
     return new Promise((resolve, reject) => {
@@ -258,6 +455,17 @@ router.get('*', function (req, res) {
     res.status(404).send('404 : The page you have requested does not exist.');
 });
 
+/*
+************************************
+            getMyInvitedEvents page
+    params : user_id
+    body : none
+    redirect : none
+
+    private page
+    prints to console my invted events
+*************************************
+ */
 
 router.get('/getMyInvitedEvents/:user_id', (req, res) => {
     return new Promise((resolve, reject) => {
@@ -269,6 +477,17 @@ router.get('/getMyInvitedEvents/:user_id', (req, res) => {
             }).catch(err => reject(err))
     })
 });
+
+/*
+************************************
+            vote page
+    params : user_id
+    body : user_id, eventId, myVote
+    redirect : /eventMe/event
+
+    the page update use's vote
+*************************************
+ */
 
 router.post('/vote/:user_id', (req, res) => {
    return new Promise((resolve, reject) => {
@@ -300,4 +519,20 @@ module.exports = router;
 //                 resolve()
 //             }).catch(err => reject(err))
 //     })
+// });
+
+
+
+// //GET home page.
+// router.get('/', function (req, res) {
+//     res.render('getstarted');
+// });
+//
+// router.get('/welcome', function (req, res) {
+//     res.render('welcome');
+// });
+//
+//
+// router.get('/createEvent/:user_id', function (req, res) {
+//     res.render('createevent', {user_id: req.params.user_id});
 // });
