@@ -18,6 +18,7 @@
         <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" media="screen"
         href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
+
         <style>
             .center{
                 margin:auto;
@@ -106,10 +107,10 @@
 		<div class="container demo-2">
             <div class="content">
                 <div id="large-header" class="large-header">
-                    <% include nav %>
+                    <% include createeventbar %>
                     <div id="event-properties" class="center" ><!--event creation form-->
-                    <form id="event-form" style="background-color:#f9f1e9;
-            top: 50%; left: 50%;margin-left:auto; margin-right: auto; overflow-y: scroll;" action="/eventMe/addOpenEvent/<%=user_id%>" method="post">
+                    <form id="event-form" style="background-color:#eee;
+            top: 50%; left: 50%;margin-left:auto; margin-right: auto; overflow-y: scroll; padding: 10px" action="/eventMe/addOpenEvent/<%=user_id%>" method="post">
 
                         Activity name:
                         <input type="text" name="Activity_name"/><br>
