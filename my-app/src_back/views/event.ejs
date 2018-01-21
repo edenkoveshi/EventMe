@@ -25,21 +25,66 @@
         var FreePoll=[];
 
 
+        function Vote(type)
+        {
+            var user_id=document.getElementById("user_id").innerHTML;
+            var going_users=document.getElementById("going_ids").innerHTML;
+            var poll;
+            if(going_users==undefined)
+            {
+                window.alert("If you wish to vote, you must first confirm your attendance");
+            }
+            else{
+                going_users=JSON.parse(going_users);
+                if(going_users.contains(user_id))
+                {
+                    if(type=="Location")
+                        poll=LocationsPoll;
+                    else if(type=="Date&Time")
+                        poll=TimePoll;
+                    else
+                        poll=FreePoll;
+                    if(poll.votedUsers.contains(user_id))
+                    {
+                        if(window.confirm('You have already voted for this poll. Would you like to change your vote?'))
+                        {
+                            //Change vote code
+                        }
+                    }
+                    else
+                    {
+                        ///Vote code
+                    }
+                }
+                else
+                {
+                    window.alert("If you wish to vote, you must first confirm your attendance");
+                }
+            }
+
+        }
+
         function CenterMap(i)
         {
-            var coords=LocationsPoll[i].split[0];
+            var coords=LocationsPoll.options[i].option.split(" ");
+            //window.alert(coords);
             var _lat = parseFloat(coords[0].split(",")[0].substring(1));
             var _lng = parseFloat(coords[1].substring(0, coords[1].length - 1));
             var pos={lat:_lat,lng:_lng};
             map.setCenter(pos);
         }
 
-        function CreateTooltip(i)
+        function CreateTooltip(i,type)
         {
-            var func='CenterMap('+i+')';
-            return '<div>'+
-                '<a onclick()='+func+'>View on map</a>'+
+            var str="";
+            if(type=="Location") {
+                var func = 'CenterMap(' + i + ')';
+                str+='<div style="position: relative; transition: 5s; hover:">' +
+                    '<a onclick=' + func + '>View on map</a>'
                 '</div>'
+            }
+            str+='<div><a onclick=Vote('+type+')>Vote!</a></div>';
+            return str;
         }
 
         ///---INITALIZE POLLS----
@@ -47,9 +92,10 @@
         var i=0;
         if(document.getElementById('location').innerHTML=="")
         {
-            LocationsPoll=JSON.parse('['+document.getElementById('polls').innerHTML+']')[i];
+            console.log(JSON.parse(document.getElementById('polls').innerHTML));
+            LocationsPoll=JSON.parse(document.getElementById('polls').innerHTML)[i];
             i++;
-            console.log(LocationsPoll);
+            //console.log(LocationsPoll);
             document.getElementById('location').innerHTML="Location is under poll. Click here to view."
             document.getElementById('location').onclick=function(){
                 var addr=[];
@@ -58,8 +104,10 @@
                     var t=[];
                     //console.log(temp[j]);
                     t.push(addresses[j]);
-                    t.push(Math.floor(Math.random()*10)+1);
+                    //t.push(Math.round(Math.random()*10));
+                    t.push(LocationsPoll.options[j].votes);
                     t.push(getRandomColor());
+                    t.push(CreateTooltip(j,"Location"));
                     addr.push(t);
                 }
                 PollChart(addr,'Location');
@@ -68,48 +116,49 @@
         }
         if(document.getElementById('event-time').innerHTML=="When: ")
         {
-            var temp2=[];
-            temp2=JSON.parse('['+document.getElementById('polls').innerHTML+']')[i];
-            for(var j=0;j<temp2.length;j++)
+            TimePoll=JSON.parse(document.getElementById('polls').innerHTML)[i];
+            var tabledata=[];
+            for(var j=0;j<TimePoll.options.length;j++)
             {
                 var t=[];
-                t.push(temp2[j]);
-                t.push(Math.floor(Math.random()*10)+1);
+                t.push(TimePoll.options[j].option);
+                t.push(TimePoll.options[j].votes);
                 t.push(getRandomColor());
-                TimePoll.push(t);
+                t.push(CreateTooltip(j,"Time&Date"));
+                tabledata.push(t);
             }
             i++;
             //console.log(TimePoll);
             document.getElementById('event-time').style="display:none";
             console.log(TimePoll);
-            $("<a onclick=TimeOnClick()>Time&Date is under poll. Click here to view.</a>").insertBefore($('#event-type'));
+            $("<a id='time-poll-msg'>Time&Date is under poll. Click here to view.</a>").insertBefore($('#event-type'));
+            $('#time-poll-msg').click(function(){
+                PollChart(tabledata,'Date-time');
+                ShowPollResults();
+            });
         }
-        if(parseInt(document.getElementById('poll-counter').innerHTML)<i)
+        if(parseInt(document.getElementById('poll-counter').innerHTML)>i)
         {
-            $('<a id="free-poll">Open-question poll ongoing.Click here to view.</a>').insertAfter($('#event-type'));
-            var temp3=[];
-            temp3=JSON.parse('['+document.getElementById('polls').innerHTML+']')[i];
-            for(var j=0;j<temp3.length;j++)
+            $('<a id="free-poll">Open-question poll ongoing.Click here to view.</a>').insertBefore($('#close-chart'));
+            var tabledata=[];
+            FreePoll=JSON.parse(document.getElementById('polls').innerHTML)[i];
+            for(var j=0;j<FreePoll.options.length;j++)
             {
                 var t=[];
-                t.push(temp3[j]);
-                t.push(Math.floor(Math.random()*10)+1);
+                t.push(FreePoll.options[j].option);
+                t.push(FreePoll.options[j].votes);
                 t.push(getRandomColor());
-                FreePoll.push(t);
+                t.push(CreateTooltip(j,"Other"));
+                tabledata.push(t);
             }
             i++;
-            document.getElementById('free-poll').onclick= function(){
-                PollChart(FreePoll,'Other');
+            $('#free-poll').click(function(){
+                PollChart(tabledata,'Other');
                 ShowPollResults();
-            }
+            });
         }
         });
 
-        function TimeOnClick()
-        {
-            PollChart(TimePoll,'Date-time');
-            ShowPollResults();
-        }
 
         ///----CONTROL CHART DIV----
         function ShowPollResults()
@@ -122,8 +171,8 @@
                 chart.style="display:none";
                 close.style='display:none';
             };
-            console.log(chart);
-            console.log(close);
+            //console.log(chart);
+            //console.log(close);
         }
 
         //----CHECK IF LOCATION IS POLLED----
@@ -142,14 +191,16 @@
             }
             else {
                 //console.log(document.getElementById('polls'));
-                coordinates =JSON.parse('['+document.getElementById('polls').innerHTML+']')[0];
+                for(i=0;i<LocationsPoll.options.length;i++) {
+                    coordinates.push(LocationsPoll.options[i].option);
+                }
                 //window.alert(coordinates);
                 //window.alert(coordinates.length);
             }
             var i=0;
             //console.log(coordinates);
             coordinates.forEach(function(item,index){
-                var latlng = item.substring(1, coordinates[i].length - 2);
+                var latlng = item.substring(1, coordinates[i].length - 3);
                 //window.alert(latlng);
                 var coords = latlng.split(" ");
                 //window.alert(coords);
@@ -224,7 +275,7 @@
                     var _lat = parseFloat(coords[0].split(",")[0].substring(1));
                     var _lng = parseFloat(coords[1].substring(0, coords[1].length - 1));
                     var default_location = {lat: _lat, lng: _lng};
-                    console.log(default_location);
+                    //console.log(default_location);
                     var marker = new google.maps.Marker({
                         position: default_location,
                         map: map,
@@ -249,14 +300,14 @@
                 var title;
                 var tooltips=[];
                 if (type == "Location") {
-                    title = "Where should we go to?";
+                    title = LocationsPoll.poll_question;
 
                 }
                 else if (type == "Date-time") {
-                    title = "When should we do this?";
+                    title = TimePoll.poll_question;
                 }
                 else if (type == "Other") {
-                    title = document.getElementById('poll-question').innerHTML;
+                    title = FreePoll.poll_question;
                 }
 
                 // Callback that creates and populates a data table,
@@ -266,14 +317,11 @@
 
                     // Create the data table.
                     var dataarray = [];
-                    if(type=='Location') {
                         dataarray.push(['Option', 'Votes', {role: 'style'}, {
                             'type': 'string',
                             'role': 'tooltip',
                             'p': {'html': true}
                         }]);
-                    }
-                    else dataarray.push(['Option', 'Votes', {role: 'style'}]);
                         x.forEach(function (item) {
                             dataarray.push(item);
                         });
@@ -292,30 +340,15 @@
                         'height': 300,
                         'bar': {groupWidth: "95%"},
                         'legend': {position: "none"},
-                        'tooltip': { isHtml: true },
+                        'tooltip': { isHtml: true ,
+                                    trigger : 'both'},
+                        'focusTarget' : 'category',
+                        'backgroundColor' : 'transparent'
                     };
 
 
-                    function selectHandler() {
-                        var selectedItem = chart.getSelection()[0];
-                        console.log(chart.getSelection());
-                        var going_users = document.getElementById('going_ids').innerHTML;
-                        var user = document.getElementById('user_id').innerHTML;
-                        var tooltips;
-                        if (selectedItem) {
-                            var selection = data.getValue(selectedItem.row, 0);
-                            if (going_users != "") {
-                                going_users = JSON.parse(going_users);
-                                if (going_users.contains(user_id)) {
-                                    window.confirm('Vote?');
-                                }
-                            }
-                        }
-                    }
-
                     var chart = new google.visualization.ColumnChart(document.getElementById('google-chart'));
 
-                    google.visualization.events.addListener(chart, 'select', selectHandler);
 
                     // Instantiate and draw our chart, passing in some options.
                     chart.draw(data, options);
@@ -392,9 +425,9 @@
             <% include nav %>
 
             <canvas id="demo-canvas"></canvas>
-            <div style="overflow-y:scroll">
+            <div style="height:500px;overflow-y:auto;">
             <table id="singleEventTable" style="height: 500px; width: 735px; background-color:#f9f1e9;border-width: 0;
-            bottom: 200px; left: 50%; text-align: center; margin-left:auto; margin-right: auto; overflow-y:scroll;">
+            bottom: 200px; left: 50%; text-align: center; margin-left:auto; margin-right: auto; overflow-y:auto;">
                 <colgroup>
                     <col width="15%"/>
                     <col width="15%"/>
@@ -415,7 +448,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr style="height: 124px;background-color:#f9f1e9;border-width: 0">
+                <tr style="height: 124px;background-color:#f9f1e9;border-width: 0" >
                     <td style="text-align:center;border-width: 0;">
                         <h4 style="color:black;weight:bold;">Join event<br/></h4>
                         <a style="border-width: 5px;border-color: #222222;"
@@ -431,7 +464,7 @@
                                  src="../../../img\x.png"/>
                         </a>
                     </td>
-                    <td style="border-width: 0;">
+                    <td id='event-info' style="border-width: 0;">
                         <span style="color:black">
                         <span style="text-align:center;color:black"><H3>
                                 <%= title %>
@@ -466,7 +499,6 @@
 
                     </td>
                     <p id="poll-counter" style="display:none"><%= pollCounter %></p>
-                    <p id="poll-question" style="display:none"><%= pollQuestion%></p>
                     <p id="invited_ids" style="display:none"><%=invited_ids%></p>
                     <p id="going_ids" style="display:none"><%=going_ids%></p>
                     <p id="user_id" style="display:none"><%=user_id%></p>

@@ -45,7 +45,7 @@ router.get('/event/:event_id/:user_id', function (req, res) {
                     event["invitedName"] == undefined ? [] : event["invitedName"],
                 invited_ids : (event["invited_users"] == undefined ? [] : event["invited_users"]),
                 going_ids: (event["going_users"]==undefined ? [] : event["going_users"]),
-                pollArray: (event["pollArray"] == undefined ? [] : event["pollArray"]),
+                pollArray: (event["pollArray"] == undefined ? [] : JSON.stringify(event["pollArray"])),
                 pollCounter: event["pollCounter"],
                 //pollQuestion: event["pollQuestion"],
             })
