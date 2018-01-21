@@ -325,7 +325,7 @@
     function initMap(event) {
         $(document).ready(function () {
             // ----- MAP CREATION -------
-            var default_location = {lat: 51.508742, lng: -0.120850};
+            var default_location = {lat: 32.07005626883245, lng: 34.79411959648132};
             map = new google.maps.Map(document.getElementById('googleMap'), {
                 zoom: 15,
                 center: default_location,
@@ -350,19 +350,18 @@
             });
 
             var location_no_poll = document.getElementsByName("google-location")[0];
-
             // ------ GET CURRENT LOCATION ------
-            var Location = new Promise(function (resolve, reject) {
-                $.getJSON("http://freegeoip.net/json/", function (data) {
+            /*var Location = new Promise(function (resolve, reject) {
+                $.getJSON("http://freegeoip.net/json/", function(data) {
                     /*var country_code = data.country_code;
                     var country = data.country_name;
                     var ip = data.ip;
-                    var time_zone = data.time_zone;*/
+                    var time_zone = data.time_zone;
                     var latitude = data.latitude;
                     var longitude = data.longitude;
 
-                    var location = {lat: latitude, lng: longitude};
-                    resolve(location);
+                    var location={lat: latitude,lng:longitude};
+                    resolve(JSON.stringify(location));
                 });
             });
             Location.then(function (result) {
@@ -373,11 +372,12 @@
                     marker.setMap(map);
                     location_no_poll.value = "(" + result.lat + ", " + result.lng + ')';
                 }
-                google.maps.event.trigger(map, "resize");
-            });
+                google.maps.event.trigger(map, "resize");*/
+
             //-------------- CHANGE LOCATION ON CLICK ------
             google.maps.event.addListener(map, 'click', function (event) {
                 var loc = event.latLng;
+                window.alert(loc);
                 if (!LocationPollCheck()) {
                     marker.setPosition(loc);
                     marker.setMap(map);
