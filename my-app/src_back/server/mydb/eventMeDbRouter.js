@@ -8,7 +8,7 @@ var User = require('./user');
 
 /* GET home page. */
 router.get('/', function (req, res) {
-    res.render('getstarted');
+    res.render('welcome');
 });
 
 router.get('/welcome', function (req, res) {
