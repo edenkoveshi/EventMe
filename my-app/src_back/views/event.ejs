@@ -44,6 +44,7 @@
         function Vote(type,vote) {
             var user_id = document.getElementById("user_id").innerHTML;
             var going_users = document.getElementById("going_ids").innerHTML;
+            var event_id=document.getElementById('event_id').innerHTML;
             var poll;
             var pollNum;
             console.log(going_users);
@@ -69,21 +70,37 @@
                     }
                     console.log(poll);
                     if(poll.votedUsers==undefined || !search(poll.votedUsers,user_id)) {
-                        $(document.body).append($('<form id="poll_data" action="/eventMe/vote/'+user_id+'" method="POST" style="display:none>' +
-                            '<input name="user_id" value='+user_id+'/>' +
-                            '<input name="eventId" value='+event_id+'/>' +
-                            '<input name="pollNum" value='+pollNum+'/>' +
-                            '<input name="myVote" value='+vote+'/> '));
-                        $('#poll_data').submit();
+                        $('#poll-data').remove();
+                        var SendData=new Promise(function(resolve,reject)
+                        {
+                            $(document.body).append($('<form id="poll_data" action="/eventMe/vote/' + user_id + '" method="POST" style="display:none>' +
+                                '<input name="user_id" value=' + user_id + '>' +
+                                '<input name="eventId" value=' + event_id + '>' +
+                                '<input name="pollNum" value=' + pollNum + '>' +
+                                '<input name="myVote" value=' + vote + '>'));
+                            resolve();
+                        });
+                        SendData.then(function(result)
+                        {
+                            $('#poll_data').submit();
+                        });
                     }
                     else {
                         if (window.confirm('You have already voted for this poll. Would you like to change your vote?')) {
-                            $(document.body).append($('<form id="poll_data" action="/eventMe/vote/'+user_id+'" method="POST" style="display:none>' +
-                                '<input name="user_id" value='+user_id+'/>' +
-                                '<input name="eventId" value='+event_id+'/>' +
-                                '<input name="pollNum" value='+pollNum+'/>' +
-                                '<input name="myVote" value='+vote+'/> '));
-                            $('#poll_data').submit();
+                            $('#poll-data').remove();
+                            var SendData=new Promise(function(resolve,reject)
+                            {
+                                $(document.body).append($('<form id="poll_data" action="/eventMe/vote/' + user_id + '" method="POST" style="display:none>' +
+                                    '<input name="user_id" value=' + user_id + '>' +
+                                    '<input name="eventId" value=' + event_id + '>' +
+                                    '<input name="pollNum" value=' + pollNum + '>' +
+                                    '<input name="myVote" value=' + vote + '>'));
+                                resolve();
+                            });
+                            SendData.then(function(result)
+                            {
+                                $('#poll_data').submit();
+                            });
                         }
                     }
 
