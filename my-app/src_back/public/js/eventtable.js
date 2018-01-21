@@ -98,7 +98,8 @@ function displaytime() {
 
 function displaysearch() {
     var myCurrentList = [];
-    var x = $("#srch-term").val();
+    var alreadyIn = [];
+    var x = $("#txt_name").val();
     if (x != "") {
         for (var listIndex = 0; listIndex < myList.length; listIndex++) {
             var event_types=myList[listIndex]["Type"].split(',');
