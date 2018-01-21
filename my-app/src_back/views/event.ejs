@@ -47,6 +47,7 @@
         }
 
         function Vote(type,vote) {
+            $(document).ready(function(){
             var user_id = document.getElementById("user_id").innerHTML;
             var going_users = document.getElementById("going_ids").innerHTML;
             var owner_id = document.getElementById('owner_id').innerHTML;
@@ -97,13 +98,12 @@
 
                     }
                     else {
-                        console.log("here");
                         window.alert("If you wish to vote, you must first confirm your attendance");
                     }
                 }
 
             }
-        }
+        });}
 
         function CenterMap(i) {
             var coords = LocationsPoll.options[i].option.split(" ");

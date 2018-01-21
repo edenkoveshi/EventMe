@@ -47,7 +47,7 @@ router.get('/event/:event_id/:user_id', function (req, res) {
                 going_ids: (event["going_users"]==undefined ? [] : event["going_users"]),
                 pollArray: (event["pollArray"] == undefined ? [] : JSON.stringify(event["pollArray"])),
                 pollCounter: event["pollCounter"],
-                owner_id: event["ownerName"],
+                owner_id: event["ownerId"],
                 //pollQuestion: event["pollQuestion"],
             })
             ;
@@ -95,7 +95,7 @@ router.post('/addOpenEvent/:user_id', (req, res) => {
         console.log(req.body);
         es.addOpenEvent(req.params["user_id"], req.body["Activity_name"], req.body["google-location"], req.body["categories"], req.body["description"], req.body["Activity_time"],req.body)
             .then(_ => {
-                let newUrl = '/eventMe/frontpage/' + req.params["user_id"];
+                let newUrl = '/eventMe/myOwnEvents/' + req.params["user_id"];
                 console.log(newUrl);
                 res.redirect(newUrl);
                 resolve()
@@ -269,6 +269,7 @@ router.post('/vote/:user_id', (req, res) => {
        event_id = req.body.eventId
        cur_pull = req.body.pollNum
        my_vote = req.body.myVote
+       console.log(req.body);
        es.vote(user_id ,event_id ,cur_pull - 1, my_vote).then(_=>{
            console.log('I managed to vote!!, maybe i shoudent have voted for trump...')
            res.redirect('/eventMe/event/' + event_id + '/' + user_id);
