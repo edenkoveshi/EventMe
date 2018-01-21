@@ -278,7 +278,7 @@
                     else if(LocationPollCheck())
                     {
                         document.getElementById('locations-list').value=JSON.stringify(location_poll);
-                        window.alert(JSON.stringify(location_poll));
+                        //.alert(JSON.stringify(location_poll));
                     }
                     modal.style.display = "none";
                 }
@@ -296,52 +296,57 @@
             //Google Maps function
             function initMap(event) {
                 $(document).ready(function () {
-                        // ----- MAP CREATION -------
-                        var default_location = {lat: 51.508742, lng: -0.120850};
-                        map = new google.maps.Map(document.getElementById('googleMap'), {
-                            zoom: 15,
-                            center: default_location,
+                    // ----- MAP CREATION -------
+                    var default_location = {lat: 51.508742, lng: -0.120850};
+                    map = new google.maps.Map(document.getElementById('googleMap'), {
+                        zoom: 15,
+                        center: default_location,
+                    });
+
+                    //---MARKER CREATION ----
+                    var marker = new google.maps.Marker({
+                        position: default_location,
+                        map: null,
+                        icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FE7569'
+                    });
+                    if (!LocationPollCheck()) {
+                        marker.setMap(map);
+                    }
+                    //----- SEARCH BAR CREATION -----
+                    //--creation--
+                    var input = document.getElementById('pac-input');
+                    var searchBox = new google.maps.places.SearchBox(input);
+                    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                    map.addListener('bounds_changed', function () {
+                        searchBox.setBounds(map.getBounds());
+                    });
+
+                    var location_no_poll = document.getElementsByName("google-location")[0];
+
+                    // ------ GET CURRENT LOCATION ------
+                    var Location = new Promise(function (resolve, reject) {
+                        $.getJSON("http://freegeoip.net/json/", function (data) {
+                            /*var country_code = data.country_code;
+                            var country = data.country_name;
+                            var ip = data.ip;
+                            var time_zone = data.time_zone;*/
+                            var latitude = data.latitude;
+                            var longitude = data.longitude;
+
+                            var location = {lat: latitude, lng: longitude};
+                            resolve(location);
                         });
-
-                        //---MARKER CREATION ----
-                        var marker=new google.maps.Marker({position: default_location,map:null,icon:'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FE7569'});
-                        if(!LocationPollCheck()) {
-                              marker.setMap(map);
+                    });
+                    Location.then(function (result) {
+                        //Adjust map
+                        map.setCenter(result);
+                        if (!LocationPollCheck()) {
+                            marker.setPosition(result);
+                            marker.setMap(map);
+                            location_no_poll.value = "(" + result.lat + ", " + result.lng + ')';
                         }
-                        //----- SEARCH BAR CREATION -----
-                        //--creation--
-                        var input = document.getElementById('pac-input');
-                        var searchBox = new google.maps.places.SearchBox(input);
-                        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
-                        map.addListener('bounds_changed', function () {
-                            searchBox.setBounds(map.getBounds());
-                        });
-
-                        var location_no_poll=document.getElementsByName("google-location")[0];
-
-                        // ------ GET CURRENT LOCATION ------
-                        if (navigator.geolocation) {
-                            navigator.geolocation.getCurrentPosition(function (position) {
-                                var pos = {
-                                    lat: position.coords.latitude,
-                                    lng: position.coords.longitude
-                                };
-                                //Adjust map
-                                map.setCenter(pos);
-                                if(!LocationPollCheck())
-                                {
-                                marker.setPosition(pos);
-                                marker.setMap(map);
-                                location_no_poll.value = "("+pos.lat+", "+pos.lng+')';}
-                                google.maps.event.trigger(map, "resize");
-                            }, function () {
-                                handleLocationError();
-                            });
-                        } else {
-                            // Browser doesn't support Geolocation
-                            handleLocationError();
-
-                        }
+                        google.maps.event.trigger(map, "resize");
+                    });
                         //-------------- CHANGE LOCATION ON CLICK ------
                         google.maps.event.addListener(map, 'click', function (event) {
                             var loc = event.latLng;
@@ -518,7 +523,7 @@
                     //if any of them is empty
                     if (form_input[i].value == "") {
                         all_fields_set = 0;
-                        window.alert(form_input[i].name);
+                       //window.alert(form_input[i].name);
                     }
                 }
 
@@ -622,9 +627,9 @@
                         window.alert("Event created successfully!");
                         var poll_counter = 0;
                         if ($('#location-cb').is(':checked')) {
-                            window.alert(JSON.parse(document.getElementById('locations-list').value));
+                           // window.alert(JSON.parse(document.getElementById('locations-list').value));
                             polls.push(JSON.parse(document.getElementById('locations-list').value));
-                            window.alert(document.getElementById('locations-list').value);
+                            //window.alert(document.getElementById('locations-list').value);
                             poll_counter++;
                             poll_questions.push("Where should we go?");
                         }
