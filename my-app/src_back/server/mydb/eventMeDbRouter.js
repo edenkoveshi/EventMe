@@ -268,7 +268,7 @@ router.post('/vote/:user_id', (req, res) => {
        event_id = req.body.eventId
        cur_pull = req.body.pollNum
        my_vote = req.body.myVote
-       es.vote(user_id ,event_id ,cur_pull, my_vote).then(_=>{
+       es.vote(user_id ,event_id ,cur_pull - 1, my_vote).then(_=>{
            console.log('I managed to vote!!, maybe i shoudent have voted for trump...')
            res.redirect('/eventMe/event/' + event_id + '/' + user_id);
            resolve()
