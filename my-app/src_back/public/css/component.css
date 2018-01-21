@@ -1,9 +1,9 @@
 /* Header */
 .large-header {
-    position: relative;
+    overflow-y: hidden;
+    overflow-x: hidden;
     width: 100%;
     background: #333;
-    overflow: hidden;
     background-size: cover;
     background-position: center center;
     z-index: 1;
@@ -19,14 +19,6 @@
     background-size: cover;
 }
 
-.demo-3 .large-header {
-    background: url('../img/2.jpg');;
-}
-
-.demo-4 .large-header {
-    background: #f9f1e9;
-}
-
 .main-title {
     position: absolute;
     margin: 0;
@@ -40,10 +32,6 @@
 }
 
 .demo-1 .main-title,
-.demo-3 .main-title {
-    font-size: 8em;
-    letter-spacing: 0.1em;
-}
 
 .demo-2 .main-title {
     font-family: 'Clicker Script', cursive;
@@ -72,29 +60,13 @@
     transform: translate3d(-50%, -50%, 0);
 }
 
-.demo-3 .main-title {
-    font-size: 3em;
-    /*	padding: 10px 40px;*/
-    border: 10px double #f9f1e9;
-    font-family: Londrina Outline, sans-serif;
-}
-
-.demo-4 .main-title {
-    font-size: 6em;
-    font-weight: 300;
-    padding: 10px 30px;
-    text-transform: uppercase;
-    color: #222;
-}
 
 .main-title .thin {
     font-weight: 200;
 }
 
 @media only screen and (max-width: 768px) {
-    .demo-1 .main-title,
-    .demo-3 .main-title,
-    .demo-4 .main-title {
+    .demo-1 .main-title{
         font-size: 3em;
     }
 
