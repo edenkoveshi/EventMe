@@ -44,7 +44,7 @@
         function Vote(type,vote) {
             var user_id = document.getElementById("user_id").innerHTML;
             var going_users = document.getElementById("going_ids").innerHTML;
-            var event_id=document.getElementById('event_id').innerHTML;
+            var event_id = document.getElementById('event_id').innerHTML;
             var poll;
             var pollNum;
             console.log(going_users);
@@ -52,55 +52,33 @@
                 window.alert("If you wish to vote, you must first confirm your attendance");
             }
             else {
-                going_users = JSON.parse('['+going_users+']');
-                if (search(going_users,user_id)) {
+                going_users = JSON.parse('[' + going_users + ']');
+                if (search(going_users, user_id)) {
                     if (type == "Location") {
                         poll = LocationsPoll;
-                        pollNum=1;
+                        pollNum = 1;
                     }
                     else if (type == "Date&Time") {
                         poll = TimePoll;
-                        if(LocationUnderPoll())
-                            pollNum=2;
-                        else pollNum=1;
+                        if (LocationUnderPoll())
+                            pollNum = 2;
+                        else pollNum = 1;
                     }
                     else {
                         poll = FreePoll;
-                        pollNum=parseInt(document.getElementById('poll-counter').innerHTML);
+                        pollNum = parseInt(document.getElementById('poll-counter').innerHTML);
                     }
                     console.log(poll);
-                    if(poll.votedUsers==undefined || !search(poll.votedUsers,user_id)) {
-                        $('#poll-data').remove();
-                        var SendData=new Promise(function(resolve,reject)
-                        {
-                            $(document.body).append($('<form id="poll_data" action="/eventMe/vote/' + user_id + '" method="POST" style="display:none>' +
-                                '<input name="user_id" value=' + user_id + '>' +
-                                '<input name="eventId" value=' + event_id + '>' +
-                                '<input name="pollNum" value=' + pollNum + '>' +
-                                '<input name="myVote" value=' + vote + '>'));
-                            resolve();
-                        });
-                        SendData.then(function(result)
-                        {
-                            $('#poll_data').submit();
-                        });
+                    if (poll.votedUsers == undefined || !search(poll.votedUsers, user_id)) {
+                        document.getElementById('myVote').value=vote;
+                        document.getElementById('pollNum').value=pollNum;
+                        $('#poll_data').submit();
                     }
                     else {
                         if (window.confirm('You have already voted for this poll. Would you like to change your vote?')) {
-                            $('#poll-data').remove();
-                            var SendData=new Promise(function(resolve,reject)
-                            {
-                                $(document.body).append($('<form id="poll_data" action="/eventMe/vote/' + user_id + '" method="POST" style="display:none>' +
-                                    '<input name="user_id" value=' + user_id + '>' +
-                                    '<input name="eventId" value=' + event_id + '>' +
-                                    '<input name="pollNum" value=' + pollNum + '>' +
-                                    '<input name="myVote" value=' + vote + '>'));
-                                resolve();
-                            });
-                            SendData.then(function(result)
-                            {
-                                $('#poll_data').submit();
-                            });
+                            document.getElementById('myVote').value=vote;
+                            document.getElementById('pollNum').value=pollNum;
+                            $('#poll_data').submit();
                         }
                     }
 
@@ -533,7 +511,16 @@
                         <p id="poll-counter" style="display:none"><%= pollCounter %></p>
                         <p id="going_ids" style="display:none"><%= going_ids %></p>
                         <p id="user_id" style="display:none"><%= user_id %></p>
-                        <p id="event_id" style="display:none"><%= event_id %></p>
+                        <p id="event_id" style="display:none"><%= event_id %>
+
+                        <form id="poll_data" action="/eventMe/vote/<%= user_id%>" method="POST" style="display:none">
+                            <input name="user_id" value=<%=user_id%> />
+                            <input name="event_id" value=<%=event_id%> />
+                            <input name="pollNum" id="pollNum"/>
+                            <input name="myVote" id="myVote"/>
+                        </form>
+
+
                     </tr>
 
                 </table>
