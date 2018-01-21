@@ -80,17 +80,25 @@ function displaytime() {
     var time = document.getElementById("time").value;
     var myCurrentList = [];
     var x = (date + "T" + time);
-    for (var listIndex = 0; listIndex < myList.length; listIndex++) {
-        if (myList[listIndex]["Time"] == x) {
+    var splittedTime = [];
+    for (var listIndex = 2; listIndex < myList.length; listIndex++) {
+        splittedTime = myList[listIndex]["Time"].split("T");
+        if (time == "") {
+            if (splittedTime[0] == date){
+                myCurrentList.push(myList[listIndex]);
+            }
+        } else if (date == "") {
+            if (splittedTime[1] == time) {
+                myCurrentList.push(myList[listIndex]);
+            }
+        } else if (myList[listIndex]["Time"] == x) {
             myCurrentList.push(myList[listIndex]);
-
         }
     }
     if (x == "T"){
         for (var listIndex = 2; listIndex < myList.length; listIndex++) {
             myCurrentList.push(myList[listIndex]);
         }
-
     }
     $("#excelDataTable tr").remove();
     buildEventsTable('#excelDataTable', myCurrentList);
