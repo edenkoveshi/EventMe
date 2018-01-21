@@ -53,15 +53,6 @@
             var owner_id = document.getElementById('owner_id').innerHTML;
             var poll;
             var pollNum;
-            console.log(going_users);
-            if (user_id == owner_id) {
-                if (window.confirm('Vote?')) {
-                    document.getElementById('myVote').value = vote;
-                    document.getElementById('pollNum').value = pollNum;
-                    $('#poll_data').submit();
-                }
-            }
-            else {
                 if (going_users == "") {
                     window.alert("If you wish to vote, you must first confirm your attendance");
                 }
@@ -102,7 +93,6 @@
                     }
                 }
 
-            }
         });}
 
         function CenterMap(i) {
@@ -174,7 +164,7 @@
             }
             if (parseInt(document.getElementById('poll-counter').innerHTML) > i) {
                 $('<a id="free-poll">Open-question poll ongoing.Click here to view.</a>').insertBefore($('#close-chart'));
-                var tabledata = [];
+                var tabledata2 = [];
                 FreePoll = JSON.parse(document.getElementById('polls').innerHTML)[i];
                 for (var j = 0; j < FreePoll.options.length; j++) {
                     var t = [];
@@ -182,11 +172,11 @@
                     t.push(FreePoll.options[j].votes);
                     t.push(getRandomColor());
                     t.push(CreateTooltip(j, "Other",FreePoll.options[j].option));
-                    tabledata.push(t);
+                    tabledata2.push(t);
                 }
                 i++;
                 $('#free-poll').click(function () {
-                    PollChart(tabledata, 'Other');
+                    PollChart(tabledata2, 'Other');
                     ShowPollResults();
                 });
             }
@@ -525,11 +515,10 @@
                         <p id="going_ids" style="display:none"><%= going_ids %></p>
                         <p id="user_id" style="display:none"><%= user_id %></p>
                         <p id="event_id" style="display:none"><%= event_id %>
-                        <p id="owner_id" style="display:none"><%=owner_id%></p>
 
                         <form id="poll_data" action="/eventMe/vote/<%= user_id%>" method="POST" style="display:none">
                             <input style="display:none" name="user_id" value=<%=user_id%> />
-                            <input style="display:none" name="event_id" value=<%=event_id%> />
+                            <input style="display:none" name="eventId" value=<%=event_id%> />
                             <input style="display:none" name="pollNum" id="pollNum"/>
                             <input style="display:none" name="myVote" id="myVote"/>
                         </form>
