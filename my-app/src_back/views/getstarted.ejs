@@ -94,12 +94,12 @@
                         FBFriends.then(function (result) {
                             friend_list = JSON.stringify(result.data);
                                 document.getElementsByName("friend_list")[0].value = friend_list;
-                            var Location = new Promise(function (resolve, reject) {
+                            /*var Location = new Promise(function (resolve, reject) {
                                 $.getJSON("http://freegeoip.net/json/", function(data) {
                                     /*var country_code = data.country_code;
                                     var country = data.country_name;
                                     var ip = data.ip;
-                                    var time_zone = data.time_zone;*/
+                                    var time_zone = data.time_zone;
                                     var latitude = data.latitude;
                                     var longitude = data.longitude;
 
@@ -107,8 +107,8 @@
                                     resolve(JSON.stringify(location));
                                 });
                             });
-                            Location.then(function (result) {
-                                location = result;
+                            Location.then(function (result) {*/
+                                location = JSON.stringify({lat: 32.07005626883245, lng: 34.79411959648132});
                                 document.getElementsByName("location")[0].value = location;
                                 //document.getElementsByName("location")[0].value = '('+location.lat+','+location.lng);
                                 document.getElementById("user_info").submit();
