@@ -91,7 +91,7 @@
 
             <canvas id="demo-canvas"></canvas>
 
-            <table class="table table-striped" id="excelDataTable">
+            <table class="table table-striped" id="excelDataTable" style="z-index: 50">
                 <thead class="thead-dark">
                 <tr>
                     <th>Type</th>
@@ -113,7 +113,7 @@
                     <td id="distance"><%= invited_events[i]["location"] %></td>
                     <td style="display:none"><%= invited_events[i]["eventId"] %></td>
                     <p id="user_location" style="display:none"><%= location %></p>
-                    <!--<td class='event_location' style="display:none"><%= invited_events[i]["location"] %></td>-->
+                    <td class='event_location'><%= invited_events[i]["location"] %></td>
                     <td><%= invited_events[i]["time"] %></td>
                     <td><%= invited_events[i]["ownerName"] %></td>
                 </tr>
@@ -173,14 +173,8 @@
                     var d = R * c;
                     d = Math.round(d * 100) / 100;
 
-                    if(d>1000)
-                    {
-                        return d/1000+'km';
-                    }
-                    else
-                    {
-                        return d+'m';
-                    }
+                    return (parseInt(d/100))/10 +'km';
+
 
 
                 }

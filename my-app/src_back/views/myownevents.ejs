@@ -175,16 +175,7 @@
                     var d = R * c;
                     d = Math.round(d * 100) / 100;
 
-                    if(d>1000)
-                    {
-                        return d/1000+'km';
-                    }
-                    else
-                    {
-                        return d+'m';
-                    }
-
-
+                    return (parseInt(d/100))/10 +'km';
                 }
 
                 function radians(x) {

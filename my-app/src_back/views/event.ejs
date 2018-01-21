@@ -19,6 +19,11 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
+
+
     <script>
         var coordinates = [];
         var map;
@@ -403,15 +408,16 @@
 <div class="container demo-2">
     <div class="content">
         <div id="large-header" class="large-header">
+            <% include createeventbar %>
 
-            <div style="height:615px;width:800px;background-color:#f9f1e9;overflow:auto;margin-right: auto;margin-left:auto; margin-top: 0px;">
+            <div style="height:615px;width:800px;background-color:#eee;overflow:auto;margin-right: auto;margin-left:auto; margin-top: 0px;">
                 <table id="singleEventTable" style="position:relative;width: 735px; border-width: 0;text-align: center;">
                     <colgroup>
                         <col width="15%"/>
                         <col width="15%"/>
                         <col width="70%"/>
                     </colgroup>
-                    <tr style="background-color:#f9f1e9;border-width: 0">
+                    <tr style=" border-width: 0">
                         <td colspan=2 style="border-width: 0;"><img height=200px, width=300px
                                                                     src="/img/<%= event_img %>">
                         </td>
@@ -425,7 +431,7 @@
                             </div>
                         </td>
                     </tr>
-                    <tr style="height: 124px;background-color:#f9f1e9;border-width: 0" >
+                    <tr style="height: 124px;border-width: 0" >
                         <td style="text-align:center;border-width: 0;">
                             <h4 style="color:black;weight:bold;">Join event<br/></h4>
                             <a style="border-width: 5px;border-color: #222222;"
@@ -458,7 +464,7 @@
                         </td>
                         <td style="display:none" id="polls"><%= pollArray %></td>
                     </tr>
-                    <tr style="height: 124px;background-color:#f9f1e9;border-color: #f9f1e9">
+                    <tr style="height: 124px; border-color: #f9f1e9">
                         <td colspan=2 style="border-width: 0; color:black;">&nbsp;
                             <h3>Going: <br/></h3>
                             <% for (let i = 0; i < going_users.length; i++) { %>

@@ -78,7 +78,7 @@
 .demo-2 td, .demo-2 th {
     border: 1px solid #dddddd;
     text-align: left;
-    padding: 8px;
+    padding: 3px;
 }
 
 #excelDataTable {
@@ -90,7 +90,7 @@
     overflow-x: scroll;
     display: inline-block;
     position: absolute;
-    background-color: #aaa;
+    background-color: transparent;
     top: 50%;
     left: 50%;
     -webkit-transform: translate3d(-50%, -50%, 0);
@@ -107,12 +107,16 @@
 }
 
 #excelDataTable td{
-    width: 200px;
+    width: 300px;
     height: 100px;
     background-color: #eee;
 }
 
-tr:hover {
+#excelDataTable tr{
+    background-color: #aaa;
+}
+
+#excelDataTable tr:hover{
     background: #b3d4fc;
 }
 
