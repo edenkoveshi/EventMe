@@ -171,8 +171,12 @@ function validate_vote(user_id ,event_id ,cur_pull ,my_vote ,event ){
         valid_vote= false
     }
     if(event[0].going_users.indexOf(user_id) < 0){
-        consile.log('the user ' + user_id + ' is not going to event ' + event_id)
-        valid_vote = false
+        if(user_id != event[0].ownerId)
+        {
+            consile.log('the user ' + user_id + ' is not going to event ' + event_id)
+            valid_vote = false
+        }
+
     }
 
     for(var i = 0; i<event[0].pollArray[cur_pull].voted_users.length; i++){
