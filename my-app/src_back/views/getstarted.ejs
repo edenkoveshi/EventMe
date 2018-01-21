@@ -26,18 +26,9 @@
 
     <style>
         /* The Modal (background) */
-        .modal {
+        #myModal {
             display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            left: 30%;
-            top: 20%;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            width: 60%; /* Full width */
-            height: 60%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0); /* Fallback color */
+
         }
         /* Modal Content */
         .modal-content {
@@ -45,7 +36,7 @@
             margin: auto;
             padding: 20px;
             border: 1px solid #888;
-            width: 80%;
+            width: 45%;
         }
 
         /* The Close Button */
@@ -166,9 +157,7 @@
                         <!-- Modal content-->
                         <div class="modal-content" id="myModal" style="background-color:White;">
                             <div class="modal-body">
-                                <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                </div>
                                 <a id="fb_login" style="display: none; width: 100%;" onclick="return FBLogin()"><img src="../../img/FB_login.png"></a>
                                 <form action="">
                                     <label class="checkbox-inline" style="width: 150px"><input id="cb" style="width: 20px" type="checkbox" value="">Share My Location</label>
