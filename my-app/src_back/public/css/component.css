@@ -75,34 +75,7 @@
     }
 }
 
-/*.demo-2 table {*/
-    /*width: 62%;*/
-    /*height: 50%;*/
-    /*margin: 0;*/
-    /*padding: 0;*/
-    /*overflow-y: scroll;*/
-    /*overflow-x: scroll;*/
-    /*display: inline-block;*/
-    /*position: absolute;*/
-    /*font-family: arial, sans-serif;*/
-    /*border-collapse: collapse;*/
-    /*color: black;*/
-    /*text-align: center;*/
-    /*background: white;*/
-    /*top: 50%;*/
-    /*left: 50%;*/
-    /*-webkit-transform: translate3d(-50%, -50%, 0);*/
-    /*transform: translate3d(-50%, -50%, 0);*/
-/*}*/
-
-/*.demo-2 td, .demo-2 th {*/
-    /*border: 1px solid #dddddd;*/
-    /*text-align: left;*/
-    /*padding: 8px;*/
-/*}*/
-
-/*new*/
-.demo-2 table{
+.demo-2 table {
     width: 62%;
     height: 50%;
     margin: 0;
@@ -111,29 +84,56 @@
     overflow-x: scroll;
     display: inline-block;
     position: absolute;
-    background-color: #aaa;
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    color: black;
+    text-align: center;
+    background: white;
     top: 50%;
     left: 50%;
     -webkit-transform: translate3d(-50%, -50%, 0);
     transform: translate3d(-50%, -50%, 0);
-
 }
 
-.demo-2 tbody{
-    width: 100%;
-    height: 100%;
-    -display: block;
-    background-color: #ccc;
-    overflow-y: scroll;
-    overflow-x: hidden;
-
+.demo-2 td, .demo-2 th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
 }
 
-.demo-2 td{
-    width: 100px;
-    height: 100px;
-    background-color: #eee;
-}
+/*new*/
+/*.demo-2 table{*/
+    /*width: 50%;*/
+    /*height: 50%;*/
+    /*margin: 0;*/
+    /*padding: 0;*/
+    /*overflow-y: scroll;*/
+    /*overflow-x: scroll;*/
+    /*display: inline-block;*/
+    /*position: absolute;*/
+    /*background-color: #aaa;*/
+    /*top: 50%;*/
+    /*left: 50%;*/
+    /*-webkit-transform: translate3d(-50%, -50%, 0);*/
+    /*transform: translate3d(-50%, -50%, 0);*/
+
+/*}*/
+
+/*.demo-2 tbody{*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*-display: block;*/
+    /*background-color: #ccc;*/
+    /*overflow-y: scroll;*/
+    /*overflow-x: hidden;*/
+
+/*}*/
+
+/*.demo-2 td{*/
+    /*width: 200px;*/
+    /*height: 100px;*/
+    /*background-color: #eee;*/
+/*}*/
 /*end of new*/
 
 .demo-2 tr:hover {
