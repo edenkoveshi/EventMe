@@ -528,10 +528,10 @@
                         <p id="owner_id" style="display:none"><%=owner_id%></p>
 
                         <form id="poll_data" action="/eventMe/vote/<%= user_id%>" method="POST" style="display:none">
-                            <input name="user_id" value=<%=user_id%> />
-                            <input name="eventId" value=<%=event_id%> />
-                            <input name="pollNum" id="pollNum"/>
-                            <input name="myVote" id="myVote"/>
+                            <input style="display:none" name="user_id" value=<%=user_id%> />
+                            <input style="display:none" name="event_id" value=<%=event_id%> />
+                            <input style="display:none" name="pollNum" id="pollNum"/>
+                            <input style="display:none" name="myVote" id="myVote"/>
                         </form>
 
 
