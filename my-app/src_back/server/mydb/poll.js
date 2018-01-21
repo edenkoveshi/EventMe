@@ -4,9 +4,9 @@
 
 class  poll
 {
-    constructor(owner_name, poll_question, options_array, array_length, poll_id){
+    constructor(owner_id, poll_question, options_array, array_length, poll_id){
         this.poll_id = poll_id
-        this.owner_name = owner_name
+        this.owner_name = owner_id
         this.poll_question = poll_question
         this.options = []
         this.voted_users = []

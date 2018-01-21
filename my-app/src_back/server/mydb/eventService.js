@@ -2,6 +2,7 @@ const DB = require('../data/DB')
 const eventDAO = require('./eventDAO')
 const userDAO = require('./userDAO')
 var Event = require('./event')
+var Poll=require('./poll')
 
 
 
@@ -36,11 +37,19 @@ class eventService {
                 }
                 var polls = []
                 var current_poll
+                var question
+                var options
+                var length
                 for (var poll_counter = 0; poll_counter < parseInt(body['poll_counter']);poll_counter++)
                 {
                     current_poll ='poll'+(poll_counter+1)
                     console.log("current_poll "+current_poll);
-                    polls[poll_counter] = body[current_poll]
+                    question=body[current_poll+'_question']
+                    options=JSON.parse(body[current_poll])
+                    length=parseInt(body[current_poll+'_length'])
+                    polls[poll_counter] =new Poll(owner_id ,question ,options ,length, event_id)
+                    console.log('entered a new poll')
+                    console.log(polls[poll_counter])
                 }
 
                 Promise.all(promises).then(_=>{
