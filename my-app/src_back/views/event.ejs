@@ -174,7 +174,7 @@
             }
             if (parseInt(document.getElementById('poll-counter').innerHTML) > i) {
                 $('<a id="free-poll">Open-question poll ongoing.Click here to view.</a>').insertBefore($('#close-chart'));
-                var tabledata = [];
+                var tabledata2 = [];
                 FreePoll = JSON.parse(document.getElementById('polls').innerHTML)[i];
                 for (var j = 0; j < FreePoll.options.length; j++) {
                     var t = [];
@@ -182,11 +182,11 @@
                     t.push(FreePoll.options[j].votes);
                     t.push(getRandomColor());
                     t.push(CreateTooltip(j, "Other",FreePoll.options[j].option));
-                    tabledata.push(t);
+                    tabledata2.push(t);
                 }
                 i++;
                 $('#free-poll').click(function () {
-                    PollChart(tabledata, 'Other');
+                    PollChart(tabledata2, 'Other');
                     ShowPollResults();
                 });
             }
@@ -529,7 +529,7 @@
 
                         <form id="poll_data" action="/eventMe/vote/<%= user_id%>" method="POST" style="display:none">
                             <input style="display:none" name="user_id" value=<%=user_id%> />
-                            <input style="display:none" name="event_id" value=<%=event_id%> />
+                            <input style="display:none" name="eventId" value=<%=event_id%> />
                             <input style="display:none" name="pollNum" id="pollNum"/>
                             <input style="display:none" name="myVote" id="myVote"/>
                         </form>
