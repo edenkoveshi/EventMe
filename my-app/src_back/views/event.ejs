@@ -28,32 +28,68 @@
         var FreePoll = [];
 
 
-        function Vote(type) {
+        function search(array,x)
+        {
+            for(var i=0;i<array.length;i++)
+            {
+                console.log(JSON.stringify(array[i]));
+                console.log(JSON.stringify(x));
+                if(JSON.stringify(array[i])==x)
+                    return true;
+            }
+            return false;
+
+        }
+
+        function Vote(type,vote) {
             var user_id = document.getElementById("user_id").innerHTML;
             var going_users = document.getElementById("going_ids").innerHTML;
             var poll;
-            if (going_users == undefined) {
+            var pollNum;
+            console.log(going_users);
+            if (going_users == "") {
                 window.alert("If you wish to vote, you must first confirm your attendance");
             }
             else {
-                going_users = JSON.parse(going_users);
-                if (going_users.contains(user_id)) {
-                    if (type == "Location")
+                going_users = JSON.parse('['+going_users+']');
+                if (search(going_users,user_id)) {
+                    if (type == "Location") {
                         poll = LocationsPoll;
-                    else if (type == "Date&Time")
+                        pollNum=1;
+                    }
+                    else if (type == "Date&Time") {
                         poll = TimePoll;
-                    else
-                        poll = FreePoll;
-                    if (poll.votedUsers.contains(user_id)) {
-                        if (window.confirm('You have already voted for this poll. Would you like to change your vote?')) {
-                            //Change vote code
-                        }
+                        if(LocationUnderPoll())
+                            pollNum=2;
+                        else pollNum=1;
                     }
                     else {
-                        ///Vote code
+                        poll = FreePoll;
+                        pollNum=parseInt(document.getElementById('poll-counter').innerHTML);
                     }
+                    console.log(poll);
+                    if(poll.votedUsers==undefined || !search(poll.votedUsers,user_id)) {
+                        $(document.body).append($('<form id="poll_data" action="/eventMe/vote/'+user_id+'" method="POST" style="display:none>' +
+                            '<input name="user_id" value='+user_id+'/>' +
+                            '<input name="eventId" value='+event_id+'/>' +
+                            '<input name="pollNum" value='+pollNum+'/>' +
+                            '<input name="myVote" value='+vote+'/> '));
+                        $('#poll_data').submit();
+                    }
+                    else {
+                        if (window.confirm('You have already voted for this poll. Would you like to change your vote?')) {
+                            $(document.body).append($('<form id="poll_data" action="/eventMe/vote/'+user_id+'" method="POST" style="display:none>' +
+                                '<input name="user_id" value='+user_id+'/>' +
+                                '<input name="eventId" value='+event_id+'/>' +
+                                '<input name="pollNum" value='+pollNum+'/>' +
+                                '<input name="myVote" value='+vote+'/> '));
+                            $('#poll_data').submit();
+                        }
+                    }
+
                 }
                 else {
+                    console.log("here");
                     window.alert("If you wish to vote, you must first confirm your attendance");
                 }
             }
@@ -69,7 +105,7 @@
             map.setCenter(pos);
         }
 
-        function CreateTooltip(i, type) {
+        function CreateTooltip(i, type,vote) {
             var str = "";
             if (type == "Location") {
                 var func = 'CenterMap(' + i + ')';
@@ -77,7 +113,8 @@
                     '<a onclick=' + func + '>View on map</a>'
                 '</div>'
             }
-            str += '<div><a onclick=Vote(' + type + ')>Vote!</a></div>';
+            str += '<div><a onclick=\'Vote("' + type+'","'+vote + '")\'>Vote!</a></div>';
+            console.log(str);
             return str;
         }
 
@@ -99,7 +136,7 @@
                         //t.push(Math.round(Math.random()*10));
                         t.push(LocationsPoll.options[j].votes);
                         t.push(getRandomColor());
-                        t.push(CreateTooltip(j, "Location"));
+                        t.push(CreateTooltip(j, "Location",addresses[j]));
                         addr.push(t);
                     }
                     PollChart(addr, 'Location');
@@ -114,7 +151,7 @@
                     t.push(TimePoll.options[j].option);
                     t.push(TimePoll.options[j].votes);
                     t.push(getRandomColor());
-                    t.push(CreateTooltip(j, "Time&Date"));
+                    t.push(CreateTooltip(j, "Time&Date",TimePoll.options[j].option));
                     tabledata.push(t);
                 }
                 i++;
@@ -136,7 +173,7 @@
                     t.push(FreePoll.options[j].option);
                     t.push(FreePoll.options[j].votes);
                     t.push(getRandomColor());
-                    t.push(CreateTooltip(j, "Other"));
+                    t.push(CreateTooltip(j, "Other",FreePoll.options[j].option));
                     tabledata.push(t);
                 }
                 i++;
@@ -477,9 +514,9 @@
 
                         </td>
                         <p id="poll-counter" style="display:none"><%= pollCounter %></p>
-                        <p id="invited_ids" style="display:none"><%= invited_ids %></p>
                         <p id="going_ids" style="display:none"><%= going_ids %></p>
                         <p id="user_id" style="display:none"><%= user_id %></p>
+                        <p id="event_id" style="display:none"><%= event_id %></p>
                     </tr>
 
                 </table>
