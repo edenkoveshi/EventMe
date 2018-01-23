@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Examples for creative website header animations using Canvas and JavaScript"/>
     <meta name="keywords" content="header, canvas, animated, creative, inspiration, javascript"/>
     <meta name="author" content="Codrops"/>
@@ -11,15 +11,14 @@
     <link rel="stylesheet" type="text/css" href="../../css/normalize.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/styles.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/component.css"/>
-    <link href='http://fonts.googleapis.com/css?family=Raleway:200,400,800|Londrina+Outline' rel='stylesheet'
-          type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Raleway:200,400,800|Londrina+Outline' rel='stylesheet'type='text/css'>
     <!--[if IE]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" media="screen"
-          href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <style>
         .center {
             margin: auto;
@@ -123,20 +122,72 @@
 </head>
 <body>
 <div class="container demo-2">
-    <div class="content">
         <div id="large-header" class="large-header">
             <% include createeventbar %>
             <div id="event-properties" class="center"><!--event creation form-->
+                <div class="container" style="background: #eee;">
+
+                        <form  id="event-form" action="/eventMe/addOpenEvent/<%= user_id %>" method="post">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputEmail4">Activity Name:</label>
+                                    <input type="email" class="form-control" id="inputEmail4" placeholder="Activity Name">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="inputPassword4">Date & Time</label>
+                                    <p id="time-polled"/>
+                                    <input class="form-control" type="datetime-local" name="Activity_time" id="event-time" style="display:inline-block"/>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputPassword4">Location: </label>
+                                    <label for="inputPassword4">(default - current location)</label>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input type="button" class="form-control" id="Activity_location" value="Click here" onclick="ChooseLocation()"/>
+                                    <a href="#demo" data-toggle="collapse">Activity Type</a>
+                                    <div id="demo" class="collapse">
+                                        <% include filterBar %>
+                                    </div>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputEmail4">Select your activity type:</label>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input type="button" id="Type_selection" value="Click here" onclick="SelectType()" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="inputEmail4">Description (optional):</label>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <input class="form-control" placeholder="Description" name="description" >
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <input type="button" type="button" id="poll" onclick="Poll()" value="Poll!" class="form-control"/>
+                            </div>
+                            <div class="form-row">
+                                <input type="button" id="Create" onclick="CreateEvent()" value="Create!" class="form-control"/>
+                            </div>
+                        </form>
+                </div>
+
+
                 <form id="event-form" style="background-color:#eee;
             top: 50%; left: 50%;margin-left:auto; margin-right: auto; overflow-y: scroll; padding: 10px"
                       action="/eventMe/addOpenEvent/<%= user_id %>" method="post">
 
                     Activity name:
-                    <input type="text" name="Activity_name"/><br>
-                    <p id="time-polled" style="display:inline-block">Date and time:</p><input type="datetime-local"
-                                                                                              name="Activity_time"
-                                                                                              id="event-time"
-                                                                                              style="display:inline-block"/>
+                    <input type="text" name="Activity_name"/>
+                    <br>
+                    <p id="time-polled" style="display:inline-block">Date and time:</p><input type="datetime-local" name="Activity_time" id="event-time" style="display:inline-block"/>
                     <br>
                     Location: <p id="location-polled" style="display:inline">(Current location will be taken as
                         default)</p>
@@ -276,7 +327,6 @@
                 </form>
             </div>
         </div>
-    </div>
     <!-- Related demos -->
 </div><!-- /container -->
 <script>
