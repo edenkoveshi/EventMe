@@ -83,14 +83,10 @@
 </head>
 <body onload="getList()">
 <div class="container demo-2">
-
-
-    <div class="content">
         <div id="large-header" class="large-header">
             <% include tmpnav %>
-
-            <canvas id="demo-canvas"></canvas>
-
+            <div class="container-fluid">
+            <div class="table-responsive">
             <table class="table table-striped" id="excelDataTable" style="z-index: 50">
                 <thead class="thead-dark">
                 <tr>
@@ -185,9 +181,10 @@
                 }
 
             </script>
+            </div>
 
         </div>
-    </div>
+        </div>
     <!-- Related demos -->
 </div><!-- /container -->
 <script src="../../js/rAF.js"></script>

@@ -84,15 +84,13 @@
 </head>
 <body onload="getList()">
 <div class="container demo-2">
-
-
-    <div class="content">
         <div id="large-header" class="large-header">
             <% include tmpnav %>
 
-            <canvas id="demo-canvas"></canvas>
+            <div class="container-fluid">
+             <div class="table-responsive">
 
-            <table id="excelDataTable">
+            <table class="table table-striped" id="excelDataTable">
                 <tr>
                     <th>Type</th>
                     <th>Title</th>
@@ -179,6 +177,7 @@
                 }
 
             </script>
+            </div>
 
         </div>
     </div>
