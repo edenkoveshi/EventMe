@@ -52,176 +52,176 @@
 </head>
 <body>
 <div class="container demo-2">
-        <div id="large-header" class="large-header">
-            <% include createeventbar %>
-            <div id="event-properties" class="center"><!--event creation form-->
-                <div class="container" style="background: black; color: white;">
-                    <form id="event-form" action="/eventMe/addOpenEvent/<%= user_id %>" method="post">
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="inputEmail4">Activity Name:</label>
-                                <input type="email" class="form-control" id="inputEmail4" name="Activity_name" placeholder="Activity Name">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="inputPassword4" id="time-polled">Date & Time</label>
-                                <p id="time-polled"/>
-                                <input class="form-control" type="datetime-local" name="Activity_time" id="event-time" style="display:inline-block"/>
-                            </div>
+    <div id="large-header" class="large-header">
+        <% include createeventbar %>
+        <div id="event-properties" class="center"><!--event creation form-->
+            <div class="container" style="background: black; color: white;">
+                <form id="event-form" action="/eventMe/addOpenEvent/<%= user_id %>" method="post">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputEmail4">Activity Name:</label>
+                            <input type="email" class="form-control" id="inputEmail4" name="Activity_name" placeholder="Activity Name">
                         </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="inputPassword4">Location: </label>
-                                <label for="inputPassword4">(default - current location)</label>
-                                <input type="text" name="google-location" id="location-polled" class="form-control" style="display:none"/>
-
-                                <!--Location: <p id="location-polled" style="display:inline" class="form-control">(Current location will be taken as-->
-                                    <!--default)</p>-->
-                            </div>
-                            <div class="form-group col-md-6">
-                                <input type="button" class="form-control" id="Activity_location" value="Click here" onclick="ChooseLocation()"/>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md">
-                                <input type="button" class="form-control" value="Select your activity type:" data-toggle="collapse" data-target="#demo" id="Type_selection"/>
-                                <div id="demo" class="collapse">
-                                    <div class="form-row">
-                                        <div class="form-group col-md-4">
-                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Food</a>
-                                            <ul class="dropdown-menu">
-                                                <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food" value="">Food</label></li>
-                                                <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Hamburger" value="">Hamburger</label></li>
-                                                <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Italian" value="">Italian</label></li>
-                                                <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Israeli" value="">Israeli</label></li>
-                                                <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Sushi" value="">Sushi</label></li>
-                                                <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Viatnamise" value="">Viatnamise</label></li>
-                                                <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Chinese" value="">Chinese</label></li>
-                                                <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Other" value="">Other</label></li>
-                                            </ul>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Party</a>
-                                            <ul class="dropdown-menu">
-                                                <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Party" value="">Party</label></li>
-                                                <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Party_Techno" value="">Techno</label></li>
-                                                <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Party_Salsa" value="">Salsa</label></li>
-                                                <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Party_MainStream" value="">MainStream</label></li>
-                                                <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Party_Other" value="">Other</label></li>
-                                            </ul>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Shopping</a>
-                                            <ul class="dropdown-menu">
-                                                <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Shopping" value="">Shopping</label></li>
-                                                <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Shopping_Groceries" value="">Groceries</label></li>
-                                                <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Shopping_Clothes" value="">Clothes</label></li>
-                                                <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Shopping_HomeDecore" value="">HomeDecore</label></li>
-                                                <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Shopping_Other" value="">Other</label></li>
-                                            </ul>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Entertainment</a>
-                                            <ul class="dropdown-menu">
-                                                <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Entertainment" value="">Entertainment</label></li>
-                                                <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Entertainment_Movie" value="">Movie</label></li>
-                                                <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Entertainment_Concert" value="">Concert</label></li>
-                                                <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Entertainment_Stand_up_show" value="">Stand-up show</label></li>
-                                                <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Entertainment_Other" value="">Other</label></li>
-                                            </ul>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Sports</a>
-                                            <ul class="dropdown-menu">
-                                                <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports" value="">Sports</label></li>
-                                                <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Soccer" value="">Soccer</label></li>
-                                                <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Basketball" value="">Basketball</label></li>
-                                                <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Football" value="">Football</label></li>
-                                                <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Handball" value="">Handball</label></li>
-                                                <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Tennis" value="">Tennis</label></li>
-                                                <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Jogging" value="">Jogging</label></li>
-                                                <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Training" value="">Training</label></li>
-                                                <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Athletics" value="">Athletics</label></li>
-                                                <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Other" value="">Other</label></li>
-                                            </ul>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Adventure</a>
-                                            <ul class="dropdown-menu">
-                                                <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure" value="">Adventure</label></li>
-                                                <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure_Hiking" value="">Hiking</label></li>
-                                                <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure_Road_trip" value="">Road-Trip</label></li>
-                                                <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure_Diving" value="">Diving</label></li>
-                                                <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure_Ski" value="">Ski</label></li>
-                                                <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure_Other" value="">Other</label></li>
-                                            </ul>
-                                        </div>
-                                        <div class="form-group col-md-4">
-                                            <label class="checkbox-inline" style="width: 150px"><input style="width: 30px" type="checkbox" id="Other" value="">Other</label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row" style="padding: 5px">
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <input class="form-control" type="hidden" name="categories">Description (optional):</input>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <input class="form-control" placeholder="Description" name="description" >
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md" style="margin-left:auto; margin-right: auto; overflow-y: scroll;" >
-                                <input type="button" id="poll" onclick="Poll()" value="Poll!" class="form-control"/>
-                                <div id="poll-modal" style="display:none">
-                                    <div class="modal-content" style="color:black">
-                                        <div id="poll">
-                                            <label class="checkbox-inline" style="width: 150px"><input type="checkbox" id="location-cb" style="width: 20px"/>Location</label><br>
-                                            <div>
-                                                <input type="button" id='location-options' onclick="ChooseLocation()"
-                                                       style="display:none" value="Choose Locations" class="form-control" />
-                                                    <input type="hidden" id="locations-list"/>
-                                            </div>
-                                            <label class="checkbox-inline" style="width: 150px"><input type="checkbox" id="time-cb" style="width: 20px"/>Time & Date</label>
-                                            <div id="time-options"></div>
-                                            <label class="checkbox-inline" style="width: 150px"><input type="checkbox" id="free-poll-cb" style="width: 20px"/>Another</label>
-                                            <div id="free-poll-options" style="display: none;">
-                                                Poll Question:<input type="text" id="free-poll-question"/><br>
-                                                Options: <br>
-                                                <input type="text" name="free-poll-option"/><br>
-                                                <input type="text" name="free-poll-option"/><br>
-                                                <input class="form-control" type="button" id="free-poll-button" onclick="AddFreePollOptions()" value="Add more options!"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row" style="padding: 2px">
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md">
-                                <input type="button" id="Create" onclick="CreateEvent()" value="Create!" class="form-control"/>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-                    <!-- Google Maps modal-->
-                    <div id="maps-modal" class="modal" style="display:none;">
-                        <!-- Modal content -->
-                        <div class="modal-content" style="width: 50%; margin-left:auto; margin-right: auto; overflow-y: scroll; ">
-                            <span class="close">Confirm</span>
-                            <input id="pac-input" class="controls" type="text" placeholder="Enter Location Here"
-                                   style="left:0px"/>
-                            <div style="z-index: 1;" id="googleMap"></div>
-                            <input type="text" class="form-control" name="google-location" style="display:none"/>
+                        <div class="form-group col-md-6">
+                            <label for="inputPassword4" id="time-polled">Date & Time</label>
+                            <p id="time-polled"/>
+                            <input class="form-control" type="datetime-local" name="Activity_time" id="event-time" style="display:inline-block"/>
                         </div>
                     </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputPassword4">Location: </label>
+                            <label for="inputPassword4">(default - current location)</label>
+                            <input type="text" name="google-location" id="location-polled" class="form-control" style="display:none"/>
+
+                            <!--Location: <p id="location-polled" style="display:inline" class="form-control">(Current location will be taken as-->
+                            <!--default)</p>-->
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input type="button" class="form-control" id="Activity_location" value="Click here" onclick="ChooseLocation()"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md">
+                            <input type="button" class="form-control" value="Select your activity type:" data-toggle="collapse" data-target="#demo" id="Type_selection"/>
+                            <div id="demo" class="collapse">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Food</a>
+                                        <ul class="dropdown-menu">
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food" value="">Food</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Hamburger" value="">Hamburger</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Italian" value="">Italian</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Israeli" value="">Israeli</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Sushi" value="">Sushi</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Viatnamise" value="">Viatnamise</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Chinese" value="">Chinese</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Other" value="">Other</label></li>
+                                        </ul>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Party</a>
+                                        <ul class="dropdown-menu">
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Party" value="">Party</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Party_Techno" value="">Techno</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Party_Salsa" value="">Salsa</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Party_MainStream" value="">MainStream</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Party_Other" value="">Other</label></li>
+                                        </ul>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Shopping</a>
+                                        <ul class="dropdown-menu">
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Shopping" value="">Shopping</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Shopping_Groceries" value="">Groceries</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Shopping_Clothes" value="">Clothes</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Shopping_HomeDecore" value="">HomeDecore</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Shopping_Other" value="">Other</label></li>
+                                        </ul>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Entertainment</a>
+                                        <ul class="dropdown-menu">
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Entertainment" value="">Entertainment</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Entertainment_Movie" value="">Movie</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Entertainment_Concert" value="">Concert</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Entertainment_Stand_up_show" value="">Stand-up show</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Entertainment_Other" value="">Other</label></li>
+                                        </ul>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Sports</a>
+                                        <ul class="dropdown-menu">
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports" value="">Sports</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Soccer" value="">Soccer</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Basketball" value="">Basketball</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Football" value="">Football</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Handball" value="">Handball</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Tennis" value="">Tennis</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Jogging" value="">Jogging</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Training" value="">Training</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Athletics" value="">Athletics</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Other" value="">Other</label></li>
+                                        </ul>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Adventure</a>
+                                        <ul class="dropdown-menu">
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure" value="">Adventure</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure_Hiking" value="">Hiking</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure_Road_trip" value="">Road-Trip</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure_Diving" value="">Diving</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure_Ski" value="">Ski</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure_Other" value="">Other</label></li>
+                                        </ul>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label class="checkbox-inline" style="width: 150px"><input style="width: 30px" type="checkbox" id="Other" value="">Other</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row" style="padding: 5px">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <input class="form-control" type="hidden" name="categories">Description (optional):</input>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input class="form-control" placeholder="Description" name="description" >
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md" style="margin-left:auto; margin-right: auto; overflow-y: scroll;" >
+                            <input type="button" id="poll" onclick="Poll()" value="Poll!" class="form-control"/>
+                            <div id="poll-modal" style="display:none">
+                                <div class="modal-content" style="color:black">
+                                    <div id="poll">
+                                        <label class="checkbox-inline" style="width: 150px"><input type="checkbox" id="location-cb" style="width: 20px"/>Location</label><br>
+                                        <div>
+                                            <input type="button" id='location-options' onclick="ChooseLocation()"
+                                                   style="display:none" value="Choose Locations" class="form-control" />
+                                            <input type="hidden" id="locations-list"/>
+                                        </div>
+                                        <label class="checkbox-inline" style="width: 150px"><input type="checkbox" id="time-cb" style="width: 20px"/>Time & Date</label>
+                                        <div id="time-options"></div>
+                                        <label class="checkbox-inline" style="width: 150px"><input type="checkbox" id="free-poll-cb" style="width: 20px"/>Another</label>
+                                        <div id="free-poll-options" style="display: none;">
+                                            Poll Question:<input type="text" id="free-poll-question"/><br>
+                                            Options: <br>
+                                            <input type="text" name="free-poll-option"/><br>
+                                            <input type="text" name="free-poll-option"/><br>
+                                            <input class="form-control" type="button" id="free-poll-button" onclick="AddFreePollOptions()" value="Add more options!"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row" style="padding: 2px">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md">
+                            <input type="button" id="Create" onclick="CreateEvent()" value="Create!" class="form-control"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Google Maps modal-->
+            <div id="maps-modal" class="modal" style="display:none;">
+                <!-- Modal content -->
+                <div class="modal-content" style="width: 50%; margin-left:auto; margin-right: auto; overflow-y: scroll; ">
+                    <span class="close">Confirm</span>
+                    <input id="pac-input" class="controls" type="text" placeholder="Enter Location Here"
+                           style="left:0px"/>
+                    <div style="z-index: 1;" id="googleMap"></div>
+                    <input type="text" class="form-control" name="google-location" style="display:none"/>
+                </div>
             </div>
         </div>
+    </div>
     <!-- Related demos -->
 </div><!-- /container -->
 <script>
