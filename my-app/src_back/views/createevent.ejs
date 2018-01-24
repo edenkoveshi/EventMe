@@ -72,7 +72,7 @@
                         <div class="form-group col-md-6">
                             <label for="inputPassword4">Location: </label>
                             <label for="inputPassword4">(default - current location)</label>
-                            <input type="text" name="google-location" id="location-polled" class="form-control" style="display:none"/>
+                            <input type="text" name="google-location" id="location" class="form-control" style="display:none"/>
 
                             <!--Location: <p id="location-polled" style="display:inline" class="form-control">(Current location will be taken as-->
                             <!--default)</p>-->
@@ -217,7 +217,7 @@
                     <input id="pac-input" class="controls" type="text" placeholder="Enter Location Here"
                            style="left:0px"/>
                     <div style="z-index: 1;" id="googleMap"></div>
-                    <input type="text" class="form-control" name="google-location" style="display:none"/>
+                    <!--<input type="text" class="form-control" name="google-location" style="display:none"/>-->
                 </div>
             </div>
         </div>
@@ -270,7 +270,9 @@
     function initMap(event) {
         $(document).ready(function () {
             // ----- MAP CREATION -------
+            var location_no_poll = document.getElementsByName("google-location")[0];
             var default_location = {lat: 32.07005626883245, lng: 34.79411959648132};
+            location_no_poll.value='(32.07005626883245,34.79411959648132)';
             map = new google.maps.Map(document.getElementById('googleMap'), {
                 zoom: 15,
                 center: default_location,
@@ -294,7 +296,6 @@
                 searchBox.setBounds(map.getBounds());
             });
 
-            var location_no_poll = document.getElementsByName("google-location")[0];
             // ------ GET CURRENT LOCATION ------
             /*var Location = new Promise(function (resolve, reject) {
                 $.getJSON("http://freegeoip.net/json/", function(data) {
@@ -490,7 +491,7 @@
             //if any of them is empty
             if (form_input[i].value == "") {
                 all_fields_set = 0;
-                //window.alert(form_input[i].name);
+                window.alert(form_input[i].name);
             }
         }
 
