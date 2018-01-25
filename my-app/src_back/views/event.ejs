@@ -433,7 +433,6 @@
 
         a {
             color: #06c;
-
         }
 
     </style>
@@ -489,7 +488,7 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <p style="display:none" id="polls"><%= pollArray %></p>
+                        <p style="display:none; color:white;" id="polls"><%= pollArray %></p>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-3">
@@ -518,18 +517,18 @@
                             <%= event_desc %>
                         </div>
                     </div>
+                </form>
 
-                    <p id="poll-counter" style="display:none"><%= pollCounter %></p>
-                    <p id="going_ids" style="display:none"><%= going_ids %></p>
-                    <p id="user_id" style="display:none"><%= user_id %></p>
-                    <p id="event_id" style="display:none"><%= event_id %>
+                <p id="poll-counter" style="display:none; color:white;"><%= pollCounter %></p>
+                <p id="going_ids" style="display:none; color:white;"><%= going_ids %></p>
+                <p id="user_id" style="display:none; color:white;"><%= user_id %></p>
+                <p id="event_id" style="display:none; color:white;"><%= event_id %>
 
-                    <form id="poll_data" action="/eventMe/vote/<%= user_id%>" method="POST" style="display:none">
-                        <input style="display:none" name="user_id" value=<%=user_id%> />
-                        <input style="display:none" name="eventId" value=<%=event_id%> />
-                        <input style="display:none" name="pollNum" id="pollNum"/>
-                        <input style="display:none" name="myVote" id="myVote"/>
-                    </form>
+                <form id="poll_data" action="/eventMe/vote/<%= user_id%>" method="POST" style="display:none; color:white;">
+                    <input style="display:none; color:white;" name="user_id" value=<%=user_id%> />
+                    <input style="display:none; color:white;" name="eventId" value=<%=event_id%> />
+                    <input style="display:none; color:white;" name="pollNum" id="pollNum"/>
+                    <input style="display:none; color:white;" name="myVote" id="myVote"/>
                 </form>
              </div>
         </div>

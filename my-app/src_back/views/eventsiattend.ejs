@@ -99,6 +99,9 @@
                     <th>Owner</th>
                 <tr/>
                 <% for (var i = 0; i < invited_events.length; i++) { %>
+                    <% var eventtime = invited_events[i]["time"];
+                       var eventime2 = eventtime.split("T");
+                       var finaltime = eventime2[0] + " " + eventime2[1]; %>
                 <tr>
                     <td><%= invited_events[i]["type"] %></td>
                     <td>
@@ -109,8 +112,7 @@
                     <td id="distance"><%= invited_events[i]["location"] %></td>
                     <td style="display:none"><%= invited_events[i]["eventId"] %></td>
                     <p id="user_location" style="display:none"><%= location %></p>
-                    <!--<td class='event_location' style="display:none"><%= invited_events[i]["location"] %></td>-->
-                    <td><%= invited_events[i]["time"] %></td>
+                    <td><%= finaltime %></td>
                     <td><%= invited_events[i]["ownerName"] %></td>
                 </tr>
                 <% } %>
