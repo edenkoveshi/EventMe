@@ -76,10 +76,9 @@
                     var name;
                     var friend_list;
                     var location;
+                    //Get personal details
                     var FBDetails = new Promise(function (resolve, reject) {
-                        //window.alert("Welcome");
                         FB.api('/me', function (response) {
-                            //window.alert(response.name + ' ' + response.id);
                             resolve(response);
                         });
                     });
@@ -88,6 +87,7 @@
                         name = result.name;
                         document.getElementsByName("fb_id")[0].value = fb_id;
                         document.getElementsByName("f_name")[0].value = name;
+                        //Get friend list
                         var FBFriends = new Promise(function (resolve, reject) {
                             FB.api('/me/friends', function (response) {
                                 resolve(response);
@@ -96,6 +96,7 @@
                         FBFriends.then(function (result) {
                             friend_list = JSON.stringify(result.data);
                             document.getElementsByName("friend_list")[0].value = friend_list;
+                            //Get location(geolocation,not related to facebook)
                             var Location = new Promise(function (resolve, reject) {
                                 if (navigator.geolocation) {
                                     navigator.geolocation.getCurrentPosition(function (position) {
@@ -108,7 +109,7 @@
                                 }
                                 else reject();
 
-
+                                //Location alternative
                                 // $.getJSON("http://freegeoip.net/json/", function(data) {
                                 //     /*var country_code = data.country_code;
                                 //     var country = data.country_name;
@@ -140,6 +141,7 @@
             }, {scope: 'user_friends'});
         };
 
+        //Facebook init function
         (function (d, s, id) {
             var js, fjs = d.getElementsByTagName(s)[0];
             if (d.getElementById(id)) {
@@ -154,6 +156,7 @@
 <!-- Import JQuery  -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
+    //Set check listener for checkbox
     $(document).ready(function () {
         $("#cb").click(function () {
                 $("#fb_login").toggle(this.checked);

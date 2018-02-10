@@ -45,8 +45,6 @@
         //used in Vote function
         function search(array, x) {
             for (var i = 0; i < array.length; i++) {
-                console.log(JSON.stringify(array[i]));
-                console.log(JSON.stringify(x));
                 if (JSON.stringify(array[i]) == x)
                     return true;
             }
@@ -61,12 +59,12 @@
                 var going_users = document.getElementById("going_ids").innerHTML;
                 var poll;
                 var pollNum;
-                if (going_users == "") {
+                if (going_users == "") {//there are no going users
                     window.alert("If you wish to vote, you must first confirm your attendance");
                 }
                 if (going_users != "") {
                     going_users = JSON.parse('[' + going_users + ']');
-                    if (search(going_users, user_id)) {
+                    if (search(going_users, user_id)) {//look for current user in going users & set poll number
                         if (type == "Location") {
                             poll = LocationsPoll;
                             pollNum = 1;
@@ -93,8 +91,8 @@
             });
         }
 
+        //Center map on chosen address in poll chart
         function CenterMap() {
-            //console.log();
             var i=chart.getSelection()[0].row;
             var coords = LocationsPoll.options[i].option.split(" ");
             var _lat = parseFloat(coords[0].split(",")[0].substring(1));
@@ -107,18 +105,15 @@
         $(document).ready(function () {
             var i = 0;
             if (document.getElementById('location').innerHTML == "") {
-                console.log(JSON.parse(document.getElementById('polls').innerHTML));
                 LocationsPoll = JSON.parse(document.getElementById('polls').innerHTML)[i];
                 i++;
-                //console.log(LocationsPoll);
                 document.getElementById('location').innerHTML = "Location is under poll. Click here to view."
+                //Set chart data
                 document.getElementById('location').onclick = function () {
                     var addr = [];
                     for (var j = 0; j < addresses.length; j++) {
                         var t = [];
-                        //console.log(temp[j]);
                         t.push(addresses[j]);
-                        //t.push(Math.round(Math.random()*10));
                         t.push(LocationsPoll.options[j].votes);
                         t.push(getRandomColor());
                         addr.push(t);
@@ -132,6 +127,7 @@
                 TimePoll = JSON.parse(document.getElementById('polls').innerHTML)[i];
                 var tabledata = [];
                 var options=[];
+                //Set chart data
                 for (var j = 0; j < TimePoll.options.length; j++) {
                     var t = [];
                     t.push(TimePoll.options[j].option);
@@ -141,9 +137,7 @@
                     tabledata.push(t);
                 }
                 i++;
-                //console.log(TimePoll);
                 document.getElementById('event-time').style = "display:none";
-                console.log(TimePoll);
                 $("<a id='time-poll-msg'>Time&Date is under poll. Click here to view.</a>").insertBefore($('#event-type'));
                 $('#time-poll-msg').click(function () {
                     PollChart(tabledata, 'Date-time');
@@ -155,6 +149,7 @@
                 $('<a id="free-poll">Open-question poll ongoing.Click here to view.</a>').insertBefore($('#close-chart'));
                 var tabledata2 = [];
                 var options=[];
+                //Set chart data
                 FreePoll = JSON.parse(document.getElementById('polls').innerHTML)[i];
                 for (var j = 0; j < FreePoll.options.length; j++) {
                     var t = [];
@@ -197,32 +192,24 @@
             //----- PARSE COORDIANTES INTO ADDRESS ---------
             if (!LocationUnderPoll()) {
                 coordinates.push(document.getElementById("location").innerHTML + " ");
-                //window.alert(coordinates);
             }
             else {
-                //console.log(document.getElementById('polls'));
                 for (i = 0; i < LocationsPoll.options.length; i++) {
                     coordinates.push(LocationsPoll.options[i].option);
                 }
-                //window.alert(coordinates);
-                //window.alert(coordinates.length);
             }
             var i = 0;
-            //console.log(coordinates);
             coordinates.forEach(function (item, index) {
                 var latlng = item.substring(1, coordinates[i].length - 3);
-                //window.alert(latlng);
                 var coords = latlng.split(" ");
-                //window.alert(coords);
                 latlng = coords[0] + coords[1];
-                //window.alert(latlng);
+                //Make an http request for google geocode services to get coordinates address
                 var xmlHttp = new XMLHttpRequest();
                 var url = "https:maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&key=AIzaSyCu3KurWBoVaFCgz3J6jjoYcnmIVY2i6B0";
                 xmlHttp.open("GET", url, true);
                 xmlHttp.onreadystatechange = function () {
                     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
                         var address = JSON.parse(xmlHttp.responseText).results[0].formatted_address;
-                        //window.alert(address);
                         document.getElementById('location-premable').style = "display:block";
                         document.getElementById('location').style = "display:block";
                         if (!LocationUnderPoll()) {
@@ -235,7 +222,6 @@
                 }
                 xmlHttp.send();
             });
-            //console.log(addresses);
         });
 
 
@@ -269,7 +255,6 @@
             $(document).ready(function () {
                 // ----- MAP CREATION -------
                 var coords = coordinates[0].split(" ");
-                //window.alert(coords);
                 var _lat = parseFloat(coords[0].split(",")[0].substring(1));
                 var _lng = parseFloat(coords[1].substring(0, coords[1].length - 1));
                 var default_location = {lat: _lat, lng: _lng};
@@ -299,15 +284,12 @@
         function PollChart(x, type) {
             // Load the Visualization API and the corechart package.
             google.charts.load('current', {'packages': ['corechart']});
-            //google.charts.load('visualization', {'packages': ['columnchart']});
 
             // Set a callback to run when the Google Visualization API is loaded.
             google.charts.setOnLoadCallback(drawChart);
-            console.log(x);
 
-            // Set chart options
+            // Set chart title
             var title;
-            var tooltips = [];
             if (type == "Location") {
                 title = LocationsPoll.poll_question;
 
@@ -333,7 +315,7 @@
 
                 var data = new google.visualization.arrayToDataTable(dataarray);
 
-                //customize axis values
+                //Customize axis values
                 var ticks=Votes(type);
                 var max_votes=0;
                 for(var i=0;i<ticks.length;i++)
@@ -355,7 +337,6 @@
                         viewWindow:{min:0,max:max_votes},
                         ticks:ticks,
                     },
-                    'is3D':true,
                 };
 
 
@@ -370,7 +351,7 @@
             }
         }
 
-        //generate a random color
+        //Generate a random color
         function getRandomColor() {
             var letters = '0123456789abcdef';
             var color = '#';
