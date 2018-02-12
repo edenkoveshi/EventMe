@@ -83,14 +83,10 @@
 </head>
 <body onload="getList()">
 <div class="container demo-2">
-
-
-    <div class="content">
         <div id="large-header" class="large-header">
             <% include tmpnav %>
-
-            <canvas id="demo-canvas"></canvas>
-
+            <div class="container-fluid">
+            <div class="table-responsive">
             <table class="table table-striped" id="excelDataTable" style="z-index: 50">
                 <thead class="thead-dark">
                 <tr>
@@ -103,6 +99,9 @@
                 </thead>
                 <tbody>
                 <% for (var i = 0; i < invited_events.length; i++) { %>
+                <% var eventtime = invited_events[i]["time"];
+                var eventime2 = eventtime.split("T");
+                var finaltime = eventime2[0] + " " + eventime2[1];%>
                 <tr>
                     <td><%= invited_events[i]["type"] %></td>
                     <td>
@@ -113,9 +112,8 @@
                     <td id="distance"><%= invited_events[i]["location"] %></td>
                     <td style="display:none"><%= invited_events[i]["eventId"] %></td>
                     <p id="user_location" style="display:none"><%= location %></p>
-                    <td class='event_location'><%= invited_events[i]["location"] %></td>
                     <td><%= invited_events[i]["time"] %></td>
-                    <td><%= invited_events[i]["ownerName"] %></td>
+                    <td><%= finaltime %></td>
                 </tr>
                 <% } %>
                 </tbody>
@@ -185,9 +183,10 @@
                 }
 
             </script>
+            </div>
 
         </div>
-    </div>
+        </div>
     <!-- Related demos -->
 </div><!-- /container -->
 <script src="../../js/rAF.js"></script>

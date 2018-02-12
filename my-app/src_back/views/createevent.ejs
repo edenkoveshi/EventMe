@@ -11,20 +11,19 @@
     <link rel="stylesheet" type="text/css" href="../../css/normalize.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/styles.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/component.css"/>
-    <link href='http://fonts.googleapis.com/css?family=Raleway:200,400,800|Londrina+Outline' rel='stylesheet'
-          type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Raleway:200,400,800|Londrina+Outline' rel='stylesheet'type='text/css'>
     <!--[if IE]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" media="screen"
-          href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <style>
         .center {
             margin: auto;
-            padding: 150px 0;
-            width: 50%;
+            padding: 150px;
+            width: 100%;
         }
 
         #googleMap {
@@ -32,248 +31,183 @@
             height: 400px;
         }
 
-        #event-properties ul {
-            background: white;
-            float: left;
-            -webkit-transition: .5s;
-            transition: .5s;
-        }
-
-        #event-properties li {
-            float: left;
-            position: relative;
-            width: 120px;
-            list-style: none;
-            -webkit-transition: .5s;
-            transition: .5s;
-        }
-
-        #event-properties > ul > li > a, h1 {
-            text-transform: uppercase;
-        }
-
-        #event-properties a {
-            display: block;
-            text-decoration: none;
-            padding: 5px 15px;
-            color: #000;
-        }
-
-        #event-properties ul ul {
-            position: absolute;
-            left: 75%;
-            top: 0;
-            visibility: hidden;
-            opacity: 0;
-        }
-
-        #event-properties ul ul ul {
-            left: 100%;
-            top: 0;
-        }
-
-        #event-properties ul ul ul ul {
-            left: 100%;
-            top: 0;
-        }
-
-        #event-properties li:hover {
-            background: #ddd;
-        }
-
-        #event-properties li li:hover {
-            background: #bbb;
-        }
-
-        #event-properties li li li:hover {
-            background: #bbb;
-        }
-
-        #event-properties li li li:hover {
-            background: #999;
-        }
-
-        #event-properties li li li li:hover {
-            background: #999;
-        }
-
-        #event-properties li:hover > ul {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .pac-container {
-            background-color: #FFF;
-            z-index: 20;
-            position: fixed;
-            display: inline-block;
-            float: left;
-        }
-
         .modal {
             z-index: 20;
         }
-
-        .modal-backdrop {
-            z-index: 10;
-        }
-
         ​
     </style>
 </head>
 <body>
 <div class="container demo-2">
-    <div class="content">
-        <div id="large-header" class="large-header">
-            <% include createeventbar %>
-            <div id="event-properties" class="center"><!--event creation form-->
-                <form id="event-form" style="background-color:#eee;
-            top: 50%; left: 50%;margin-left:auto; margin-right: auto; overflow-y: scroll; padding: 10px"
-                      action="/eventMe/addOpenEvent/<%= user_id %>" method="post">
+    <div id="large-header" class="large-header">
+        <% include createeventbar %>
+        <div id="event-properties" class="center"><!--event creation form-->
+            <div class="container" style="background: black; color: white;">
+                <form id="event-form" action="/eventMe/addOpenEvent/<%= user_id %>" method="post">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputEmail4">Activity Name:</label>
+                            <input type="email" class="form-control" id="inputEmail4" name="Activity_name" placeholder="Activity Name">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="inputPassword4" id="time-polled">Date & Time</label>
+                            <p id="time-polled"/>
+                            <input type="button" id="Today" value="Today"></input><input type="button" id="Tommorow" value="Tommorow"></input><br>
+                            <input type="button" id="Morning" value="Morning"></input><input type="button" id="Noon" value="Noon"></input><input type="button" id="Evening" value="Evening"></input>
+                            <input class="form-control" type="datetime-local" name="Activity_time" id="event-time" style="display:inline-block"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="inputPassword4">Location: </label>
+                            <label for="inputPassword4">(default - current location)</label>
+                            <input type="text" name="google-location" id="location" class="form-control" style="display:none"/>
 
-                    Activity name:
-                    <input type="text" name="Activity_name"/><br>
-                    <p id="time-polled" style="display:inline-block">Date and time:</p><input type="datetime-local"
-                                                                                              name="Activity_time"
-                                                                                              id="event-time"
-                                                                                              style="display:inline-block"/>
-                    <br>
-                    Location: <p id="location-polled" style="display:inline">(Current location will be taken as
-                        default)</p>
-                    <input type="button" id="Activity_location" value="Click here" onclick="ChooseLocation()"/>
-
-                    <!--Polls-->
-                    &nbsp;&nbsp;&nbsp; <input type="button" id="poll" onclick="Poll()" value="Poll!"/>
-                    <div id="poll-modal" style="display:none">
-                        <div class="modal-content">
-                            <!--<span class="close">&times;</span>-->
-                            <div id="poll">
-                                <input type="checkbox" id="location-cb">Location</input><br>
-                                <div>
-                                    <input type="button" id='location-options' onclick="ChooseLocation()"
-                                           style="display:none" value="Choose Locations"/>
-                                    <input type="hidden" id="locations-list"/>
-                                </div>
-                                <input type="checkbox" id="time-cb">Time&Date</input>
-                                <div id="time-options"></div>
-                                <input type="checkbox" id="free-poll-cb">Another</input>
-                                <div id="free-poll-options" style="display: none;">
-                                    Poll Question:<input type="text" id="free-poll-question"/><br>
-                                    Options: <br>
-                                    <input type="text" name="free-poll-option"/><br>
-                                    <input type="text" name="free-poll-option"/><br>
-                                    <input type="button" id="free-poll-button" onclick="AddFreePollOptions()"
-                                           value="Add more options!"/>
-
+                            <!--Location: <p id="location-polled" style="display:inline" class="form-control">(Current location will be taken as-->
+                            <!--default)</p>-->
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input type="button" class="form-control" id="Activity_location" value="Click here" onclick="ChooseLocation()"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md">
+                            <input type="button" class="form-control" value="Select your activity type:" data-toggle="collapse" data-target="#demo" id="Type_selection"/>
+                            <div id="demo" class="collapse">
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Food</a>
+                                        <ul class="dropdown-menu">
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food" value="">Food</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Hamburger" value="">Hamburger</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Italian" value="">Italian</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Israeli" value="">Israeli</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Sushi" value="">Sushi</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Viatnamise" value="">Viatnamise</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Chinese" value="">Chinese</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Other" value="">Other</label></li>
+                                        </ul>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Party</a>
+                                        <ul class="dropdown-menu">
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Party" value="">Party</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Party_Techno" value="">Techno</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Party_Salsa" value="">Salsa</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Party_MainStream" value="">MainStream</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Party_Other" value="">Other</label></li>
+                                        </ul>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Shopping</a>
+                                        <ul class="dropdown-menu">
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Shopping" value="">Shopping</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Shopping_Groceries" value="">Groceries</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Shopping_Clothes" value="">Clothes</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Shopping_HomeDecore" value="">HomeDecore</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Shopping_Other" value="">Other</label></li>
+                                        </ul>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Entertainment</a>
+                                        <ul class="dropdown-menu">
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Entertainment" value="">Entertainment</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Entertainment_Movie" value="">Movie</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Entertainment_Concert" value="">Concert</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Entertainment_Stand_up_show" value="">Stand-up show</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Entertainment_Other" value="">Other</label></li>
+                                        </ul>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Sports</a>
+                                        <ul class="dropdown-menu">
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports" value="">Sports</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Soccer" value="">Soccer</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Basketball" value="">Basketball</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Football" value="">Football</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Handball" value="">Handball</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Tennis" value="">Tennis</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Jogging" value="">Jogging</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Training" value="">Training</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Athletics" value="">Athletics</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Other" value="">Other</label></li>
+                                        </ul>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Adventure</a>
+                                        <ul class="dropdown-menu">
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure" value="">Adventure</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure_Hiking" value="">Hiking</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure_Road_trip" value="">Road-Trip</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure_Diving" value="">Diving</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure_Ski" value="">Ski</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure_Other" value="">Other</label></li>
+                                        </ul>
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label class="checkbox-inline" style="width: 150px"><input style="width: 30px" type="checkbox" id="Other" value="">Other</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <br>
-
-                    <!-- Google Maps modal-->
-                    <div id="maps-modal" class="modal" style="display:none">
-                        <!-- Modal content -->
-                        <div class="modal-content">
-                            <span class="close">Confirm</span>
-                            <input id="pac-input" class="controls" type="text" placeholder="Enter Location Here"
-                                   style="left:0px"/>
-                            <div style="z-index: 1;" id="googleMap"></div>
-                            <input type="text" name="google-location" style="display:none"/>
+                    <div class="form-row" style="padding: 5px">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <input class="form-control" type="hidden" name="categories">Description (optional):</input>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input class="form-control" placeholder="Description" name="description" >
                         </div>
                     </div>
-
-                    Select your activity type:
-                    <input type="button" id="Type_selection" value="Click here" onclick="SelectType()"/>
-                    <br>
-                    <div id="activity-type" style="display: none;">
-                        <ul>
-                            <li><input type="checkbox" id="Food">Food</input>
-                                <ul>
-                                    <li><input type="checkbox" id="Food_Mexican">Mexican</input></li>
-                                    <li><input type="checkbox" id="Food_Hamburger">Hamburger</input></li>
-                                    <li><input type="checkbox" id="Food_Italian">Italian</input></li>
-                                    <li><input type="checkbox" id="Food_Israeli">Israeli</input></li>
-                                    <li><input type="checkbox" id="Food_Sushi">Sushi</input></li>
-                                    <li><input type="checkbox" id="Food_Viatnamise">Viatnamise</input></li>
-                                    <li><input type="checkbox" id="Food_Chinese">Chinese</input></li>
-                                    <li><input type="checkbox" id="Food_Other">Other</input></li>
-                                </ul>
-                            </li>
-                            <br>
-                            <li><input type="checkbox" id="Party">Party</input>
-                                <ul>
-                                    <li><input type="checkbox" id="Party_Techno">Techno</input></li>
-                                    <li><input type="checkbox" id="Party_Salsa">Salsa</input></li>
-                                    <li><input type="checkbox" id="Party_Main-Stream">Main-Stream</input></li>
-                                    <li><input type="checkbox" id="Party_Other">Other</input></li>
-                                </ul>
-                            </li>
-                            <br>
-                            <li><input type="checkbox" id="Shopping">Shopping</input>
-                                <ul>
-                                    <li><input type="checkbox" id="Shopping_Groceries">Groceries</input></li>
-                                    <li><input type="checkbox" id="Shopping_Clothes">Clothes</input></li>
-                                    <li><input type="checkbox" id="Shopping_HomeDecore">Home Decore</input></li>
-                                    <li><input type="checkbox" id="Shopping_Other">Other</input></li>
-                                </ul>
-                            </li>
-                            <br>
-                            <li><input type="checkbox" id="Entertainment">Entertainment</input>
-                                <ul>
-                                    <li><input type="checkbox" id="Entertainment_Movie">Movie</input></li>
-                                    <li><input type="checkbox" id="Entertainment_Theater">Theater</input></li>
-                                    <li><input type="checkbox" id="Entertainment_Concert">Concert</input></li>
-                                    <li><input type="checkbox" id="Entertainment_Stand_up_show">Stand-up show</input>
-                                    </li>
-                                    <li><input type="checkbox" id="Entertainment_Other">Other</input></li>
-
-                                </ul>
-                            </li>
-                            <br>
-                            <li><input type="checkbox" id="Sports">Sports</input>
-                                <ul>
-                                    <li><input type="checkbox" id="Sports_Soccer">Soccer</input></li>
-                                    <li><input type="checkbox" id="Sports_Basketball">Basketball</input></li>
-                                    <li><input type="checkbox" id="Sports_Football">Football</input></li>
-                                    <li><input type="checkbox" id="Sports_Handball">Handball</input></li>
-                                    <li><input type="checkbox" id="Sports_Tennis">Tennis</input></li>
-                                    <li><input type="checkbox" id="Sports_Jogging">Jogging</input></li>
-                                    <li><input type="checkbox" id="Sports_Training">Training at the gym</input></li>
-                                    <li><input type="checkbox" id="Sports_Athletics">Athletics</input></li>
-                                    <li><input type="checkbox" id="Sports_Other">Other</input></li>
-                                </ul>
-                            </li>
-                            <br>
-                            <li><input type="checkbox" id="Adventure">Adventure</input>
-                                <ul>
-                                    <li><input type="checkbox" id="Adventure_Hiking">Hiking</input></li>
-                                    <li><input type="checkbox" id="Adventure_Road_trip">Road-trip</input></li>
-                                    <li><input type="checkbox" id="Adventure_Diving">Diving</input></li>
-                                    <li><input type="checkbox" id="Adventure_Ski">Ski</input></li>
-                                    <li><input type="checkbox" id="Adventure_Other">Other</input></li>
-                                </ul>
-                            </li>
-                            <br>
-                            <li><input type="checkbox" id="Other">Other</input></li>
-                        </ul>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
-                        <br>
+                    <div class="form-row">
+                        <div class="form-group col-md" style="margin-left:auto; margin-right: auto; overflow-y: scroll;" >
+                            <input type="button" id="poll" onclick="Poll()" value="Poll!" class="form-control"/>
+                            <div id="poll-modal" style="display:none">
+                                <div class="modal-content" style="color:black">
+                                    <div id="poll">
+                                        <label class="checkbox-inline" style="width: 150px"><input type="checkbox" id="location-cb" style="width: 20px"/>Location</label><br>
+                                        <div>
+                                            <input type="button" id='location-options' onclick="ChooseLocation()"
+                                                   style="display:none" value="Choose Locations" class="form-control" />
+                                            <input type="hidden" id="locations-list"/>
+                                        </div>
+                                        <label class="checkbox-inline" style="width: 150px"><input type="checkbox" id="time-cb" style="width: 20px"/>Time & Date</label>
+                                        <div id="time-options"></div>
+                                        <label class="checkbox-inline" style="width: 150px"><input type="checkbox" id="free-poll-cb" style="width: 20px"/>Another</label>
+                                        <div id="free-poll-options" style="display: none;">
+                                            Poll Question:<input type="text" id="free-poll-question"/><br>
+                                            Options: <br>
+                                            <input type="text" name="free-poll-option"/><br>
+                                            <input type="text" name="free-poll-option"/><br>
+                                            <input class="form-control" type="button" id="free-poll-button" onclick="AddFreePollOptions()" value="Add more options!"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-                    <input type="hidden" name="categories"/>
-                    Description (optional):
-                    <input type="text" name="description"/><br>
-                    <!--Picture (optional): (JPG,PNG formats)
-                    <input type="file" name="picture"/><br>-->
-                    <input type="button" id="Create" value="Create!" onclick="CreateEvent()"/>
+                    <div class="form-row" style="padding: 2px">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md">
+                            <input type="button" id="Create" onclick="CreateEvent()" value="Create!" class="form-control"/>
+                        </div>
+                    </div>
                 </form>
+            </div>
+
+            <!-- Google Maps modal-->
+            <div id="maps-modal" class="modal" style="display:none;">
+                <!-- Modal content -->
+                <div class="modal-content" style="width: 50%; margin-left:auto; margin-right: auto; overflow-y: scroll; ">
+                    <span class="close">Confirm</span>
+                    <input id="pac-input" class="controls" type="text" placeholder="Enter Location Here"
+                           style="left:0px"/>
+                    <div style="z-index: 1;" id="googleMap"></div>
+                    <!--<input type="text" class="form-control" name="google-location" style="display:none"/>-->
+                </div>
             </div>
         </div>
     </div>
@@ -283,6 +217,127 @@
     var map;
     var markers = [];
     var location_poll = [];
+
+    $(document).ready(function(){
+        //----Set onclick functions for time&date buttons-------
+       var today=document.getElementById('Today');
+       var tommorow=document.getElementById('Tommorow');
+       var morning=document.getElementById('Morning');
+       var noon=document.getElementById('Noon');
+       var evening=document.getElementById('Evening');
+       today.onclick=function(){
+           var date=new Date();
+           var time=document.getElementById('event-time').value;
+           if(time!="")//if time is specified already,do not change it
+           {
+               date.setHours(parseInt(time.split('T')[1].split(':')[0])+2);//takes -2 for some reason
+               date.setMinutes(parseInt(time.split('T')[1].split(':')[1]));
+           }
+           SetDate(date);
+       }
+       tommorow.onclick=function() {
+           var date = new Date();
+           var time=document.getElementById('event-time').value;
+           if(time!="")
+           {
+               date.setHours(parseInt(time.split('T')[1].split(':')[0])+2);
+               date.setMinutes(parseInt(time.split('T')[1].split(':')[1]));
+           }
+           var day = date.getDate();
+           var month = date.getMonth();
+           var year = date.getFullYear();
+           if (month == 11 && day == 31) //end of year
+           {
+               date.setFullYear(year + 1);
+               date.setMonth(0);
+               date.setDate(1);
+           }
+           else if ((day == 31 && (month == 0 || month == 2 || month == 4 || month == 6 || month == 7 || month == 9)) || (day == 30 && (month == 3 || month == 5 || month == 8 || month == 10)))//end of month,does not include Dec.(end of year) or Feb.(special case)
+           {
+               date.setDate(1);
+               date.setMonth(month + 1);
+           }
+           else if (month == 1 && day == 28) {
+               if (year % 4 == 0) {
+                   if (year % 100 == 0) {
+                       if (year % 400 != 0)//feb. has 28 days
+                       {
+                           date.setDate(1);
+                           date.setMonth(2);
+                       }
+                       else
+                       {
+                           date.setDate(29);
+                       }
+                   }
+                   else {
+                       date.setDate(29);
+                   }
+               }
+           }
+           else if(month==1&&day==29)
+           {
+               date.setDate(1);
+               date.setMonth(2);
+           }
+           else//not end of month,year
+           {
+               date.setDate(day+1);
+           }
+           SetDate(date);
+       }
+       morning.onclick=function(){
+           var time=document.getElementById('event-time').value;
+           if(time=="")//if time&date is not specified,set default date for today's date
+           {
+               time=new Date();
+               time=time.toISOString();
+           }
+            var date=parseISOString(time);
+            date.setHours(11);
+            date.setMinutes(0);
+            SetDate(date);
+       }
+       noon.onclick=function(){
+           var time=document.getElementById('event-time').value;
+           if(time=="")
+           {
+               time=new Date();
+               time=time.toISOString();
+           }
+           var date=parseISOString(time);
+           date.setHours(17);
+           date.setMinutes(0);
+           SetDate(date);
+       }
+        evening.onclick=function(){
+            var time=document.getElementById('event-time').value;
+           if(time=="")
+            {
+                time=new Date();
+                time=time.toISOString();
+            }
+            var date=parseISOString(time);
+            date.setHours(23);
+            date.setMinutes(0);
+            SetDate(date);
+        }
+
+    });
+
+    //Set date&time in input field
+    function SetDate(date)
+    {
+        var time=document.getElementById('event-time');
+        var isodate=date.toISOString();
+        time.value=isodate.substring(0,isodate.length-8);//remove sec and millisec
+    }
+
+    //Parse ISO formatted string to Date object
+    function parseISOString(s) {
+        var b = s.split(/\D+/);
+        return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], 0, 0));
+    }
 
     //var location;
     function ChooseLocation() {
@@ -325,7 +380,9 @@
     function initMap(event) {
         $(document).ready(function () {
             // ----- MAP CREATION -------
+            var location_no_poll = document.getElementsByName("google-location")[0];
             var default_location = {lat: 32.07005626883245, lng: 34.79411959648132};
+            location_no_poll.value='(32.07005626883245,34.79411959648132)';
             map = new google.maps.Map(document.getElementById('googleMap'), {
                 zoom: 15,
                 center: default_location,
@@ -349,10 +406,20 @@
                 searchBox.setBounds(map.getBounds());
             });
 
-            var location_no_poll = document.getElementsByName("google-location")[0];
             // ------ GET CURRENT LOCATION ------
-            /*var Location = new Promise(function (resolve, reject) {
-                $.getJSON("http://freegeoip.net/json/", function(data) {
+            var Location = new Promise(function (resolve, reject) {
+                //Get current location using geolocation service
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        var pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude
+                        };
+                        resolve(JSON.stringify(pos));
+                    });
+                }
+                //Alternative
+                /*$.getJSON("http://freegeoip.net/json/", function(data) {
                     /*var country_code = data.country_code;
                     var country = data.country_name;
                     var ip = data.ip;
@@ -362,22 +429,23 @@
 
                     var location={lat: latitude,lng:longitude};
                     resolve(JSON.stringify(location));
-                });
+                });*/
             });
             Location.then(function (result) {
                 //Adjust map
+                result=JSON.parse(result);
                 map.setCenter(result);
                 if (!LocationPollCheck()) {
                     marker.setPosition(result);
                     marker.setMap(map);
                     location_no_poll.value = "(" + result.lat + ", " + result.lng + ')';
                 }
-                google.maps.event.trigger(map, "resize");*/
+                google.maps.event.trigger(map, "resize");
+            });
 
             //-------------- CHANGE LOCATION ON CLICK ------
             google.maps.event.addListener(map, 'click', function (event) {
                 var loc = event.latLng;
-                window.alert(loc);
                 if (!LocationPollCheck()) {
                     marker.setPosition(loc);
                     marker.setMap(map);
@@ -464,9 +532,9 @@
         });
     }
 
-    function handleLocationError() {
+    /*function handleLocationError() {
         window.alert("We have a problem fetching your location.Please check it and try again later.");
-    }
+    }*/
 
     function LocationPollCheck() {
         return ($('#location-cb').is(':checked'));
@@ -482,11 +550,13 @@
 
 
         $(document).ready(function () {
+            //-----Hide relevant elements when poll checkboxes are checked-----------
             $("#location-cb").click(function () {
                     $("#Activity_location").toggle(!this.checked);
                     p = document.getElementById('location-polled');
                     p.innerHTML = (p.innerHTML == "Under poll") ? "(Current location will be taken as default)" : "Under poll";
                     $('#location-options').toggle(this.checked);
+
                 }
             )
             $('#time-cb').click(function () {
@@ -494,6 +564,11 @@
                 p = document.getElementById('time-polled');
                 p.innerHTML = (p.innerHTML == "Date and time: Under poll") ? "Date and time" : "Date and time: Under poll";
                 $('#time-options').toggle(this.checked);
+                $('#Today').toggle(!this.checked);
+                $('#Tommorow').toggle(!this.checked);
+                $('#Morning').toggle(!this.checked);
+                $('#Noon').toggle(!this.checked);
+                $('#Evening').toggle(!this.checked);
                 var add_options = document.getElementById('add-options');
                 if (add_options == undefined) {
                     var but = document.createElement('input');
@@ -516,17 +591,29 @@
 
     }
 
+    //Add date and time objects,used for date and time polls
     function AddDateAndTime() {
         $("<input type=datetime-local name='time-poll-option'/>").insertBefore($('#add-options'));
         $("<input type=datetime-local name='time-poll-option'/>").insertBefore($('#add-options'));
     }
 
+    //Same here for free polls
     function AddFreePollOptions() {
         $("<input type=text name='free-poll-option'/>").insertBefore($('#free-poll-button'));
         $("<br>").insertBefore($('#free-poll-button'));
     }
 
+    //Time validation function
+    function ValidateTime(time)
+    {
+        var chosen=parseISOString(time);
+        var current=new Date();
+        if(chosen.getTime()-current.getTime()<3540000) return 0;//a gap of approx. 1 hour is enforced here
+        return 1;
+    }
 
+
+    //----------Validate all fields,submit if everything is okay--------------
     function CreateEvent() {
         var location_under_poll = ($('#location-cb').is(':checked')) ? 1 : 0;
         var time_under_poll = ($('#time-cb').is(':checked')) ? 1 : 0;
@@ -534,6 +621,7 @@
         var all_fields_set = 1;
         var polls = [];
         var query = 'input[name="Activity_name"]';
+        //Check location and time fields if they aren't under poll
         if (!location_under_poll) {
             query += ',input[name="google-location"]';
         }
@@ -545,7 +633,6 @@
             //if any of them is empty
             if (form_input[i].value == "") {
                 all_fields_set = 0;
-                //window.alert(form_input[i].name);
             }
         }
 
@@ -560,6 +647,7 @@
         }
         document.getElementsByName("categories")[0].value = str.substring(1, str.length);
 
+        //Validate polls
         if (location_under_poll) {
             var locations = document.getElementById('locations-list').value;
             var res = JSON.parse(locations);
@@ -642,6 +730,30 @@
             }
         }*/
 
+        //Validate chosen date(s)
+        {
+            var flag=1;
+            if(time_under_poll)
+            {
+                var dates=document.getElementsByName('time-poll-option');
+                dates.forEach(function(item,index){
+                    if(!ValidateTime(item.value)) flag=0;
+                });
+            }
+            else
+            {
+                var date=document.getElementById('event-time');
+                if(!ValidateTime(date.value))
+                {
+                    flag=0;
+                }
+            }
+            if(!flag){
+                all_fields_set=0;
+                window.alert("You have chosen an invalid date(s).");
+            }
+        }
+
 
         //If everything is okay submit form, err otherwise
         var poll_questions = [];
@@ -684,10 +796,6 @@
             var poll_1 = JSON.stringify(polls[0]);
             var poll_2 = JSON.stringify(polls[1]);
             var poll_3 = JSON.stringify(polls[2]);
-            console.log(polls);
-            console.log(poll_1);
-            console.log(poll_2);
-            console.log(poll_3);
 
             $("<input type='hidden' name='poll1' value='" + poll_1 + "' />").insertBefore($('#Create'));
             $("<input type='hidden' name='poll2' value='" + poll_2 + "' />").insertBefore($('#Create'));
