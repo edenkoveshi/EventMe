@@ -131,6 +131,17 @@ class eventService {
                     }
                     else
                     {
+                        //check if the user voted before -> if he did, delete his previos vote
+                        for(var i = 0; i<event[0].pollArray[cur_pull].voted_users.length; i++){
+                            if(event[0].pollArray[cur_pull].voted_users[i].user == user_id){
+                                console.log('the user '+user_id + 'already voted in event ' + event_id + 'poll '+ cur_pull);
+                                console.log('deleting old vote so the new vote could be recieved');
+                                let old_vote = event[0].pollArray[cur_pull].voted_users[i].vote;
+                                requested_events[0].pollArray[cur_pull].options[i].votes--;
+                                event[0].pollArray[cur_pull].voted_users.splice(user[0].invited_events.indexOf( i ,1));
+                            }
+                        }
+
                         console.log(' poll before vote:')
                         console.log(requested_events[0].pollArray[cur_pull])
                         requested_events[0].pollArray[cur_pull].voted_users.push({user : user_id, vote : my_vote})
@@ -176,14 +187,6 @@ function validate_vote(user_id ,event_id ,cur_pull ,my_vote ,event ){
         if(user_id != event[0].ownerId)
         {
             consile.log('the user ' + user_id + ' is not going to event ' + event_id)
-            valid_vote = false
-        }
-
-    }
-
-    for(var i = 0; i<event[0].pollArray[cur_pull].voted_users.length; i++){
-        if(event[0].pollArray[cur_pull].voted_users[i].user == user_id){
-            console.log('the user '+user_id + 'already voted in event ' + event_id + 'poll '+ cur_pull)
             valid_vote = false
         }
     }
