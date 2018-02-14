@@ -13,9 +13,11 @@ function getList(){
         }
     });
     for (var listIndex = 2; listIndex < myList.length; listIndex++) {
-        if (myList[listIndex]["Distance"] !== "") {
+        if (myList[listIndex]["Distance"] !== "" || myList[listIndex]["Distance"] !== "") {
             var tmpDistance = readyForDistance(myList[listIndex]["Distance"]);
             myList[listIndex]["Distance"] = tmpDistance;
+        } else if (myList[listIndex]["Distance"] == "") {
+            myList[listIndex]["Distance"] = "under poll";
         }
     }
     return myList;
@@ -52,7 +54,7 @@ function boxChecked() {
 function displayarrange() {
     var newList = [];
     for (var listIndex = 2; listIndex < myList.length; listIndex++) {
-        if (myList[listIndex]["Distance"].indexOf("km") !== -1) {
+        if (myList[listIndex]["Distance"].indexOf("km") !== -1 || myList[listIndex]["Distance"] !== "under poll") {
             newList.push(Object.assign({}, myList[listIndex]));
         }
     }
@@ -151,10 +153,14 @@ function buildEventsTable(selector, myList) {
             var hrefdelete = "/eventMe/delete_event/" + myList[i]["Event Id"]+ "/" +user_id;
             if (columns[colIndex] == "Title") {
                 row$.append($('<td>'+'<a href='+link+'>'+cellValue+'</a>'+'</td>'+'</tr>'));
-            } else if (columns[colIndex] == "Owner" && arrayHref[4] == "myownevents") {
+            }
+            else if (columns[colIndex] == "Owner" && arrayHref[4] == "myownevents") {
                 row$.append($('<td>'+cellValue+'</td>'+'</tr>'));
                 row$.append($('<td>'+'<a href='+hrefdelete+'> <button>delete</button>'+'</a>'+'</td>'+'</tr>'));
-            } else {
+            } else if (columns[colIndex] == "Title") {
+
+            }
+            else {
                 row$.append($('<td>'+cellValue+'</td>'+'</tr>'));
             }
 

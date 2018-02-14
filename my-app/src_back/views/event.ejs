@@ -449,9 +449,13 @@
     <style>
         .center {
             margin: auto;
-            padding: 150px;
-            padding-top: 15px;
+            padding: 50px;
+            background: black;
+            color: white;
             width: 100%;
+            height: 100%;
+            overflow-y: scroll;
+            overflow-x: hidden;
         }
 
         #googleMap {
@@ -498,16 +502,20 @@
             color:black;
         }
 
+        .form-row{
+            padding: 10px;
+        }
+
     </style>
 </head>
 
 
 <body onload="OpenMap()">
 <div class="container demo-2">
-    <div id="large-header" class="large-header">
+    <div id="large-header" class="large-header" style="background: grey">
         <% include createeventbar %>
         <div id="event-properties" class="center">
-            <div class="container" style="height:600px;overflow:auto;background: black; color: white;">
+            <div class="container">
                 <form id="event-form" style="padding:15px;">
                     <div class="form-row">
                         <div class="form-group col-md-6">
