@@ -163,7 +163,7 @@
                 }
                 i++;
                 document.getElementById('event-time').style = "display:none";
-                $("<a id='time-poll-msg'>Time&Date is under poll. Click here to view.</a>").insertBefore($('#event-type'));
+                $("<a id='time-poll-msg'>Time&Date is under poll. Click here to view.</a><br>").insertBefore($('#event-type'));
                 $('#time-poll-msg').click(function () {
                     PollChart(tabledata, 'Date-time');
                     SetOptions('Date-time',options);
@@ -171,7 +171,10 @@
                 });
             }
             if (parseInt(document.getElementById('poll-counter').innerHTML) > i) {
-                $('<a id="free-poll">Open-question poll ongoing.Click here to view.</a>').insertBefore($('#close-chart'));
+                var time=document.getElementById('time-poll-msg');
+                if(time==undefined)
+                    time=document.getElementById('event-time');
+                $('<a id="free-poll">Open-question poll ongoing.Click here to view.</a><br>').insertBefore(time);
                 var tabledata2 = [];
                 var options=[];
                 //Set chart data
@@ -320,7 +323,7 @@
             // Set chart title
             var title;
             if (type == "Location") {
-                title = LocationsPoll.poll_question;
+                title = LocationsPoll.poll_question+"\nClick on the bar to view location on map";
 
             }
             else if (type == "Date-time") {
