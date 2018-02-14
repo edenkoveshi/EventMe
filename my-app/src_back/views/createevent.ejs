@@ -22,8 +22,19 @@
     <style>
         .center {
             margin: auto;
-            padding: 150px;
+            padding: 50px;
+            background: black;
+            color: white;
             width: 100%;
+            height: 100%;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+
+        body {
+            font: 300 15px/1.5 "Helvetica Neue", helvetica, arial, sans-serif;
+            background: #333;
+            margin: 15px;
         }
 
         #googleMap {
@@ -34,45 +45,74 @@
         .modal {
             z-index: 20;
         }
-        ​
+
+        .form-row{
+            padding: 7px;
+        }
+
     </style>
 </head>
 <body>
 <div class="container demo-2">
-    <div id="large-header" class="large-header">
+    <div id="large-header" class="large-header" style="background: grey">
         <% include createeventbar %>
         <div id="event-properties" class="center"><!--event creation form-->
-            <div class="container" style="background: black; color: white;">
+            <div class="container-fluid" >
                 <form id="event-form" action="/eventMe/addOpenEvent/<%= user_id %>" method="post">
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputEmail4">Event Name:</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
                             <input type="email" class="form-control" id="inputEmail4" name="Activity_name" placeholder="Event Name">
                         </div>
+                    </div>
+                    <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputPassword4" id="time-polled">Date & Time</label>
-                            <p id="time-polled"/>
-                            <input type="button" id="Today" value="Today"></input><input type="button" id="Tommorow" value="Tommorow"></input><br>
-                            <input type="button" id="Morning" value="Morning"></input><input type="button" id="Noon" value="Noon"></input><input type="button" id="Evening" value="Evening"></input>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <input type="button" class="form-control" id="Today" value="Today" style="background-color: black; color: white"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <input type="button" class="form-control"id="Tommorow" value="Tommorow" style="background-color: black; color: white"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <input type="button" class="form-control" id="Morning" value="Morning" style="background-color: black; color: white"/>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <input type="button" class="form-control"id="Noon" value="Noon" style="background-color: black; color: white"/>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <input type="button" class="form-control" id="Evening" value="Evening" style="background-color: black; color: white"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                        </div>
+                        <div class="form-group col-md-8">
                             <input class="form-control" type="datetime-local" name="Activity_time" id="event-time" style="display:inline-block"/>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputPassword4">Location: </label>
-                            <label for="inputPassword4">(default - current location)</label>
+                            <label for="inputPassword4" id="location-polled">(default - current location)</label>
                             <input type="text" name="google-location" id="location" class="form-control" style="display:none"/>
-
-                            <!--Location: <p id="location-polled" style="display:inline" class="form-control">(Current location will be taken as-->
-                            <!--default)</p>-->
                         </div>
                         <div class="form-group col-md-6">
-                            <input type="button" class="form-control" id="Activity_location" value="Click here" onclick="ChooseLocation()"/>
+                            <input type="button" class="form-control" id="Activity_location" value="Click here" onclick="ChooseLocation()" style="background-color: black; color: white"/>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md">
-                            <input type="button" class="form-control" value="Select your event type:(optional)" data-toggle="collapse" data-target="#demo" id="Type_selection"/>
+                            <input type="button" class="form-control" value="Select your event type:(optional)" data-toggle="collapse" data-target="#demo" id="Type_selection" style="background-color: black; color: white"/>
                             <div id="demo" class="collapse">
                                 <div class="form-row">
                                     <div class="form-group col-md-4">
@@ -163,7 +203,7 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md" style="margin-left:auto; margin-right: auto; overflow-y: scroll;" >
-                            <input type="button" id="poll" onclick="Poll()" value="Poll!" class="form-control"/>
+                            <input type="button" id="poll" onclick="Poll()" value="Poll!" class="form-control" style="background-color: black; color: white"/>
                             <div id="poll-modal" style="display:none">
                                 <div class="modal-content" style="color:black">
                                     <div id="poll">
@@ -181,7 +221,7 @@
                                             Options: <br>
                                             <input type="text" name="free-poll-option"/><br>
                                             <input type="text" name="free-poll-option"/><br>
-                                            <input class="form-control" type="button" id="free-poll-button" onclick="AddFreePollOptions()" value="Add more options!"/>
+                                            <input class="form-control" type="button" id="free-poll-button" onclick="AddFreePollOptions()" value="Add more options!" />
                                         </div>
                                     </div>
                                 </div>
@@ -192,7 +232,7 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md">
-                            <input type="button" id="Create" onclick="CreateEvent()" value="Create!" class="form-control"/>
+                            <input type="button" id="Create" onclick="CreateEvent()" value="Create!" class="form-control" style="background-color: black; color: white"/>
                         </div>
                     </div>
                 </form>

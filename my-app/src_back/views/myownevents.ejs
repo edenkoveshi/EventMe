@@ -135,7 +135,11 @@
                     }
                     var table=document.getElementById('excelDataTable');
                     for(var i=2;i<table.rows.length;i++) {
-                        table.rows[i].cells[2].innerHTML=distances[i-2];
+                        if (distances[i-2] == undefined){
+                            table.rows[i].cells[2].innerHTML="under poll"
+                        } else {
+                            table.rows[i].cells[2].innerHTML = distances[i - 2];
+                        }
                     }
                     //$('#excelDataTable tr td:nth-child(3)').text(str.substr(0,str.length-1));
 
