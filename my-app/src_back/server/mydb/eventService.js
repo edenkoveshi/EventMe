@@ -132,13 +132,28 @@ class eventService {
                     else
                     {
                         //check if the user voted before -> if he did, delete his previos vote
-                        for(var i = 0; i<event[0].pollArray[cur_pull].voted_users.length; i++){
-                            if(event[0].pollArray[cur_pull].voted_users[i].user == user_id){
+                        for(var i = 0; i<requested_events[0].pollArray[cur_pull].voted_users.length; i++){
+                            if(requested_events[0].pollArray[cur_pull].voted_users[i].user == user_id){
                                 console.log('the user '+user_id + 'already voted in event ' + event_id + 'poll '+ cur_pull);
                                 console.log('deleting old vote so the new vote could be recieved');
-                                let old_vote = event[0].pollArray[cur_pull].voted_users[i].vote;
-                                requested_events[0].pollArray[cur_pull].options[i].votes--;
-                                event[0].pollArray[cur_pull].voted_users.splice(user[0].invited_events.indexOf( i ,1));
+                                let old_vote = requested_events[0].pollArray[cur_pull].voted_users[i].vote;
+                                var j = 0;
+                                var found = false;
+                                while (!found){
+                                    if(requested_events[0].pollArray[cur_pull].options[j].option == old_vote){
+                                        found = true;
+                                    }
+                                    else{
+                                        j++;
+                                    }
+                                    if(j > requested_events[0].pollArray[cur_pull].options.length)
+                                    {
+                                        console.log("altough user has already voted, couldnt match his vote to any other vote")
+                                        resolve()
+                                    }
+                                }
+                                requested_events[0].pollArray[cur_pull].options[j].votes--;
+                                requested_events[0].pollArray[cur_pull].voted_users.splice(requested_events[0].pollArray[cur_pull].voted_users.indexOf( user_id ,my_vote),1);
                             }
                         }
 
@@ -193,6 +208,7 @@ function validate_vote(user_id ,event_id ,cur_pull ,my_vote ,event ){
     let acure = false;
     for(var i = 0; i<event[0].pollArray[cur_pull].options.length; i++){
         if(my_vote == event[0].pollArray[cur_pull].options[i].option){
+            console.log("my vote exists")
             acure = true;
         }
     }
@@ -200,6 +216,7 @@ function validate_vote(user_id ,event_id ,cur_pull ,my_vote ,event ){
         console.log('the vote ' + my_vote + ' does not exist ')
         valid_vote = false
     }
+    console.log("the vote vlidation  is "+ valid_vote)
     return valid_vote
 }
 

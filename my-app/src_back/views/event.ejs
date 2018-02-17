@@ -58,13 +58,13 @@
             var y=x[0].split('-');//date change to DD/MM/YY format
             var newdate=y[2]+'/'+y[1]+'/'+y[0]+' '+x[1];
             return newdate;
-        };
+        }
 
         function RevertDisplay(date){
             var x=date.split(' '); //the reverse operation
             var y=x[0].split('/')
             return y[2]+'-'+y[1]+'-'+y[0]+'T'+x[1];
-        };
+        }
 
         //used in Vote function
         function search(array, x) {
@@ -163,7 +163,7 @@
                 }
                 i++;
                 document.getElementById('event-time').style = "display:none";
-                $("<a id='time-poll-msg'>Time&Date is under poll. Click here to view.</a>").insertBefore($('#event-type'));
+                $("<a id='time-poll-msg'>Time&Date is under poll. Click here to view.</a><br>").insertBefore($('#event-type'));
                 $('#time-poll-msg').click(function () {
                     PollChart(tabledata, 'Date-time');
                     SetOptions('Date-time',options);
@@ -171,7 +171,10 @@
                 });
             }
             if (parseInt(document.getElementById('poll-counter').innerHTML) > i) {
-                $('<a id="free-poll">Open-question poll ongoing.Click here to view.</a>').insertBefore($('#close-chart'));
+                var time=document.getElementById('time-poll-msg');
+                if(time==undefined)
+                    time=document.getElementById('event-time');
+                $('<a id="free-poll">Open-question poll ongoing.Click here to view.</a><br>').insertBefore(time);
                 var tabledata2 = [];
                 var options=[];
                 //Set chart data
@@ -231,7 +234,7 @@
             coordinates.forEach(function (item, index) {
                 var latlng = item.substring(1, coordinates[i].length - 3);
                 var coords = latlng.split(" ");
-                latlng = coords[0] + coords[1];
+                latlng = coords[0] + coords[1].substring(0,coords[1].length-1);
                 //Make an http request for google geocode services to get coordinates address
                 var xmlHttp = new XMLHttpRequest();
                 var url = "https:maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&key=AIzaSyCu3KurWBoVaFCgz3J6jjoYcnmIVY2i6B0";
@@ -320,7 +323,7 @@
             // Set chart title
             var title;
             if (type == "Location") {
-                title = LocationsPoll.poll_question;
+                title = LocationsPoll.poll_question+"\nClick on the bar to view location on map";
 
             }
             else if (type == "Date-time") {
@@ -334,7 +337,7 @@
             // instantiates the bar chart, passes in the data and
             // draws it.
             function drawChart() {
-
+                $(document).ready(function(){
                 // Create the data table.
                 var dataarray = [];
                 dataarray.push(['Option', 'Votes', {role: 'style'}]);
@@ -377,6 +380,8 @@
                 if(type=='Location')
                     //set on-click handler to show location on map
                     google.visualization.events.addListener(chart, 'select', CenterMap);
+            }
+        );
             }
         }
 
@@ -427,13 +432,16 @@
         //calculate number of votes in a poll,used for google chart customization
         function Votes(type)
         {
-            var poll=[];
+            var poll;
             if(type=="Location")
+            {
                 poll=LocationsPoll;
-            if(type=="Other")
+            }
+            else if(type=="Other")
                 poll=FreePoll;
             else
                 poll=TimePoll;
+            console.log(poll);
             var votes=[];
             for(var i=0;i<poll.options.length;i++) {
                 votes.push(poll.options[i].votes)
