@@ -83,45 +83,54 @@
     </style>
 </head>
 <body onload="getList()">
-<div class="container demo-2">
+<div class="container-fluid demo-2">
         <div id="large-header" class="large-header">
             <% include tmpnav %>
 
             <div class="container-fluid">
                 <div class="table-responsive">
 
-            <table class="table table-striped" id="excelDataTable">
-                <thead class="thead-dark">
-                <tr>
-                    <th>Type</th>
-                    <th>Title</th>
-                    <th><button onclick="displayarrange()"  class="mybutton" ><span>Distance</span></button></th>
-                    <th>Time</th>
-                    <th>Owner</th>
-                <tr/>
-                </thead>
-                <tbody>
-                <% for (var i = 0; i < invited_events.length; i++) { %>
-                <% var eventtime = invited_events[i]["time"];
-                    var eventime2 = eventtime.split("T");
-                    var finaltime = eventime2[0] + " " + eventime2[1];%>
-                <tr>
-                    <td><%= invited_events[i]["type"] %></td>
-                    <td>
-                        <a href="/eventMe/event/<%= invited_events[i]["eventId"] %>/<%= user_id%>">
-                            <%= invited_events[i]["title"] %>
-                        </a>
-                    </td>
-                    <td id="distance"><%= invited_events[i]["location"] %></td>
-                    <td style="display:none"><%= invited_events[i]["eventId"] %></td>
-                    <p id="user_location" style="display:none"><%= location %></p>
-                    <td><%= finaltime %></td>
-                    <td><%= invited_events[i]["ownerName"] %></td>
-                    <td><a href="/eventMe/delete_event/<%= invited_events[i]["eventId"] %>/<%= user_id%>" <button>delete</button> </a></td>
-                </tr>
-                <% } %>
-                </tbody>
-            </table>
+                    <% if (invited_events.length <= 0) { %>
+                    <div class="container-fluid" >
+                        <a class="btn btn-info btn-lg" href="/eventMe/createevent/<%= user_id %>" style="white-space: normal; background-color: black; color: white; border-color: white">No Upcoming Events. Create Your Own By Clicking Here</a>
+                    </div>
+
+                    <% } %>
+
+                    <% if (invited_events.length > 0) { %>
+                        <table class="table table-striped" id="excelDataTable">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th>Type</th>
+                                <th>Title</th>
+                                <th><a onclick="displayarrange()" class="btn btn-info btn-lg" style="white-space: normal; background-color: coral; color: black; border-color: black"><span>Distance</span></a></th>
+                                <th>Time</th>
+                                <th>Owner</th>
+                                <th>
+                            <tr/>
+                            </thead>
+                            <tbody>
+                            <% for (var i = 0; i < invited_events.length; i++) { %>
+                            <% var eventtime = invited_events[i]["time"];
+                                var eventime2 = eventtime.split("T");
+                                var finaltime = eventime2[0] + " " + eventime2[1];%>
+                            <tr>
+                                <td><%= invited_events[i]["type"] %></td>
+                                <td>
+                                    <a href="/eventMe/event/<%= invited_events[i]["eventId"] %>/<%= user_id%>">
+                                        <%= invited_events[i]["title"] %>
+                                    </a>
+                                </td>
+                                <td id="distance"><%= invited_events[i]["location"] %></td>
+                                <td style="display:none"><%= invited_events[i]["eventId"] %></td>
+                                <p id="user_location" style="display:none"><%= location %></p>
+                                <td><%= finaltime %></td>
+                                <td><%= invited_events[i]["ownerName"] %></td>
+                                <td><a style="white-space: normal; background-color: coral; color: black; border-color: black" class="btn btn-info btn-lg" href="/eventMe/delete_event/<%= invited_events[i]["eventId"] %>/<%= user_id%>">delete</a></td>
+                            </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
             <script>
                 $(document).ready(function(){
                     var event_loc=$('#excelDataTable tr td:nth-child(3)').text();
@@ -187,7 +196,7 @@
                     return x * (pi / 180);
                 }
 
-            </script>
+            </script><% } %>
 
         </div>
         </div>

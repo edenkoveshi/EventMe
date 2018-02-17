@@ -75,15 +75,10 @@
     }
 }
 
-.demo-2 td, .demo-2 th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 3px;
-}
-
 #excelDataTable {
-    width: 50%;
-    height: 50%;
+    font: 500 17px/1.5 "Helvetica Neue", helvetica, arial, sans-serif;
+    width: 80%;
+    height: 70%;
     margin: 0;
     padding: 0;
     overflow-y: auto;
@@ -110,6 +105,15 @@
     width: 300px;
     height: 100px;
     background-color: #eee;
+    border: 1px solid #dddddd;
+}
+
+#excelDataTable th{
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 3px;
+    color: darkred;
+    font: 800 25px/1.5 "Helvetica Neue", helvetica, arial, sans-serif;
 }
 
 #excelDataTable tr{

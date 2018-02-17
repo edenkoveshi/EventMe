@@ -457,7 +457,7 @@
     <style>
         .center {
             margin: auto;
-            padding: 50px;
+            padding: 5px;
             background: black;
             color: white;
             width: 100%;
@@ -540,14 +540,14 @@
                     <div class="form-row">
                         <div class="form-group col-md-3">
                             <h4 class="form-control" style="weight:bold;">Join event<br/></h4>
-                            <a class="form-control" href="/eventMe/joinEvent/<%= event_id %>/<%= user_id %>">
+                            <a style="background-color: coral; border-color: darkred;" class="form-control" href="/eventMe/joinEvent/<%= event_id %>/<%= user_id %>">
                                 <img height=50px, onClick='alert("You have joined: <%= title %> ")' width=50px
                                      src="../../../img\tick.png"/>
                             </a>
                         </div>
                         <div class="form-group col-md-3">
                             <h4 class="form-control" style="weight:bold;">Leave event<br/></h4>
-                            <a class="form-control" href="/eventMe/unattend/<%= event_id %>/<%= user_id %>">
+                            <a style="background-color: coral; border-color: darkred;" class="form-control" href="/eventMe/unattend/<%= event_id %>/<%= user_id %>">
                                 <img height=50px, onClick='alert("You have left: <%= title %> ")' ,width=50px
                                      src="../../../img\x.png"/>
                             </a>
