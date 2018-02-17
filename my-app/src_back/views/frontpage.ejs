@@ -87,12 +87,20 @@
             <% include tmpnav %>
             <div class="container-fluid">
             <div class="table-responsive">
+                <% if (invited_events.length <= 0) { %>
+                <div class="container-fluid" >
+                    <a class="btn btn-info btn-lg" href="/eventMe/createevent/<%= user_id %>" style="white-space: normal; background-color: black; color: white; border-color: white">No Upcoming Events. Create Your Own By Clicking Here</a>
+                </div>
+
+                <% } %>
+
+                <% if (invited_events.length > 0) { %>
             <table class="table table-striped" id="excelDataTable" style="z-index: 50">
                 <thead class="thead-dark">
                 <tr>
                     <th>Type</th>
                     <th>Title</th>
-                    <th><button onclick="displayarrange()" class="mybutton" ><span>Distance</span></button></th>
+                    <th><button onclick="displayarrange()" class="btn btn-info btn-lg" ><span>Distance</span></button></th>
                     <th>Time</th>
                     <th>Owner</th>
                 <tr/>
@@ -186,7 +194,7 @@
                     return x * (pi / 180);
                 }
 
-            </script>
+            </script><% } %>
             </div>
 
         </div>
