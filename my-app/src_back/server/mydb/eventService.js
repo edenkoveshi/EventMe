@@ -137,8 +137,23 @@ class eventService {
                                 console.log('the user '+user_id + 'already voted in event ' + event_id + 'poll '+ cur_pull);
                                 console.log('deleting old vote so the new vote could be recieved');
                                 let old_vote = requested_events[0].pollArray[cur_pull].voted_users[i].vote;
-                                requested_events[0].pollArray[cur_pull].options[i].votes--;
-                                requested_events[0].pollArray[cur_pull].voted_users.splice(user[0].invited_events.indexOf( i ,1));
+                                var j = 0;
+                                var found = false;
+                                while (!found){
+                                    if(requested_events[0].pollArray[cur_pull].options[j].option == old_vote){
+                                        found = true;
+                                    }
+                                    else{
+                                        j++;
+                                    }
+                                    if(j > requested_events[0].pollArray[cur_pull].options.length)
+                                    {
+                                        console.log("altough user has already voted, couldnt match his vote to any other vote")
+                                        resolve()
+                                    }
+                                }
+                                requested_events[0].pollArray[cur_pull].options[j].votes--;
+                                requested_events[0].pollArray[cur_pull].voted_users.splice(requested_events[0].pollArray[cur_pull].voted_users.indexOf( user_id ,my_vote),1);
                             }
                         }
 
