@@ -82,10 +82,10 @@ function displaytime() {
     var date = document.getElementById("date").value;
     var time = document.getElementById("time").value;
     var myCurrentList = [];
-    var x = (date + "T" + time);
+    var x = (date + " " + time);
     var splittedTime = [];
     for (var listIndex = 2; listIndex < myList.length; listIndex++) {
-        splittedTime = myList[listIndex]["Time"].split("T");
+        splittedTime = myList[listIndex]["Time"].split(" ");
         if (time == "") {
             if (splittedTime[0] == date){
                 myCurrentList.push(myList[listIndex]);
@@ -114,8 +114,9 @@ function displaysearch() {
     if (x != "") {
         for (var listIndex = 0; listIndex < myList.length; listIndex++) {
             var event_types=myList[listIndex]["Type"].split(',');
-            for (var typesIndex = 0; typesIndex < event_types.length; typesIndex++) {
-                if (event_types[typesIndex] == x && alreadyIn.indexOf(listIndex) == -1) {
+            var event_titles=myList[listIndex]["Title"].split(',');
+            for (var eventsIndex = 0; eventsIndex < event_types.length; eventsIndex++) {
+                if ((event_types[eventsIndex].toLowerCase() == x.toLowerCase() || event_titles[eventsIndex].toLowerCase().includes(x.toLowerCase())) && alreadyIn.indexOf(listIndex) == -1) {
                     myCurrentList.push(myList[listIndex]);
                     alreadyIn.push(listIndex);
                     break;
@@ -156,7 +157,7 @@ function buildEventsTable(selector, myList) {
             }
             else if (columns[colIndex] == "Owner" && arrayHref[4] == "myownevents") {
                 row$.append($('<td>'+cellValue+'</td>'+'</tr>'));
-                row$.append($('<td>'+'<a href='+hrefdelete+'> <button>delete</button>'+'</a>'+'</td>'+'</tr>'));
+                row$.append($('<td>'+'<a style="white-space: normal; background-color: coral; color: black; border-color: black" class="btn btn-info btn-lg" href='+hrefdelete+'>delete</a>'+'</td>'+'</tr>'));
             } else if (columns[colIndex] == "Title") {
 
             }
@@ -176,19 +177,20 @@ function addAllColumnHeaders(myList, selector) {
     // $(selector).append($('<caption>'+"Events"+'</caption>'));
     var columnSet = [];
     var headerTr$ = $('<tr/>');
+    var myHref = window.location.href;
+    var arrayHref = myHref.split("/");
     var ifEmpty = ["Type", "Title", "Distance", "Time", "Owner"];
     if (myList.length == 0) {
         for (var i = 0; i < ifEmpty.length; i++) {
-            if (ifEmpty[i] !== "Distance"){
+            if (ifEmpty[i] !== "Distance") {
                 columnSet.push(ifEmpty[i]);
                 headerTr$.append($('<th/>').html(ifEmpty[i]));
             }
-            else if (ifEmpty[i] == "Distance"){
-                headerTr$.append($('<th>' + '<button onclick="displayarrange()"  class="mybutton" ><span>Distance</span></button>' + '</th>' ));
+            else if (ifEmpty[i] == "Distance") {
+                headerTr$.append($('<th>' + '<button style="white-space: normal; background-color: coral; color: black; border-color: black" class="btn btn-info btn-lg" onclick="displayarrange()"><span>Distance</span></button>' + '</th>'));
             }
         }
     }
-
     for (var i = 0; i < myList.length; i++) {
         var rowHash = myList[i];
         for (var key in rowHash) {
@@ -198,9 +200,12 @@ function addAllColumnHeaders(myList, selector) {
             }
             else if ($.inArray(key, columnSet) == -1 && key == "Distance"){
                 columnSet.push(key);
-                headerTr$.append($('<th>' + '<button onclick="displayarrange()"  class="mybutton" ><span>Distance</span></button>' + '</th>' ));
+                headerTr$.append($('<th>' + '<button onclick="displayarrange()" style="white-space: normal; background-color: coral; color: black; border-color: black" class="btn btn-info btn-lg"><span>Distance</span></button>' + '</th>' ));
             }
         }
+    }
+    if (arrayHref[4] == "myownevents") {
+        headerTr$.append($('<th/>'));
     }
     $(selector).append(headerTr$);
 
