@@ -85,12 +85,15 @@ class eventService {
                     eventDAO.get_event(event_id).then(event=>{
                         let promises = [];
                         let a_promise;
-                        a_promise = remove_my_owned_event_from_my_list(user[0],do_i_own_this_event)
+                        a_promise = remove_my_owned_event_from_my_list(user[0],do_i_own_this_event, event_id)
                         promises.push(a_promise)
                         for (let i = 0; i < event[0].going_users.length ; i++)
                         {
-                            a_promise = remove_attending_event_from_my_list(event[0].going_users[i],event_id)
-                            promises.push(a_promise)
+                            if(event[0].going_users[i] != user[0].fb_id)
+                            {
+                                a_promise = remove_attending_event_from_my_list(event[0].going_users[i],event_id)
+                                promises.push(a_promise)
+                            }
                         }
                         for (let j = 0; j < event[0].invited_users.length ; j++)
                         {
@@ -220,10 +223,15 @@ function validate_vote(user_id ,event_id ,cur_pull ,my_vote ,event ){
     return valid_vote
 }
 
-function remove_my_owned_event_from_my_list(user,event_location_in_my_array){
+function remove_my_owned_event_from_my_list(user,event_location_in_my_array, event_id){
     console.log('remove_my_owned_event_from_my_list - going to deleting event at owner')
     return new Promise((resolve, reject) => {
         user.own_public_events.splice(event_location_in_my_array,1)
+        var am_i_going = user.going_events.indexOf(event_id)
+        if(am_i_going > -1)
+        {
+            user.going_events.splice(am_i_going,1)
+        }
         userDAO.update_user(user.fb_id, user).then(_=>{
             console.log('user got his owned event removed')
             resolve()
