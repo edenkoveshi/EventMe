@@ -180,6 +180,24 @@ class eventService {
                 }).catch(err => reject(err))
         })
     }
+    close_vote(user_id ,event_id ,cur_pull ){
+        return new Promise((resolve, reject) =>{
+            eventDAO.get_event(event_id)
+                .then(requested_events=>{
+                    for(var i = cur_pull; i<(event[0].pollArray.length - 1); i++)
+                    {
+                        requested_events[0].pollArray[i] = requested_events[0].pollArray[i + 1];
+                    }
+                    requested_events[0].pollArray[i] = {};
+                    requested_events[0].pollCounter--;
+                    eventDAO.update_event(event_id, requested_events[0]).then(_=>{
+                        console.log('closed the poll,  the new event looks like this:')
+                        console.log(requested_events[0])
+                        resolve()
+                    }).catch(err => reject(err))
+                }).catch(err => reject(err))
+        }).catch(err => reject(err))
+    }
 }
 
 module.exports = new eventService()

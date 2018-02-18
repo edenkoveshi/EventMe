@@ -504,6 +504,32 @@ router.post('/vote/:user_id', (req, res) => {
    })
 });
 
+
+/*
+************************************
+            close poll
+
+    body : user_id, eventId, poll number
+    redirect : /eventMe/event
+
+    the page close the relavant poll
+*************************************
+ */
+router.post('/closepoll', (req, res) => {
+    return new Promise((resolve, reject) => {
+        console.log('I am using my right to vote !  go trump!')
+        user_id = req.body.user_id
+        event_id = req.body.eventId
+        cur_pull = req.body.pollNum
+        es.close_vote(user_id ,event_id ,cur_pull -1 ).then(_=>{
+            console.log('The event is closed')
+            res.redirect('/eventMe/event/' + event_id + '/' + user_id);
+            resolve()
+        }).catch(err => reject(err))
+    })
+});
+
+
 module.exports = router;
 
 
