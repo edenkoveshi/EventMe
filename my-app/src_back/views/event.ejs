@@ -116,6 +116,42 @@
             });
         }
 
+        function ClosePoll(type)
+        {
+            var max_votes=0;
+            for(var i=0;i<ticks.length;i++)
+            {
+                if(max_votes<ticks[i])
+                    max_votes=ticks[i];
+            }
+            if(max_votes==0)
+                window.alert('You must have at least 1 vote before closing poll');
+            else {
+                $('#close-poll-form').remove();
+                ($('<form id="close-poll-form" action="/eventMe/closepoll" method="POST"/>')).insertBefore($('#poll_data'));
+                var user_id = document.getElementById('user_id').innerHTML;
+                var event_id = document.getElementById('event_id').innerHTML;
+                $('#close-poll-form').append('<input type="text" name="user_id" style="display:none" value="' + user_id + "'");
+                $('#close-poll-form').append('<input type="text" name="eventId" style="display:none" value="' + event_id + "'");
+                $('#close-poll-form').append('<input type="text" name="event_type" style="display:none" value="' + type + "'");
+                //determine poll number
+                var pollNum;
+                if (type == "Location") {
+                    pollNum = 1;
+                }
+                else if (type == "Date-time") {
+                    if (LocationUnderPoll())
+                        pollNum = 2;
+                    else pollNum = 1;
+                }
+                else {
+                    pollNum = parseInt(document.getElementById('poll-counter').innerHTML);
+                }
+                $('#close-poll-form').append('<input type="text" name="pollNum" style="display:none" value="' + pollNum + "'");
+                $('#close-poll-form').submit();
+            }
+        }
+
         //Center map on chosen address in poll chart
         function CenterMap() {
             var i=chart.getSelection()[0].row;
@@ -424,7 +460,8 @@
             var owner_id=document.getElementById('owner_id').innerHTML;
             if(user_id==owner_id)
             {
-                $('#vote-form').append($("<button id='close-poll'>Close poll!</button>"));
+                $('#vote-form').append($("<input type='button' id='close-poll' value='Close poll!')/>"));
+                $('#close-poll').click(function(){ClosePoll(type);});
             }
 
         }
@@ -448,8 +485,6 @@
             }
             return votes;
         }
-
-
 
 
     </script>
