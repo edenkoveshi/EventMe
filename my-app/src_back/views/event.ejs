@@ -119,10 +119,11 @@
         function ClosePoll(type)
         {
             var max_votes=0;
-            for(var i=0;i<ticks.length;i++)
+            var votes=Votes();
+            for(var i=0;i<votes.length;i++)
             {
-                if(max_votes<ticks[i])
-                    max_votes=ticks[i];
+                if(max_votes<votes[i])
+                    max_votes=votes[i];
             }
             if(max_votes==0)
                 window.alert('You must have at least 1 vote before closing poll');
