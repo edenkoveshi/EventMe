@@ -106,6 +106,7 @@
                         }
                             document.getElementById('myVote').value = vote;
                             document.getElementById('pollNum').value = pollNum;
+                            $('#poll_data').attr('action',"/eventMe/vote/"+user_id);
                             $('#poll_data').submit();
                     }
                     else {
@@ -128,13 +129,7 @@
             if(max_votes==0)
                 window.alert('You must have at least 1 vote before closing poll');
             else {
-                $('#close-poll-form').remove();
-                ($('<form id="close-poll-form" action="/eventMe/closepoll" method="POST"/>')).insertBefore($('#poll_data'));
-                var user_id = document.getElementById('user_id').innerHTML;
-                var event_id = document.getElementById('event_id').innerHTML;
-                $('#close-poll-form').append('<input type="text" name="user_id" style="display:none" value="' + user_id + "'");
-                $('#close-poll-form').append('<input type="text" name="eventId" style="display:none" value="' + event_id + "'");
-                $('#close-poll-form').append('<input type="text" name="event_type" style="display:none" value="' + type + "'");
+                $('#event_type').val(type);
                 //determine poll number
                 var pollNum;
                 if (type == "Location") {
@@ -148,8 +143,10 @@
                 else {
                     pollNum = parseInt(document.getElementById('poll-counter').innerHTML);
                 }
-                $('#close-poll-form').append('<input type="text" name="pollNum" style="display:none" value="' + pollNum + "'");
-                $('#close-poll-form').submit();
+                //reusing poll-data form
+                $('#pollNum').val(pollNum);
+                $('#poll_data').attr('action',"/eventMe/closepoll");
+                $('#poll_data').submit();
             }
         }
 
@@ -479,7 +476,6 @@
                 poll=FreePoll;
             else
                 poll=TimePoll;
-            console.log(poll);
             var votes=[];
             for(var i=0;i<poll.options.length;i++) {
                 votes.push(poll.options[i].votes)
@@ -636,12 +632,13 @@
                 <p id="event_id" style="display:none; color:white;"><%= event_id %>
                 <p id="owner_id" style="display:none"><%=owner_id%></p>
 
-                <form id="poll_data" action="/eventMe/vote/<%= user_id %>" method="POST"
+                <form id="poll_data" method="POST"
                       style="display:none; ">
                     <input style="display:none; color:white;" name="user_id" value=<%= user_id %> />
                     <input style="display:none; color:white;" name="eventId" value=<%= event_id %> />
                     <input style="display:none; color:white;" name="pollNum" id="pollNum"/>
                     <input style="display:none; color:white;" name="myVote" id="myVote"/>
+                    <input style="display:none" name="event_type" id="event_type"/>
                 </form>
             </div>
         </div>
