@@ -517,10 +517,17 @@ router.post('/vote/:user_id', (req, res) => {
  */
 router.post('/closepoll', (req, res) => {
     return new Promise((resolve, reject) => {
-        console.log('I am using my right to vote !  go trump!')
+        console.log('trying to vote, let it close, let it close')
         user_id = req.body.user_id
+        console.log('user_id = ' + user_id)
         event_id = req.body.eventId
+        console.log('event_id = ' + event_id)
         cur_pull = req.body.pollNum
+        console.log('cur_pull = ' + cur_pull)
+        poll_type = req.body.event_type
+        console.log('poll_type = ' + poll_type)
+        console.log('body = ')
+        console.log(req.body)
         es.close_vote(user_id ,event_id ,cur_pull -1 ).then(_=>{
             console.log('The event is closed')
             res.redirect('/eventMe/event/' + event_id + '/' + user_id);
