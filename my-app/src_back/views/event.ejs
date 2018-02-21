@@ -50,6 +50,15 @@
                 var event_time=document.getElementById('event-time').innerHTML.split(' ')[1];
                 document.getElementById('event-time').innerHTML = "When: "+ChangeDisplay(event_time);
             }
+            var user_id=document.getElementById("user_id").innerHTML;
+            var owner_id=document.getElementById("owner_id").innerHTML;
+            console.log(user_id);
+            console.log(owner_id);
+            if(user_id==owner_id)
+            {
+            ($("<input type='button' id='edit' value='Edit'/>")).insertBefore($("#title"));
+            $('#edit').click(function(){EditEvent();});
+            }
 
         });
 
@@ -469,8 +478,6 @@
             {
                 $('#vote-form').append($("<input type='button' id='close-poll' value='Close poll!'/>"));
                 $('#close-poll').click(function(){ClosePoll(type);});
-                $('#maps-modal').append($("<button id='edit'>Edit</button>"));
-                $('#edit').click(function(){EditEvent();});
             }
 
         }
@@ -497,7 +504,11 @@
         }
 
         function EditEvent(){
-
+            var user_input=document.getElementsByClassName('user-input');
+            var user_input_copy;
+            Array.prototype.forEach.call(user_input,item => {
+                console.log(item.innerHTML);
+            })
         }
 
 
@@ -602,11 +613,11 @@
                             </a>
                         </div>
                         <div class="form-group col-md-6">
-                           <span class="form-control" style="text-align:center;"><H3>
+                           <span id="title" class="form-control user-input" style="text-align:center;"><H3>
                                     <%= title %>
                                 </H3></span>
                             <br/>
-                            <p class="form-control" id="event-time">When: <%= event_time %></p>
+                            <p class="form-control user-input" id="event-time">When: <%= event_time %></p>
                         </div>
                     </div>
                     <div class="form-row">
@@ -622,14 +633,14 @@
                             <%= invited_users[i] %><br/>
                             <% } %>
                         </div>
-                        <div class="form-group col-md-6">
+                        <div id="event-info" class="form-group col-md-6">
                             <p class="form-control" id="event-type">What:</p>
                             <p class="form-control user-input" id="event-type"><%= event_type %></p>
-                            <p class="form-control" id="location-premable" style="display: none" class="user-input"><a id="location"
+                            <p class="form-control" id="location-premable" style="display: none"><a id="location" class="user-input"
                                                                                                     style="display: none"
                                                                                                     onclick="OpenMap()"><%= event_place %></a>
                             </p>
-                            <p class="form-control" id="description">Description: <br/> <%= event_desc %></p>
+                            <p class="form-control user-input" id="description">Description: <br/> <%= event_desc %></p>
                             </span>
 
                         </div>

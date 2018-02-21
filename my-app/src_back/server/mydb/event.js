@@ -17,6 +17,7 @@ class  event
         this.goingName = [owner_name]
         this.pollCounter = poll_counter
         this.pollArray = poll_array
+        this.pool_results = '0'
     }
 }
 

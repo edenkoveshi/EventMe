@@ -66,6 +66,7 @@ router.get('/getstarted', function (req, res) {
     changes user status in an event from, invited to attending
 *************************************
  */
+
 router.get('/event/:event_id/:user_id', function (req, res) {
     let p = es.getEvent(req.params.event_id);
     p.then((event) => {
@@ -74,7 +75,12 @@ router.get('/event/:event_id/:user_id', function (req, res) {
             res.render('event', {
                 event_id: req.params.event_id,
                 title: event["title"], // 'my event',
-                event_img: (event["image"] == "" ? event["image"] : 'restaurant.jpeg'),
+                event_img: event["type"].indexOf("Food") != -1 ? 'food.jpg' :
+                    event["type"].indexOf("Sport") != -1 ? 'sport.jpg' :
+                        event["type"].indexOf("Entertainment") != -1 ? 'entertainment.jpg' :
+                            event["type"].indexOf("Shopping") != -1 ? 'shopping.jpg' :
+                                event["type"].indexOf("Adventure") != -1 ? 'adventure.jpg' :
+                                    event["type"].indexOf("Party") != -1 ? 'party.jpg' : 'other.jpg',
                 event_time: (event["time"] == undefined ? "" : event["time"]),
                 event_place: (event["location"] == undefined ? "" : event["location"]),
                 event_type: event["type"],
@@ -196,7 +202,7 @@ router.post('/addOpenEvent/:user_id', (req, res) => {
         console.log(req.body);
         es.addOpenEvent(req.params["user_id"], req.body["Activity_name"], req.body["google-location"], req.body["categories"], req.body["description"], req.body["Activity_time"], req.body)
             .then(_ => {
-                let newUrl = '/eventMe/frontpage/' + req.params["user_id"];
+                let newUrl = '/eventMe/myownevents/' + req.params["user_id"];
                 console.log(newUrl);
                 res.redirect(newUrl);
                 resolve()
@@ -526,7 +532,7 @@ router.post('/closepoll', (req, res) => {
         console.log('poll_type = ' + poll_type)
         console.log('body = ')
         console.log(req.body)
-        es.close_vote(user_id ,event_id ,cur_pull -1, poll_type ).then(_=>{
+        es.close_vote(user_id, event_id, cur_pull - 1, poll_type).then(_ => {
             console.log('The event is closed')
             res.redirect('/eventMe/event/' + event_id + '/' + user_id);
             resolve()
