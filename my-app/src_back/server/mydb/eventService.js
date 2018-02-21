@@ -196,19 +196,10 @@ class eventService {
                             winner.votes = requested_events[0].pollArray[cur_pull].options[i].votes;
                         }
                     }
-                    console.log('got this far')
+                    requested_events[0].pollArray[cur_pull].pool_results = requested_events[0].pollArray[cur_pull].winner;
                     requested_events[0].pollArray[cur_pull].status = "close";   //closing the poll
                     requested_events[0].pollArray[cur_pull].winner = requested_events[0].pollArray[cur_pull].options[winner.option].option;   // saving the winning option to the event
-                    for(var j = cur_pull; j<(requested_events[0].pollArray[cur_pull].length - 1); j++)
-                    {
-                        requested_events[0].pollArray[j] = requested_events[0].pollArray[j + 1];
-                    }
-                    requested_events[0].pollArray[j] = {};
-                    requested_events[0].pollCounter--;
-                    requested_events[0].pollArray[cur_pull].pool_results = requested_events[0].pollArray[cur_pull].winner;
-                    console.log('out of all the options in the poll:')
-                    console.log(requested_events[0].pollArray[cur_pull])
-                    console.log('the winner vote is:'+ winner)
+
                     // now if poll type is either time or location, update the event accordingly
                     if(poll_type == 'Location')
                     {
@@ -218,6 +209,12 @@ class eventService {
                     {
                         requested_events[0].time = requested_events[0].pollArray[cur_pull].winner;
                     }
+                    for(var j = cur_pull; j<(requested_events[0].pollArray[cur_pull].length - 1); j++)
+                    {
+                        requested_events[0].pollArray[j] = requested_events[0].pollArray[j + 1];
+                    }
+                    requested_events[0].pollArray[j] = {};
+                    requested_events[0].pollCounter--;
                     eventDAO.update_event(event_id, requested_events[0]).then(_=>{
                         console.log('closed the poll,  the new event looks like this:')
                         console.log(requested_events[0])
