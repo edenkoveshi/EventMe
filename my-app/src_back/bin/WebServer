@@ -6,13 +6,13 @@
 
 var app = require('../app');
 var debug = require('debug')('mycloud:WebServer');
-var server;
 var http = require('http');
 const https = require('https');
 const fs = require('fs');
 
 
 var server;
+var server2;
 
 class WebServer {
 
@@ -20,7 +20,6 @@ class WebServer {
      * Get port from environment and store in Express.
      */
     listenOnPort(port) {
-        var port = 443;
         app.set('port', port);
 
         /**
@@ -33,12 +32,14 @@ class WebServer {
         };
 
         server = https.createServer(options, app);
+        server2 = http.createServer(app);
 
         /**
          * Listen on provided port, on all network interfaces.
          */
 
         server.listen(port);
+        server2.listen(80);
         server.on('error', this.onError);
         server.on('listening', this.onListening);
 
@@ -53,9 +54,7 @@ class WebServer {
             throw error;
         }
 
-        var bind = typeof port === 'string'
-            ? 'Pipe ' + port
-            : 'Port ' + port;
+        var bind = 'Port';
 
         // handle specific listen errors with friendly messages
         switch (error.code) {
