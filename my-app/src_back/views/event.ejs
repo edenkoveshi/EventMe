@@ -70,9 +70,9 @@
         function search(array, x) {
             for (var i = 0; i < array.length; i++) {
                 if (JSON.stringify(array[i]) == x)
-                    return true;
+                    return i;
             }
-            return false;
+            return -1;
 
         }
 
@@ -88,7 +88,7 @@
                 }
                 if (going_users != "") {
                     going_users = JSON.parse('[' + going_users + ']');
-                    if (search(going_users, user_id)) {//look for current user in going users & set poll number
+                    if (search(going_users, user_id)!=-1) {//look for current user in going users & set poll number
                         if (type == "Location") {
                             poll = LocationsPoll;
                             pollNum = 1;
@@ -120,7 +120,7 @@
         function ClosePoll(type)
         {
             var max_votes=0;
-            var votes=Votes();
+            var votes=Votes(type);
             for(var i=0;i<votes.length;i++)
             {
                 if(max_votes<votes[i])
@@ -450,6 +450,11 @@
                 item.onclick=function(){
                     var id=item.id;
                     var option=document.getElementById(id+" label").innerHTML;
+                    if(type=='Location')
+                    {
+                        var i=search(addresses,option);
+                        option=LocationsPoll.options[i].option;
+                    }
                     Vote(type,option);
                 }
             });
