@@ -187,7 +187,7 @@ class eventService {
                 .then(requested_events=>{
                     console.log('requested event:')
                     console.log(requested_events[0])
-                    var winner = {option:0, votes:0}
+                    var winner = {option:0, votes:-1}
                     for(var i = cur_pull; i<(requested_events[0].pollArray.length - 1); i++)
                     {
                         if(requested_events[0].pollArray[cur_pull].options[i].votes > winner.votes)
@@ -196,10 +196,12 @@ class eventService {
                             winner.votes = requested_events[0].pollArray[cur_pull].options[i].votes;
                         }
                     }
+
+                    requested_events[0].pollArray[cur_pull].winner = requested_events[0].pollArray[cur_pull].options[winner.option].option;   // saving the winning option to the event
+                    requested_events[0].pollArray[cur_pull].status = "close";   //closing the poll
                     console.log('out of all the options in the poll:')
                     console.log(requested_events[0].pollArray[cur_pull])
                     console.log('the winner vote is:'+ winner)
-                    requested_events[0].pollArray[cur_pull].status = "close";   //closing the poll
                     // now if poll type is either time or location, update the event accordingly
                     if(poll_type == 'Location')
                     {
@@ -209,12 +211,11 @@ class eventService {
                     {
                         requested_events[0].time = requested_events[0].pollArray[cur_pull].winner;
                     }
-                    eventDAO.update_event(event_id, requested_events[0]).then(_=>{
-                        console_events[0].pollArray[cur_pull].winner = requested_events[0].pollArray[cur_pull].options[winner.option].option;   // saving the winning option to the event
-                        requested.log('closed the poll,  the new event looks like this:')
-                        console.log(requested_events[0])
-                        resolve()
-                    }).catch(err => reject(err))
+                    console.log('closed the poll,  the new event looks like this:')
+                    eventDAO.update_event(event_id, requested_events[0])
+                        .then(_=>{
+                            resolve()
+                        }).catch(err => reject(err))
                 }).catch(err => reject(err))
         }).catch(err => reject(err))
     }
