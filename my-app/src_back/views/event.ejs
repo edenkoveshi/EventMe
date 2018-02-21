@@ -42,124 +42,6 @@
         var FreePoll = [];
         var chart;
 
-        //display dates in readable format
-        $(document).ready(function(){
-            if(document.getElementById('event-time').innerHTML != "When: ") //no date poll
-            {
-                var event_time=document.getElementById('event-time').innerHTML.split(' ')[1];
-                document.getElementById('event-time').innerHTML = "When: "+ChangeDisplay(event_time);
-            }
-
-        });
-
-        //ChangeDisplay and RevertDisplay used to change date display format
-        function ChangeDisplay(date){
-            var x=date.split('T');//T replaced with ,
-            var y=x[0].split('-');//date change to DD/MM/YY format
-            var newdate=y[2]+'/'+y[1]+'/'+y[0]+' '+x[1];
-            return newdate;
-        }
-
-        function RevertDisplay(date){
-            var x=date.split(' '); //the reverse operation
-            var y=x[0].split('/')
-            return y[2]+'-'+y[1]+'-'+y[0]+'T'+x[1];
-        }
-
-        //used in Vote function
-        function search(array, x) {
-            for (var i = 0; i < array.length; i++) {
-                if (JSON.stringify(array[i]) == x)
-                    return true;
-            }
-            return false;
-
-        }
-
-        //Vote for selected option
-        function Vote(type, vote) {
-            $(document).ready(function () {
-                var user_id = document.getElementById("user_id").innerHTML;
-                var going_users = document.getElementById("going_ids").innerHTML;
-                var poll;
-                var pollNum;
-                if (going_users == "") {//there are no going users
-                    window.alert("If you wish to vote, you must first confirm your attendance");
-                }
-                if (going_users != "") {
-                    going_users = JSON.parse('[' + going_users + ']');
-                    if (search(going_users, user_id)) {//look for current user in going users & set poll number
-                        if (type == "Location") {
-                            poll = LocationsPoll;
-                            pollNum = 1;
-                        }
-                        else if (type == "Date-time") {
-                            poll = TimePoll;
-                            if (LocationUnderPoll())
-                                pollNum = 2;
-                            else pollNum = 1;
-                            vote=RevertDisplay(vote);
-                        }
-                        else {
-                            poll = FreePoll;
-                            pollNum = parseInt(document.getElementById('poll-counter').innerHTML);
-                        }
-                            document.getElementById('myVote').value = vote;
-                            document.getElementById('pollNum').value = pollNum;
-                            $('#poll_data').attr('action',"/eventMe/vote/"+user_id);
-                            $('#poll_data').submit();
-                    }
-                    else {
-                        window.alert("If you wish to vote, you must first confirm your attendance");
-                    }
-                }
-
-            });
-        }
-
-        function ClosePoll(type)
-        {
-            var max_votes=0;
-            var votes=Votes();
-            for(var i=0;i<votes.length;i++)
-            {
-                if(max_votes<votes[i])
-                    max_votes=votes[i];
-            }
-            if(max_votes==0)
-                window.alert('You must have at least 1 vote before closing poll');
-            else {
-                $('#event_type').val(type);
-                //determine poll number
-                var pollNum;
-                if (type == "Location") {
-                    pollNum = 1;
-                }
-                else if (type == "Date-time") {
-                    if (LocationUnderPoll())
-                        pollNum = 2;
-                    else pollNum = 1;
-                }
-                else {
-                    pollNum = parseInt(document.getElementById('poll-counter').innerHTML);
-                }
-                //reusing poll-data form
-                $('#pollNum').val(pollNum);
-                $('#poll_data').attr('action',"/eventMe/closepoll");
-                $('#poll_data').submit();
-            }
-        }
-
-        //Center map on chosen address in poll chart
-        function CenterMap() {
-            var i=chart.getSelection()[0].row;
-            var coords = LocationsPoll.options[i].option.split(" ");
-            var _lat = parseFloat(coords[0].split(",")[0].substring(1));
-            var _lng = parseFloat(coords[1].substring(0, coords[1].length - 1));
-            var pos = {lat: _lat, lng: _lng};
-            map.setCenter(pos);
-        }
-
         ///---INITALIZE POLLS----
         $(document).ready(function () {
             var i = 0;
@@ -230,6 +112,123 @@
             }
         });
 
+        //display dates in readable format
+        $(document).ready(function(){
+            if(document.getElementById('event-time').innerHTML != "When: ") //no date poll
+            {
+                var event_time=document.getElementById('event-time').innerHTML.split(' ')[1];
+                document.getElementById('event-time').innerHTML = "When: "+ChangeDisplay(event_time);
+            }
+
+        });
+
+        //ChangeDisplay and RevertDisplay used to change date display format
+        function ChangeDisplay(date){
+            var x=date.split('T');//T replaced with ,
+            var y=x[0].split('-');//date change to DD/MM/YY format
+            var newdate=y[2]+'/'+y[1]+'/'+y[0]+' '+x[1];
+            return newdate;
+        }
+
+        function RevertDisplay(date){
+            var x=date.split(' '); //the reverse operation
+            var y=x[0].split('/')
+            return y[2]+'-'+y[1]+'-'+y[0]+'T'+x[1];
+        }
+
+        //used in Vote function
+        function search(array, x) {
+            for (var i = 0; i < array.length; i++) {
+                if (JSON.stringify(array[i]) == x)
+                    return i;
+            }
+            return -1;
+
+        }
+
+        //Vote for selected option
+        function Vote(type, vote) {
+            $(document).ready(function () {
+                var user_id = document.getElementById("user_id").innerHTML;
+                var going_users = document.getElementById("going_ids").innerHTML;
+                var poll;
+                var pollNum;
+                if (going_users == "") {//there are no going users
+                    window.alert("If you wish to vote, you must first confirm your attendance");
+                }
+                if (going_users != "") {
+                    going_users = JSON.parse('[' + going_users + ']');
+                    if (search(going_users, user_id)!=-1) {//look for current user in going users & set poll number
+                        if (type == "Location") {
+                            poll = LocationsPoll;
+                            pollNum = 1;
+                        }
+                        else if (type == "Date-time") {
+                            poll = TimePoll;
+                            if (LocationUnderPoll())
+                                pollNum = 2;
+                            else pollNum = 1;
+                            vote=RevertDisplay(vote);
+                        }
+                        else {
+                            poll = FreePoll;
+                            pollNum = parseInt(document.getElementById('poll-counter').innerHTML);
+                        }
+                            document.getElementById('myVote').value = vote;
+                            document.getElementById('pollNum').value = pollNum;
+                            $('#poll_data').attr('action',"/eventMe/vote/"+user_id);
+                            $('#poll_data').submit();
+                    }
+                    else {
+                        window.alert("If you wish to vote, you must first confirm your attendance");
+                    }
+                }
+
+            });
+        }
+
+        function ClosePoll(type)
+        {
+            var max_votes=0;
+            var votes=Votes(type);
+            for(var i=0;i<votes.length;i++)
+            {
+                if(max_votes<votes[i])
+                    max_votes=votes[i];
+            }
+            if(max_votes==0)
+                window.alert('You must have at least 1 vote before closing poll');
+            else {
+                $('#event_type').val(type);
+                //determine poll number
+                var pollNum;
+                if (type == "Location") {
+                    pollNum = 1;
+                }
+                else if (type == "Date-time") {
+                    if (LocationUnderPoll())
+                        pollNum = 2;
+                    else pollNum = 1;
+                }
+                else {
+                    pollNum = parseInt(document.getElementById('poll-counter').innerHTML);
+                }
+                //reusing poll-data form
+                $('#pollNum').val(pollNum);
+                $('#poll_data').attr('action',"/eventMe/closepoll");
+                $('#poll_data').submit();
+            }
+        }
+
+        //Center map on chosen address in poll chart
+        function CenterMap() {
+            var i=chart.getSelection()[0].row;
+            var coords = LocationsPoll.options[i].option.split(" ");
+            var _lat = parseFloat(coords[0].split(",")[0].substring(1));
+            var _lng = parseFloat(coords[1].substring(0, coords[1].length - 1));
+            var pos = {lat: _lat, lng: _lng};
+            map.setCenter(pos);
+        }
 
         ///----CONTROL CHART DIV----
         function ShowPollResults() {
@@ -271,7 +270,7 @@
                 latlng = coords[0] + coords[1].substring(0,coords[1].length-1);
                 //Make an http request for google geocode services to get coordinates address
                 var xmlHttp = new XMLHttpRequest();
-                var url = "https:maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&key=AIzaSyCu3KurWBoVaFCgz3J6jjoYcnmIVY2i6B0";
+                var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&key=AIzaSyCu3KurWBoVaFCgz3J6jjoYcnmIVY2i6B0";
                 xmlHttp.open("GET", url, true);
                 xmlHttp.onreadystatechange = function () {
                     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
@@ -450,7 +449,15 @@
                 item.onclick=function(){
                     var id=item.id;
                     var option=document.getElementById(id+" label").innerHTML;
+                    if(type=='Location')
+                    {
+                        var i=search(addresses,'"'+option+'"');
+                        console.log(i);
+                        console.log(LocationsPoll);
+                        option=LocationsPoll.options[i].option;
+                    }
                     Vote(type,option);
+
                 }
             });
             //if current user is event owner,add a 'close poll' button
@@ -477,6 +484,8 @@
             else
                 poll=TimePoll;
             var votes=[];
+            console.log(LocationsPoll);
+            console.log(poll);
             for(var i=0;i<poll.options.length;i++) {
                 votes.push(poll.options[i].votes)
             }
