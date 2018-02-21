@@ -14,7 +14,7 @@ function getList(){
         }
     });
     for (var listIndex = 2; listIndex < myList.length; listIndex++) {
-        if (myList[listIndex]["Distance"] !== "" || myList[listIndex]["Distance"] !== "") {
+        if (!(myList[listIndex]["Distance"]).includes("km")) {
             var tmpDistance = readyForDistance(myList[listIndex]["Distance"]);
             myList[listIndex]["Distance"] = tmpDistance;
         } else if (myList[listIndex]["Distance"] == "") {
