@@ -14,18 +14,12 @@
         largeHeader = document.getElementById('large-header');
         largeHeader.style.height = height+'px';
 
-        canvas = document.getElementById('demo-canvas');
-        canvas.width = width;
-        canvas.height = height;
-        ctx = canvas.getContext('2d');
-
         // create particles
         circles = [];
         for(var x = 0; x < width*0.5; x++) {
             var c = new Circle();
             circles.push(c);
         }
-        animate();
     }
 
     // Event handling
@@ -47,15 +41,6 @@
         canvas.height = height;
     }
 
-    function animate() {
-        if(animateHeader) {
-            ctx.clearRect(0,0,width,height);
-            for(var i in circles) {
-                circles[i].draw();
-            }
-        }
-        requestAnimationFrame(animate);
-    }
 
     // Canvas manipulation
     function Circle() {
