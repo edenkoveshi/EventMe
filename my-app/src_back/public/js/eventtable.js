@@ -86,6 +86,8 @@ function displaytime() {
     var splittedTime = [];
     for (var listIndex = 2; listIndex < myList.length; listIndex++) {
         splittedTime = myList[listIndex]["Time"].split(" ");
+        splittedTime_date = splittedTime[0].split("/");
+        splittedTime[0] = splittedTime_date[2]+"-"+splittedTime_date[1]+"-"+splittedTime_date[0];
         if (time == "") {
             if (splittedTime[0] == date){
                 myCurrentList.push(myList[listIndex]);
@@ -157,7 +159,7 @@ function buildEventsTable(selector, myList) {
             }
             else if (columns[colIndex] == "Owner" && arrayHref[4] == "myownevents") {
                 row$.append($('<td>'+cellValue+'</td>'+'</tr>'));
-                row$.append($('<td>'+'<a style="white-space: normal; background-color: coral; color: black; border-color: black" class="btn btn-info btn-lg" href='+hrefdelete+'>delete</a>'+'</td>'+'</tr>'));
+                row$.append($('<td>'+'<a style="white-space: normal; background-color: rgba(248,131,121,0.8); color: black; border-color: black" class="btn btn-info btn-lg" href='+hrefdelete+'>delete</a>'+'</td>'+'</tr>'));
             } else if (columns[colIndex] == "Title") {
 
             }
@@ -187,7 +189,7 @@ function addAllColumnHeaders(myList, selector) {
                 headerTr$.append($('<th/>').html(ifEmpty[i]));
             }
             else if (ifEmpty[i] == "Distance") {
-                headerTr$.append($('<th>' + '<button style="white-space: normal; background-color: coral; color: black; border-color: black" class="btn btn-info btn-lg" onclick="displayarrange()"><span>Distance</span></button>' + '</th>'));
+                headerTr$.append($('<th>' + '<button style="white-space: normal; background-color: rgba(248,131,121,0.8); color: black; border-color: black" class="btn btn-info btn-lg" onclick="displayarrange()"><span>Distance</span></button>' + '</th>'));
             }
         }
     }
@@ -200,7 +202,7 @@ function addAllColumnHeaders(myList, selector) {
             }
             else if ($.inArray(key, columnSet) == -1 && key == "Distance"){
                 columnSet.push(key);
-                headerTr$.append($('<th>' + '<button onclick="displayarrange()" style="white-space: normal; background-color: coral; color: black; border-color: black" class="btn btn-info btn-lg"><span>Distance</span></button>' + '</th>' ));
+                headerTr$.append($('<th>' + '<button onclick="displayarrange()" style="white-space: normal; background-color: rgba(248,131,121,0.8); color: black; border-color: black" class="btn btn-info btn-lg"><span>Distance</span></button>' + '</th>' ));
             }
         }
     }

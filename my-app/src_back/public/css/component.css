@@ -77,10 +77,8 @@
 
 #excelDataTable {
     font: 500 17px/1.5 "Helvetica Neue", helvetica, arial, sans-serif;
-    width: 80%;
-    height: 70%;
-    margin: 0;
-    padding: 0;
+    width: 85%;
+    height: 75%;
     overflow-y: auto;
     overflow-x: auto;
     display: inline-block;
@@ -96,15 +94,14 @@
     width: 100%;
     height: 100%;
     -display: block;
-    background-color: #ccc;
     overflow-y: scroll;
     overflow-x: hidden;
 }
 
 #excelDataTable td{
-    width: 300px;
+    width: 290px;
     height: 100px;
-    background-color: #eee;
+    background-color: rgba(255, 255, 255, 0.5);
     border: 1px solid #dddddd;
 }
 
@@ -112,12 +109,12 @@
     border: 1px solid #dddddd;
     text-align: left;
     padding: 3px;
-    color: darkred;
+    color: white;
     font: 800 25px/1.5 "Helvetica Neue", helvetica, arial, sans-serif;
 }
 
 #excelDataTable tr{
-    background-color: #aaa;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 #excelDataTable tr:hover{
@@ -140,12 +137,6 @@ input[type=text] {
 
 input[type=text]:focus {
     width: 100%;
-}
-
-.mybutton {
-    border-radius: 12px;
-    background-color: orange;
-    color: black;
 }
 
 .button {
