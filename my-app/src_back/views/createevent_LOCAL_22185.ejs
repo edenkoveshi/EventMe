@@ -11,22 +11,14 @@
     <link rel="stylesheet" type="text/css" href="../../css/normalize.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/styles.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/component.css"/>
-    <link href='https://fonts.googleapis.com/css?family=Raleway:200,400,800|Londrina+Outline' rel='stylesheet'
-          type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Raleway:200,400,800|Londrina+Outline' rel='stylesheet'type='text/css'>
     <!--[if IE]>
-    <script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <style>
         .center {
             margin: auto;
@@ -54,7 +46,7 @@
             z-index: 20;
         }
 
-        .form-row {
+        .form-row{
             padding: 5px;
         }
 
@@ -65,7 +57,7 @@
     <div id="large-header" class="large-header" style="background: grey">
         <% include createeventbar %>
         <div id="event-properties" class="center"><!--event creation form-->
-            <div class="container-fluid">
+            <div class="container-fluid" >
                 <form id="event-form" action="/eventMe/addOpenEvent/<%= user_id %>" method="post">
                     <div class="form-row">
                         <div class="form-group col-md-6">
@@ -74,8 +66,7 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <input type="email" class="form-control" id="inputEmail4" name="Activity_name"
-                                   placeholder="Event Name">
+                            <input type="email" class="form-control" id="inputEmail4" name="Activity_name" placeholder="Event Name">
                         </div>
                     </div>
                     <div class="form-row">
@@ -85,220 +76,116 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <input type="button" class="form-control" id="Today" value="Today"
-                                   style="background-color: black; color: white"/>
+                            <input type="button" class="form-control" id="Today" value="Today" style="background-color: black; color: white"/>
                         </div>
                         <div class="form-group col-md-6">
-                            <input type="button" class="form-control" id="Tommorow" value="Tommorow"
-                                   style="background-color: black; color: white"/>
+                            <input type="button" class="form-control"id="Tommorow" value="Tommorow" style="background-color: black; color: white"/>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-4">
-                            <input type="button" class="form-control" id="Morning" value="Morning"
-                                   style="background-color: black; color: white"/>
+                            <input type="button" class="form-control" id="Morning" value="Morning" style="background-color: black; color: white"/>
                         </div>
                         <div class="form-group col-md-4">
-                            <input type="button" class="form-control" id="Noon" value="Noon"
-                                   style="background-color: black; color: white"/>
+                            <input type="button" class="form-control"id="Noon" value="Noon" style="background-color: black; color: white"/>
                         </div>
                         <div class="form-group col-md-4">
-                            <input type="button" class="form-control" id="Evening" value="Evening"
-                                   style="background-color: black; color: white"/>
+                            <input type="button" class="form-control" id="Evening" value="Evening" style="background-color: black; color: white"/>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-2">
                         </div>
                         <div class="form-group col-md-8">
-                            <input class="form-control" type="datetime-local" name="Activity_time" id="event-time"
-                                   style="display:inline-block"/>
+                            <input class="form-control" type="datetime-local" name="Activity_time" id="event-time" style="display:inline-block"/>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputPassword4">Location: </label>
                             <label for="inputPassword4" id="location-polled">(default - current location)</label>
-                            <input type="text" name="google-location" id="location" class="form-control"
-                                   style="display:none"/>
+                            <input type="text" name="google-location" id="location" class="form-control" style="display:none"/>
                         </div>
                         <div class="form-group col-md-6">
-                            <input type="button" class="form-control" id="Activity_location" value="Click here"
-                                   onclick="ChooseLocation()" style="background-color: black; color: white"/>
+                            <input type="button" class="form-control" id="Activity_location" value="Click here" onclick="ChooseLocation()" style="background-color: black; color: white"/>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md">
-                            <input type="button" class="form-control" value="Select your event type:(optional)"
-                                   data-toggle="collapse" data-target="#demo" id="Type_selection"
-                                   style="background-color: black; color: white"/>
+                            <input type="button" class="form-control" value="Select your event type:(optional)" data-toggle="collapse" data-target="#demo" id="Type_selection" style="background-color: black; color: white"/>
                             <div id="demo" class="collapse">
                                 <div class="form-row">
                                     <div class="form-group col-md-4">
-                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"
-                                           style="color: white;">Food</a>
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Food</a>
                                         <ul class="dropdown-menu">
-                                            <li><label class="checkbox-inline"><input style="width: 20px"
-                                                                                      type="checkbox" id="Food"
-                                                                                      value="">Food</label></li>
-                                            <li><label class="checkbox-inline"><input style="width: 20px"
-                                                                                      type="checkbox"
-                                                                                      id="Food_Hamburger" value="">Hamburger</label>
-                                            </li>
-                                            <li><label class="checkbox-inline"><input style="width: 20px"
-                                                                                      type="checkbox" id="Food_Italian"
-                                                                                      value="">Italian</label></li>
-                                            <li><label class="checkbox-inline"><input style="width: 20px"
-                                                                                      type="checkbox" id="Food_Israeli"
-                                                                                      value="">Israeli</label></li>
-                                            <li><label class="checkbox-inline"><input style="width: 20px"
-                                                                                      type="checkbox" id="Food_Sushi"
-                                                                                      value="">Sushi</label></li>
-                                            <li><label class="checkbox-inline"><input style="width: 20px"
-                                                                                      type="checkbox"
-                                                                                      id="Food_Viatnamise" value="">Viatnamise</label>
-                                            </li>
-                                            <li><label class="checkbox-inline"><input style="width: 20px"
-                                                                                      type="checkbox" id="Food_Chinese"
-                                                                                      value="">Chinese</label></li>
-                                            <li><label class="checkbox-inline"><input style="width: 20px"
-                                                                                      type="checkbox" id="Food_Other"
-                                                                                      value="">Other</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food" value="">Food</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Hamburger" value="">Hamburger</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Italian" value="">Italian</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Israeli" value="">Israeli</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Sushi" value="">Sushi</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Viatnamise" value="">Viatnamise</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Chinese" value="">Chinese</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Food_Other" value="">Other</label></li>
                                         </ul>
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"
-                                           style="color: white;">Party</a>
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Party</a>
                                         <ul class="dropdown-menu">
-                                            <li><label class="checkbox-inline"><input style="width: 20px"
-                                                                                      type="checkbox" id="Party"
-                                                                                      value="">Party</label></li>
-                                            <li><label class="checkbox-inline"><input style="width: 20px"
-                                                                                      type="checkbox" id="Party_Techno"
-                                                                                      value="">Techno</label></li>
-                                            <li><label class="checkbox-inline"><input style="width: 20px"
-                                                                                      type="checkbox" id="Party_Salsa"
-                                                                                      value="">Salsa</label></li>
-                                            <li><label class="checkbox-inline"><input style="width: 20px"
-                                                                                      type="checkbox"
-                                                                                      id="Party_MainStream" value="">MainStream</label>
-                                            </li>
-                                            <li><label class="checkbox-inline"><input style="width: 20px"
-                                                                                      type="checkbox" id="Party_Other"
-                                                                                      value="">Other</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Party" value="">Party</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Party_Techno" value="">Techno</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Party_Salsa" value="">Salsa</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Party_MainStream" value="">MainStream</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Party_Other" value="">Other</label></li>
                                         </ul>
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"
-                                           style="color: white;">Shopping</a>
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Shopping</a>
                                         <ul class="dropdown-menu">
-                                            <li><label class="checkbox-inline"><input style="width: 20px"
-                                                                                      type="checkbox" id="Shopping"
-                                                                                      value="">Shopping</label></li>
-                                            <li><label class="checkbox-inline"><input style="width: 20px"
-                                                                                      type="checkbox"
-                                                                                      id="Shopping_Groceries" value="">Groceries</label>
-                                            </li>
-                                            <li><label class="checkbox-inline"><input style="width: 20px"
-                                                                                      type="checkbox"
-                                                                                      id="Shopping_Clothes" value="">Clothes</label>
-                                            </li>
-                                            <li><label class="checkbox-inline"><input style="width: 20px"
-                                                                                      type="checkbox"
-                                                                                      id="Shopping_HomeDecore" value="">HomeDecore</label>
-                                            </li>
-                                            <li><label class="checkbox-inline"><input style="width: 20px"
-                                                                                      type="checkbox"
-                                                                                      id="Shopping_Other" value="">Other</label>
-                                            </li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Shopping" value="">Shopping</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Shopping_Groceries" value="">Groceries</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Shopping_Clothes" value="">Clothes</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Shopping_HomeDecore" value="">HomeDecore</label></li>
+                                            <li><label class="checkbox-inline"><input style="width: 20px" type="checkbox" id="Shopping_Other" value="">Other</label></li>
                                         </ul>
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"
-                                           style="color: white;">Entertainment</a>
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Entertainment</a>
                                         <ul class="dropdown-menu">
-                                            <li><label class="checkbox-inline" style="width: 150px"><input
-                                                            style="width: 20px" type="checkbox" id="Entertainment"
-                                                            value="">Entertainment</label></li>
-                                            <li><label class="checkbox-inline" style="width: 150px"><input
-                                                            style="width: 20px" type="checkbox" id="Entertainment_Movie"
-                                                            value="">Movie</label></li>
-                                            <li><label class="checkbox-inline" style="width: 150px"><input
-                                                            style="width: 20px" type="checkbox"
-                                                            id="Entertainment_Concert" value="">Concert</label></li>
-                                            <li><label class="checkbox-inline" style="width: 150px"><input
-                                                            style="width: 20px" type="checkbox"
-                                                            id="Entertainment_Stand_up_show" value="">Stand-up
-                                                    show</label></li>
-                                            <li><label class="checkbox-inline" style="width: 150px"><input
-                                                            style="width: 20px" type="checkbox" id="Entertainment_Other"
-                                                            value="">Other</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Entertainment" value="">Entertainment</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Entertainment_Movie" value="">Movie</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Entertainment_Concert" value="">Concert</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Entertainment_Stand_up_show" value="">Stand-up show</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Entertainment_Other" value="">Other</label></li>
                                         </ul>
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"
-                                           style="color: white;">Sports</a>
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Sports</a>
                                         <ul class="dropdown-menu">
-                                            <li><label class="checkbox-inline" style="width: 150px"><input
-                                                            style="width: 20px" type="checkbox" id="Sports" value="">Sports</label>
-                                            </li>
-                                            <li><label class="checkbox-inline" style="width: 150px"><input
-                                                            style="width: 20px" type="checkbox" id="Sports_Soccer"
-                                                            value="">Soccer</label></li>
-                                            <li><label class="checkbox-inline" style="width: 150px"><input
-                                                            style="width: 20px" type="checkbox" id="Sports_Basketball"
-                                                            value="">Basketball</label></li>
-                                            <li><label class="checkbox-inline" style="width: 150px"><input
-                                                            style="width: 20px" type="checkbox" id="Sports_Football"
-                                                            value="">Football</label></li>
-                                            <li><label class="checkbox-inline" style="width: 150px"><input
-                                                            style="width: 20px" type="checkbox" id="Sports_Handball"
-                                                            value="">Handball</label></li>
-                                            <li><label class="checkbox-inline" style="width: 150px"><input
-                                                            style="width: 20px" type="checkbox" id="Sports_Tennis"
-                                                            value="">Tennis</label></li>
-                                            <li><label class="checkbox-inline" style="width: 150px"><input
-                                                            style="width: 20px" type="checkbox" id="Sports_Jogging"
-                                                            value="">Jogging</label></li>
-                                            <li><label class="checkbox-inline" style="width: 150px"><input
-                                                            style="width: 20px" type="checkbox" id="Sports_Training"
-                                                            value="">Training</label></li>
-                                            <li><label class="checkbox-inline" style="width: 150px"><input
-                                                            style="width: 20px" type="checkbox" id="Sports_Athletics"
-                                                            value="">Athletics</label></li>
-                                            <li><label class="checkbox-inline" style="width: 150px"><input
-                                                            style="width: 20px" type="checkbox" id="Sports_Other"
-                                                            value="">Other</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports" value="">Sports</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Soccer" value="">Soccer</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Basketball" value="">Basketball</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Football" value="">Football</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Handball" value="">Handball</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Tennis" value="">Tennis</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Jogging" value="">Jogging</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Training" value="">Training</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Athletics" value="">Athletics</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Sports_Other" value="">Other</label></li>
                                         </ul>
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#"
-                                           style="color: white;">Adventure</a>
+                                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" style="color: white;">Adventure</a>
                                         <ul class="dropdown-menu">
-                                            <li><label class="checkbox-inline" style="width: 150px"><input
-                                                            style="width: 20px" type="checkbox" id="Adventure" value="">Adventure</label>
-                                            </li>
-                                            <li><label class="checkbox-inline" style="width: 150px"><input
-                                                            style="width: 20px" type="checkbox" id="Adventure_Hiking"
-                                                            value="">Hiking</label></li>
-                                            <li><label class="checkbox-inline" style="width: 150px"><input
-                                                            style="width: 20px" type="checkbox" id="Adventure_Road_trip"
-                                                            value="">Road-Trip</label></li>
-                                            <li><label class="checkbox-inline" style="width: 150px"><input
-                                                            style="width: 20px" type="checkbox" id="Adventure_Diving"
-                                                            value="">Diving</label></li>
-                                            <li><label class="checkbox-inline" style="width: 150px"><input
-                                                            style="width: 20px" type="checkbox" id="Adventure_Ski"
-                                                            value="">Ski</label></li>
-                                            <li><label class="checkbox-inline" style="width: 150px"><input
-                                                            style="width: 20px" type="checkbox" id="Adventure_Other"
-                                                            value="">Other</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure" value="">Adventure</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure_Hiking" value="">Hiking</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure_Road_trip" value="">Road-Trip</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure_Diving" value="">Diving</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure_Ski" value="">Ski</label></li>
+                                            <li><label class="checkbox-inline" style="width: 150px"><input style="width: 20px" type="checkbox" id="Adventure_Other" value="">Other</label></li>
                                         </ul>
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <label class="checkbox-inline" style="width: 150px"><input style="width: 30px"
-                                                                                                   type="checkbox"
-                                                                                                   id="Other" value="">Other</label>
+                                        <label class="checkbox-inline" style="width: 150px"><input style="width: 30px" type="checkbox" id="Other" value="">Other</label>
                                     </div>
                                 </div>
                             </div>
@@ -311,40 +198,30 @@
                             <input class="form-control" type="hidden" name="categories">Description (optional):</input>
                         </div>
                         <div class="form-group col-md-6">
-                            <input class="form-control" placeholder="Description" name="description">
+                            <input class="form-control" placeholder="Description" name="description" >
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md"
-                             style="margin-left:auto; margin-right: auto; overflow-y: scroll;">
-                            <input type="button" id="poll" onclick="Poll()" value="Poll!" class="form-control"
-                                   style="background-color: black; color: white"/>
+                        <div class="form-group col-md" style="margin-left:auto; margin-right: auto; overflow-y: scroll;" >
+                            <input type="button" id="poll" onclick="Poll()" value="Poll!" class="form-control" style="background-color: black; color: white"/>
                             <div id="poll-modal" style="display:none">
                                 <div class="modal-content" style="color:black">
                                     <div id="poll">
-                                        <label class="checkbox-inline" style="width: 150px"><input type="checkbox"
-                                                                                                   id="location-cb"
-                                                                                                   style="width: 20px"/>Location</label><br>
+                                        <label class="checkbox-inline" style="width: 150px"><input type="checkbox" id="location-cb" style="width: 20px"/>Location</label><br>
                                         <div>
                                             <input type="button" id='location-options' onclick="ChooseLocation()"
-                                                   style="display:none" value="Choose Locations" class="form-control"/>
+                                                   style="display:none" value="Choose Locations" class="form-control" />
                                             <input type="hidden" id="locations-list"/>
                                         </div>
-                                        <label class="checkbox-inline" style="width: 150px"><input type="checkbox"
-                                                                                                   id="time-cb"
-                                                                                                   style="width: 20px"/>Time
-                                            & Date</label>
+                                        <label class="checkbox-inline" style="width: 150px"><input type="checkbox" id="time-cb" style="width: 20px"/>Time & Date</label>
                                         <div id="time-options"></div>
-                                        <label class="checkbox-inline" style="width: 150px"><input type="checkbox"
-                                                                                                   id="free-poll-cb"
-                                                                                                   style="width: 20px"/>Another</label>
+                                        <label class="checkbox-inline" style="width: 150px"><input type="checkbox" id="free-poll-cb" style="width: 20px"/>Another</label>
                                         <div id="free-poll-options" style="display: none;">
                                             Poll Question:<input type="text" id="free-poll-question"/><br>
                                             Options: <br>
                                             <input type="text" name="free-poll-option"/><br>
                                             <input type="text" name="free-poll-option"/><br>
-                                            <input class="form-control" type="button" id="free-poll-button"
-                                                   onclick="AddFreePollOptions()" value="Add more options!"/>
+                                            <input class="form-control" type="button" id="free-poll-button" onclick="AddFreePollOptions()" value="Add more options!" />
                                         </div>
                                     </div>
                                 </div>
@@ -355,9 +232,7 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md">
-                            <input type="button" id="Create" onclick="CreateEvent()" value="Create!"
-                                   class="form-control"
-                                   style="background-color: coral; color: darkred; border-color: darkred"/>
+                            <input type="button" id="Create" onclick="CreateEvent()" value="Create!" class="form-control" style="background-color: coral; color: darkred; border-color: darkred"/>
                         </div>
                     </div>
                     <div class="form-row" style="padding: 30px">
@@ -368,8 +243,7 @@
             <!-- Google Maps modal-->
             <div id="maps-modal" class="modal" style="display:none;">
                 <!-- Modal content -->
-                <div class="modal-content"
-                     style="width: 50%; margin-left:auto; margin-right: auto; overflow-y: scroll; ">
+                <div class="modal-content" style="width: 50%; margin-left:auto; margin-right: auto; overflow-y: scroll; ">
                     <span class="close">Confirm</span>
                     <input id="pac-input" class="controls" type="text" placeholder="Enter Location Here"
                            style="left:0px"/>
@@ -386,101 +260,106 @@
     var markers = [];
     var location_poll = [];
 
-    $(document).ready(function () {
+    $(document).ready(function(){
         //----Set onclick functions for time&date buttons-------
-        var today = document.getElementById('Today');
-        var tommorow = document.getElementById('Tommorow');
-        var morning = document.getElementById('Morning');
-        var noon = document.getElementById('Noon');
-        var evening = document.getElementById('Evening');
-        today.onclick = function () {
-            var date = new Date();
-            var time = document.getElementById('event-time').value;
-            if (time != "")//if time is specified already,do not change it
-            {
-                date.setHours(parseInt(time.split('T')[1].split(':')[0]) + 2);//takes -2 for some reason
-                date.setMinutes(parseInt(time.split('T')[1].split(':')[1]));
-            }
-            SetDate(date);
-        }
-        tommorow.onclick = function () {
-            var date = new Date();
-            var time = document.getElementById('event-time').value;
-            if (time != "") {
-                date.setHours(parseInt(time.split('T')[1].split(':')[0]) + 2);
-                date.setMinutes(parseInt(time.split('T')[1].split(':')[1]));
-            }
-            var day = date.getDate();
-            var month = date.getMonth();
-            var year = date.getFullYear();
-            if (month == 11 && day == 31) //end of year
-            {
-                date.setFullYear(year + 1);
-                date.setMonth(0);
-                date.setDate(1);
-            }
-            else if ((day == 31 && (month == 0 || month == 2 || month == 4 || month == 6 || month == 7 || month == 9)) || (day == 30 && (month == 3 || month == 5 || month == 8 || month == 10)))//end of month,does not include Dec.(end of year) or Feb.(special case)
-            {
-                date.setDate(1);
-                date.setMonth(month + 1);
-            }
-            else if (month == 1 && day == 28) {
-                if (year % 4 == 0) {
-                    if (year % 100 == 0) {
-                        if (year % 400 != 0)//feb. has 28 days
-                        {
-                            date.setDate(1);
-                            date.setMonth(2);
-                        }
-                        else {
-                            date.setDate(29);
-                        }
-                    }
-                    else {
-                        date.setDate(29);
-                    }
-                }
-            }
-            else if (month == 1 && day == 29) {
-                date.setDate(1);
-                date.setMonth(2);
-            }
-            else//not end of month,year
-            {
-                date.setDate(day + 1);
-            }
-            SetDate(date);
-        }
-        morning.onclick = function () {
-            var time = document.getElementById('event-time').value;
-            if (time == "")//if time&date is not specified,set default date for today's date
-            {
-                time = new Date();
-                time = time.toISOString();
-            }
-            var date = parseISOString(time);
+       var today=document.getElementById('Today');
+       var tommorow=document.getElementById('Tommorow');
+       var morning=document.getElementById('Morning');
+       var noon=document.getElementById('Noon');
+       var evening=document.getElementById('Evening');
+       today.onclick=function(){
+           var date=new Date();
+           var time=document.getElementById('event-time').value;
+           if(time!="")//if time is specified already,do not change it
+           {
+               date.setHours(parseInt(time.split('T')[1].split(':')[0])+2);//takes -2 for some reason
+               date.setMinutes(parseInt(time.split('T')[1].split(':')[1]));
+           }
+           SetDate(date);
+       }
+       tommorow.onclick=function() {
+           var date = new Date();
+           var time=document.getElementById('event-time').value;
+           if(time!="")
+           {
+               date.setHours(parseInt(time.split('T')[1].split(':')[0])+2);
+               date.setMinutes(parseInt(time.split('T')[1].split(':')[1]));
+           }
+           var day = date.getDate();
+           var month = date.getMonth();
+           var year = date.getFullYear();
+           if (month == 11 && day == 31) //end of year
+           {
+               date.setFullYear(year + 1);
+               date.setMonth(0);
+               date.setDate(1);
+           }
+           else if ((day == 31 && (month == 0 || month == 2 || month == 4 || month == 6 || month == 7 || month == 9)) || (day == 30 && (month == 3 || month == 5 || month == 8 || month == 10)))//end of month,does not include Dec.(end of year) or Feb.(special case)
+           {
+               date.setDate(1);
+               date.setMonth(month + 1);
+           }
+           else if (month == 1 && day == 28) {
+               if (year % 4 == 0) {
+                   if (year % 100 == 0) {
+                       if (year % 400 != 0)//feb. has 28 days
+                       {
+                           date.setDate(1);
+                           date.setMonth(2);
+                       }
+                       else
+                       {
+                           date.setDate(29);
+                       }
+                   }
+                   else {
+                       date.setDate(29);
+                   }
+               }
+           }
+           else if(month==1&&day==29)
+           {
+               date.setDate(1);
+               date.setMonth(2);
+           }
+           else//not end of month,year
+           {
+               date.setDate(day+1);
+           }
+           SetDate(date);
+       }
+       morning.onclick=function(){
+           var time=document.getElementById('event-time').value;
+           if(time=="")//if time&date is not specified,set default date for today's date
+           {
+               time=new Date();
+               time=time.toISOString();
+           }
+            var date=parseISOString(time);
             date.setHours(11);
             date.setMinutes(0);
             SetDate(date);
-        }
-        noon.onclick = function () {
-            var time = document.getElementById('event-time').value;
-            if (time == "") {
-                time = new Date();
-                time = time.toISOString();
+       }
+       noon.onclick=function(){
+           var time=document.getElementById('event-time').value;
+           if(time=="")
+           {
+               time=new Date();
+               time=time.toISOString();
+           }
+           var date=parseISOString(time);
+           date.setHours(17);
+           date.setMinutes(0);
+           SetDate(date);
+       }
+        evening.onclick=function(){
+            var time=document.getElementById('event-time').value;
+           if(time=="")
+            {
+                time=new Date();
+                time=time.toISOString();
             }
-            var date = parseISOString(time);
-            date.setHours(17);
-            date.setMinutes(0);
-            SetDate(date);
-        }
-        evening.onclick = function () {
-            var time = document.getElementById('event-time').value;
-            if (time == "") {
-                time = new Date();
-                time = time.toISOString();
-            }
-            var date = parseISOString(time);
+            var date=parseISOString(time);
             date.setHours(23);
             date.setMinutes(0);
             SetDate(date);
@@ -489,10 +368,11 @@
     });
 
     //Set date&time in input field
-    function SetDate(date) {
-        var time = document.getElementById('event-time');
-        var isodate = date.toISOString();
-        time.value = isodate.substring(0, isodate.length - 8);//remove sec and millisec
+    function SetDate(date)
+    {
+        var time=document.getElementById('event-time');
+        var isodate=date.toISOString();
+        time.value=isodate.substring(0,isodate.length-8);//remove sec and millisec
     }
 
     //Parse ISO formatted string to Date object
@@ -544,7 +424,7 @@
             // ----- MAP CREATION -------
             var location_no_poll = document.getElementsByName("google-location")[0];
             var default_location = {lat: 32.07005626883245, lng: 34.79411959648132};
-            location_no_poll.value = '(32.07005626883245,34.79411959648132)';
+            location_no_poll.value='(32.07005626883245,34.79411959648132)';
             map = new google.maps.Map(document.getElementById('googleMap'), {
                 zoom: 15,
                 center: default_location,
@@ -554,7 +434,7 @@
             var marker = new google.maps.Marker({
                 position: default_location,
                 map: null,
-                icon: 'https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FE7569'
+                icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FE7569'
             });
             if (!LocationPollCheck()) {
                 marker.setMap(map);
@@ -580,11 +460,22 @@
                         resolve(JSON.stringify(pos));
                     });
                 }
+                //Alternative
+                /*$.getJSON("http://freegeoip.net/json/", function(data) {
+                    /*var country_code = data.country_code;
+                    var country = data.country_name;
+                    var ip = data.ip;
+                    var time_zone = data.time_zone;
+                    var latitude = data.latitude;
+                    var longitude = data.longitude;
 
+                    var location={lat: latitude,lng:longitude};
+                    resolve(JSON.stringify(location));
+                });*/
             });
             Location.then(function (result) {
                 //Adjust map
-                result = JSON.parse(result);
+                result=JSON.parse(result);
                 map.setCenter(result);
                 if (!LocationPollCheck()) {
                     marker.setPosition(result);
@@ -614,7 +505,7 @@
                             var newMarker = new google.maps.Marker({
                                 position: loc,
                                 map: map,
-                                icon: 'https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FFFFFF',
+                                icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FFFFFF',
                             });
                             markers.push(newMarker);
                             marker.setMap(null);
@@ -650,7 +541,7 @@
                             else {
                                 markers.push(new google.maps.Marker({
                                     map: map,
-                                    icon: 'https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FFFFFF',
+                                    icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FFFFFF',
                                     title: place.name,
                                     position: place.geometry.location
 
@@ -728,7 +619,7 @@
                     but.value = 'Add more options!';
                     but.id = 'add-options';
                     $('#time-options').append(but);
-                    document.getElementById('event-time').value = "";
+                    document.getElementById('event-time').value="";
                     AddDateAndTime();
                 }
             })
@@ -755,10 +646,11 @@
     }
 
     //Time validation function
-    function ValidateTime(time) {
-        var chosen = parseISOString(time);
-        var current = new Date();
-        if (chosen.getTime() - current.getTime() < 3540000) return 0;//a gap of approx. 1 hour is enforced here
+    function ValidateTime(time)
+    {
+        var chosen=parseISOString(time);
+        var current=new Date();
+        if(chosen.getTime()-current.getTime()<3540000) return 0;//a gap of approx. 1 hour is enforced here
         return 1;
     }
 
@@ -795,9 +687,9 @@
                 str += "," + cblist[i].id;
             }
         }
-        if (str.length == 0)//type was not chosen,'Other' set as default
+        if(str.length==0)//type was not chosen,'Other' set as default
         {
-            str = " Other"; //whitespace is to fit with the next line
+            str=" Other"; //whitespace is to fit with the next line
         }
         document.getElementsByName("categories")[0].value = str.substring(1, str.length);
 
@@ -886,21 +778,24 @@
 
         //Validate chosen date(s)
         {
-            var flag = 1;
-            if (time_under_poll) {
-                var dates = document.getElementsByName('time-poll-option');
-                dates.forEach(function (item, index) {
-                    if (!ValidateTime(item.value)) flag = 0;
+            var flag=1;
+            if(time_under_poll)
+            {
+                var dates=document.getElementsByName('time-poll-option');
+                dates.forEach(function(item,index){
+                    if(!ValidateTime(item.value)) flag=0;
                 });
             }
-            else {
-                var date = document.getElementById('event-time');
-                if (!ValidateTime(date.value)) {
-                    flag = 0;
+            else
+            {
+                var date=document.getElementById('event-time');
+                if(!ValidateTime(date.value))
+                {
+                    flag=0;
                 }
             }
-            if (!flag) {
-                all_fields_set = 0;
+            if(!flag){
+                all_fields_set=0;
                 window.alert("You have chosen an invalid date(s).");
             }
         }
@@ -977,16 +872,10 @@
 <script src="../../js/rAF.js"></script>
 <script src="../../js/getstarted.js"></script>
 <script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js">
+        src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js">
 </script>
 <script type="text/javascript"
-        src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js">
-</script>
-<script type="text/javascript"
-        src="https://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
-</script>
-<script type="text/javascript"
-        src="https://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.pt-BR.js">
+        src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js">
 </script>
 </body>
 </html>

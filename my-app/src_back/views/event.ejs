@@ -12,12 +12,12 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-    <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet"
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet"
           type="text/css"/>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
 
     <!--bootstrap-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -106,6 +106,7 @@
                         }
                             document.getElementById('myVote').value = vote;
                             document.getElementById('pollNum').value = pollNum;
+                            $('#poll_data').attr('action',"/eventMe/vote/"+user_id);
                             $('#poll_data').submit();
                     }
                     else {
@@ -114,6 +115,39 @@
                 }
 
             });
+        }
+
+        function ClosePoll(type)
+        {
+            var max_votes=0;
+            var votes=Votes();
+            for(var i=0;i<votes.length;i++)
+            {
+                if(max_votes<votes[i])
+                    max_votes=votes[i];
+            }
+            if(max_votes==0)
+                window.alert('You must have at least 1 vote before closing poll');
+            else {
+                $('#event_type').val(type);
+                //determine poll number
+                var pollNum;
+                if (type == "Location") {
+                    pollNum = 1;
+                }
+                else if (type == "Date-time") {
+                    if (LocationUnderPoll())
+                        pollNum = 2;
+                    else pollNum = 1;
+                }
+                else {
+                    pollNum = parseInt(document.getElementById('poll-counter').innerHTML);
+                }
+                //reusing poll-data form
+                $('#pollNum').val(pollNum);
+                $('#poll_data').attr('action',"/eventMe/closepoll");
+                $('#poll_data').submit();
+            }
         }
 
         //Center map on chosen address in poll chart
@@ -237,7 +271,7 @@
                 latlng = coords[0] + coords[1].substring(0,coords[1].length-1);
                 //Make an http request for google geocode services to get coordinates address
                 var xmlHttp = new XMLHttpRequest();
-                var url = "https:maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&key=AIzaSyCu3KurWBoVaFCgz3J6jjoYcnmIVY2i6B0";
+                var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&key=AIzaSyCu3KurWBoVaFCgz3J6jjoYcnmIVY2i6B0";
                 xmlHttp.open("GET", url, true);
                 xmlHttp.onreadystatechange = function () {
                     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
@@ -424,7 +458,8 @@
             var owner_id=document.getElementById('owner_id').innerHTML;
             if(user_id==owner_id)
             {
-                $('#vote-form').append($("<button id='close-poll'>Close poll!</button>"));
+                $('#vote-form').append($("<input type='button' id='close-poll' value='Close poll!')/>"));
+                $('#close-poll').click(function(){ClosePoll(type);});
             }
 
         }
@@ -441,15 +476,12 @@
                 poll=FreePoll;
             else
                 poll=TimePoll;
-            console.log(poll);
             var votes=[];
             for(var i=0;i<poll.options.length;i++) {
                 votes.push(poll.options[i].votes)
             }
             return votes;
         }
-
-
 
 
     </script>
@@ -600,12 +632,13 @@
                 <p id="event_id" style="display:none; color:white;"><%= event_id %>
                 <p id="owner_id" style="display:none"><%=owner_id%></p>
 
-                <form id="poll_data" action="/eventMe/vote/<%= user_id %>" method="POST"
+                <form id="poll_data" method="POST"
                       style="display:none; ">
                     <input style="display:none; color:white;" name="user_id" value=<%= user_id %> />
                     <input style="display:none; color:white;" name="eventId" value=<%= event_id %> />
                     <input style="display:none; color:white;" name="pollNum" id="pollNum"/>
                     <input style="display:none; color:white;" name="myVote" id="myVote"/>
+                    <input style="display:none" name="event_type" id="event_type"/>
                 </form>
             </div>
         </div>

@@ -7,7 +7,12 @@
 var app = require('../app');
 var debug = require('debug')('mycloud:WebServer');
 var http = require('http');
+const https = require('https');
+const fs = require('fs');
+
+
 var server;
+var server2;
 
 class WebServer {
 
@@ -15,43 +20,29 @@ class WebServer {
      * Get port from environment and store in Express.
      */
     listenOnPort(port) {
-        var port = this.normalizePort(process.env.PORT || port);
         app.set('port', port);
 
         /**
          * Create HTTP WebServer.
          */
+        const options = {
+            key: fs.readFileSync('keys/private.key'),
+            cert: fs.readFileSync('keys/certificate.crt'),
+            ca: fs.readFileSync('keys/ca_bundle.crt'),
+        };
 
-        server = http.createServer(app);
+        server = https.createServer(options, app);
+        //server2 = http.createServer(app);
 
         /**
          * Listen on provided port, on all network interfaces.
          */
 
         server.listen(port);
+        //server2.listen(80);
         server.on('error', this.onError);
         server.on('listening', this.onListening);
 
-    };
-
-    /**
-     * Normalize a port into a number, string, or false.
-     */
-
-    normalizePort(val) {
-        var port = parseInt(val, 10);
-
-        if (isNaN(port)) {
-            // named pipe
-            return val;
-        }
-
-        if (port >= 0) {
-            // port number
-            return port;
-        }
-
-        return false;
     };
 
     /**
@@ -63,9 +54,7 @@ class WebServer {
             throw error;
         }
 
-        var bind = typeof port === 'string'
-            ? 'Pipe ' + port
-            : 'Port ' + port;
+        var bind = 'Port';
 
         // handle specific listen errors with friendly messages
         switch (error.code) {

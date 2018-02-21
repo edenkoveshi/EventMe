@@ -180,6 +180,44 @@ class eventService {
                 }).catch(err => reject(err))
         })
     }
+    close_vote(user_id ,event_id ,cur_pull , poll_type){
+        console.log ('--------------close_vote---------------')
+        return new Promise((resolve, reject) =>{
+            eventDAO.get_event(event_id)
+                .then(requested_events=>{
+                    console.log('requested event:')
+                    console.log(requested_events[0])
+                    var winner = {option:0, votes:0}
+                    for(var i = cur_pull; i<(requested_events[0].pollArray.length - 1); i++)
+                    {
+                        if(requested_events[0].pollArray[cur_pull].options[i].votes > winner.votes)
+                        {
+                            winner.option = i;
+                            winner.votes = requested_events[0].pollArray[cur_pull].options[i].votes;
+                        }
+                    }
+                    console.log('out of all the options in the poll:')
+                    console.log(requested_events[0].pollArray[cur_pull])
+                    console.log('the winner vote is:'+ winner)
+                    requested_events[0].pollArray[cur_pull].status = "close";   //closing the poll
+                    // now if poll type is either time or location, update the event accordingly
+                    if(poll_type == 'Location')
+                    {
+                        requested_events[0].location = requested_events[0].pollArray[cur_pull].winner;
+                    }
+                    else if(poll_type == 'Date-time')
+                    {
+                        requested_events[0].time = requested_events[0].pollArray[cur_pull].winner;
+                    }
+                    eventDAO.update_event(event_id, requested_events[0]).then(_=>{
+                        console_events[0].pollArray[cur_pull].winner = requested_events[0].pollArray[cur_pull].options[winner.option].option;   // saving the winning option to the event
+                        requested.log('closed the poll,  the new event looks like this:')
+                        console.log(requested_events[0])
+                        resolve()
+                    }).catch(err => reject(err))
+                }).catch(err => reject(err))
+        }).catch(err => reject(err))
+    }
 }
 
 module.exports = new eventService()
