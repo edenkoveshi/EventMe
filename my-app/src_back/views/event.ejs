@@ -271,7 +271,7 @@
                 latlng = coords[0] + coords[1].substring(0,coords[1].length-1);
                 //Make an http request for google geocode services to get coordinates address
                 var xmlHttp = new XMLHttpRequest();
-                var url = "https:maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&key=AIzaSyCu3KurWBoVaFCgz3J6jjoYcnmIVY2i6B0";
+                var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&key=AIzaSyCu3KurWBoVaFCgz3J6jjoYcnmIVY2i6B0";
                 xmlHttp.open("GET", url, true);
                 xmlHttp.onreadystatechange = function () {
                     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
