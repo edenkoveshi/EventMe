@@ -528,7 +528,7 @@ router.post('/closepoll', (req, res) => {
         console.log('poll_type = ' + poll_type)
         console.log('body = ')
         console.log(req.body)
-        es.close_vote(user_id ,event_id ,cur_pull -1 ).then(_=>{
+        es.close_vote(user_id ,event_id ,cur_pull -1, poll_type ).then(_=>{
             console.log('The event is closed')
             res.redirect('/eventMe/event/' + event_id + '/' + user_id);
             resolve()
