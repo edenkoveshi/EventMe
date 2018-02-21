@@ -196,7 +196,7 @@ router.post('/addOpenEvent/:user_id', (req, res) => {
         console.log(req.body);
         es.addOpenEvent(req.params["user_id"], req.body["Activity_name"], req.body["google-location"], req.body["categories"], req.body["description"], req.body["Activity_time"], req.body)
             .then(_ => {
-                let newUrl = '/eventMe/frontpage/' + req.params["user_id"];
+                let newUrl = '/eventMe/myownevents/' + req.params["user_id"];
                 console.log(newUrl);
                 res.redirect(newUrl);
                 resolve()
