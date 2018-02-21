@@ -115,9 +115,13 @@
                             <tbody>
                             <% for (var i = 0; i < invited_events.length; i++) { %>
                             <% var eventtime = invited_events[i]["time"];
-                                var eventime2 = eventtime.split("T");
-                                var eventime3 = eventime2[0].split("-");
-                                var finaltime = eventime3[2] +"/"+eventime3[1]+"/"+ eventime3[0]+" " + eventime2[1]
+                                if (eventtime == "") {
+                                    finaltime = "under poll"
+                                } else {
+                                    var eventime2 = eventtime.split("T");
+                                    var eventime3 = eventime2[0].split("-");
+                                    var finaltime = eventime3[2] + "/" + eventime3[1] + "/" + eventime3[0] + " " + eventime2[1]
+                                }
                             %>
                             <tr>
                                 <td><%= invited_events[i]["type"] %></td>

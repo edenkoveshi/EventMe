@@ -1,4 +1,5 @@
 var myList = new Array();
+var myTmpCurrentList = new Array();
 
 function getList(){
 
@@ -19,6 +20,7 @@ function getList(){
         } else if (myList[listIndex]["Distance"] == "") {
             myList[listIndex]["Distance"] = "under poll";
         }
+        this.myTmpCurrentList.push(myList[listIndex]);
     }
     return myList;
 }
@@ -30,11 +32,11 @@ function boxChecked() {
         if (this.checked) {
             numberchecked += 1;
             var x = this.name;
-            for (var listIndex = 0; listIndex < myList.length; listIndex++) {
-                var event_types=myList[listIndex]["Type"].split(',');
+            for (var listIndex = 0; listIndex < myTmpCurrentList.length; listIndex++) {
+                var event_types=myTmpCurrentList[listIndex]["Type"].split(',');
                 for (var typesIndex = 0; typesIndex < event_types.length; typesIndex++) {
                     if (event_types[typesIndex] == x && alreadyIn.indexOf(listIndex) == -1) {
-                        myCurrentList.push(myList[listIndex]);
+                        myCurrentList.push(myTmpCurrentList[listIndex]);
                         alreadyIn.push(listIndex);
                         break;
                     }
@@ -47,15 +49,19 @@ function boxChecked() {
             myCurrentList.push(myList[listIndex]);
         }
     }
+    this.myTmpCurrentList = []
+    for (var listIndex = 0; listIndex < myCurrentList.length; listIndex++) {
+        this.myTmpCurrentList.push(myCurrentList[listIndex]);
+    }
     $("#excelDataTable tr").remove();
     buildEventsTable('#excelDataTable', myCurrentList);
 }
 
 function displayarrange() {
     var newList = [];
-    for (var listIndex = 2; listIndex < myList.length; listIndex++) {
-        if (myList[listIndex]["Distance"].indexOf("km") !== -1 || myList[listIndex]["Distance"] !== "under poll") {
-            newList.push(Object.assign({}, myList[listIndex]));
+    for (var listIndex = 2; listIndex < myTmpCurrentList.length; listIndex++) {
+        if (myTmpCurrentList[listIndex]["Distance"].indexOf("km") !== -1 || myTmpCurrentList[listIndex]["Distance"] !== "under poll") {
+            newList.push(Object.assign({}, myTmpCurrentList[listIndex]));
         }
     }
     var distancecurr = 0;
@@ -64,15 +70,20 @@ function displayarrange() {
         newList[listIndextmp]["Distance"] = distancecurr;
     }
     var newArrangeList = newList.sort(function(a,b) {return (a["Distance"] > b["Distance"]) ? 1 : ((b["Distance"] > a["Distance"]) ? -1 : 0);} );
-    for (var listIndexSec = 2; listIndexSec < myList.length; listIndexSec++) {
-        if (myList[listIndexSec]["Distance"].indexOf("km") == -1) {
-            newArrangeList.push(myList[listIndexSec]);
+    for (var listIndexSec = 2; listIndexSec < myTmpCurrentList.length; listIndexSec++) {
+        if (myTmpCurrentList[listIndexSec]["Distance"].indexOf("km") == -1) {
+            newArrangeList.push(myTmpCurrentList[listIndexSec]);
         }
     }
     for (var listIndextmpsec = 0; listIndextmpsec < newArrangeList.length; listIndextmpsec++) {
         if (typeof(newArrangeList[listIndextmpsec]["Distance"]) === 'number') {
             newArrangeList[listIndextmpsec]["Distance"] = newArrangeList[listIndextmpsec]["Distance"] + 'km';
         }
+    }
+
+    this.myTmpCurrentList = []
+    for (var listIndex = 0; listIndex < newArrangeList.length; listIndex++) {
+        this.myTmpCurrentList.push(newArrangeList[listIndex]);
     }
     $("#excelDataTable tr").remove();
     buildEventsTable('#excelDataTable', newArrangeList);
@@ -84,29 +95,35 @@ function displaytime() {
     var myCurrentList = [];
     var x = (date + " " + time);
     var splittedTime = [];
-    for (var listIndex = 2; listIndex < myList.length; listIndex++) {
-        splittedTime = myList[listIndex]["Time"].split(" ");
+    for (var listIndex = 0; listIndex < myTmpCurrentList.length; listIndex++) {
+        splittedTime = myTmpCurrentList[listIndex]["Time"].split(" ");
         splittedTime_date = splittedTime[0].split("/");
         splittedTime[0] = splittedTime_date[2]+"-"+splittedTime_date[1]+"-"+splittedTime_date[0];
         if (time == "") {
             if (splittedTime[0] == date){
-                myCurrentList.push(myList[listIndex]);
+                myCurrentList.push(myTmpCurrentList[listIndex]);
             }
         } else if (date == "") {
             if (splittedTime[1] == time) {
-                myCurrentList.push(myList[listIndex]);
+                myCurrentList.push(myTmpCurrentList[listIndex]);
             }
-        } else if (myList[listIndex]["Time"] == x) {
-            myCurrentList.push(myList[listIndex]);
+        } else if (myTmpCurrentList[listIndex]["Time"] == x) {
+            myCurrentList.push(myTmpCurrentList[listIndex]);
         }
     }
-    if (x == "T"){
+    if (x == " ") {
         for (var listIndex = 2; listIndex < myList.length; listIndex++) {
             myCurrentList.push(myList[listIndex]);
         }
+        // displaysearch();
+    }
+    this.myTmpCurrentList = []
+    for (var listIndex = 0; listIndex < myCurrentList.length; listIndex++) {
+        this.myTmpCurrentList.push(myCurrentList[listIndex]);
     }
     $("#excelDataTable tr").remove();
     buildEventsTable('#excelDataTable', myCurrentList);
+
 }
 
 function displaysearch() {
@@ -114,12 +131,19 @@ function displaysearch() {
     var alreadyIn = [];
     var x = $("#txt_name").val();
     if (x != "") {
-        for (var listIndex = 0; listIndex < myList.length; listIndex++) {
-            var event_types=myList[listIndex]["Type"].split(',');
-            var event_titles=myList[listIndex]["Title"].split(',');
-            for (var eventsIndex = 0; eventsIndex < event_types.length; eventsIndex++) {
-                if ((event_types[eventsIndex].toLowerCase() == x.toLowerCase() || event_titles[eventsIndex].toLowerCase().includes(x.toLowerCase())) && alreadyIn.indexOf(listIndex) == -1) {
-                    myCurrentList.push(myList[listIndex]);
+        for (var listIndex = 0; listIndex < myTmpCurrentList.length; listIndex++) {
+            var event_types=myTmpCurrentList[listIndex]["Type"].split(',');
+            var event_titles=myTmpCurrentList[listIndex]["Title"].split(',');
+            for (var typesIndex = 0; typesIndex < event_types.length; typesIndex++) {
+                if (event_types[typesIndex].toLowerCase().includes(x.toLowerCase()) && alreadyIn.indexOf(listIndex) == -1) {
+                    myCurrentList.push(myTmpCurrentList[listIndex]);
+                    alreadyIn.push(listIndex);
+                    break;
+                }
+            }
+            for (var titlesIndex = 0; titlesIndex < event_titles.length; titlesIndex++) {
+                if (event_titles[titlesIndex].toLowerCase().includes(x.toLowerCase()) && alreadyIn.indexOf(listIndex) == -1) {
+                    myCurrentList.push(myTmpCurrentList[listIndex]);
                     alreadyIn.push(listIndex);
                     break;
                 }
@@ -130,6 +154,11 @@ function displaysearch() {
         for (var listIndex = 2; listIndex < myList.length; listIndex++) {
             myCurrentList.push(myList[listIndex]);
         }
+        // displaytime();
+    }
+    this.myTmpCurrentList = []
+    for (var listIndex = 0; listIndex < myCurrentList.length; listIndex++) {
+        this.myTmpCurrentList.push(myCurrentList[listIndex]);
     }
     $("#excelDataTable tr").remove();
     buildEventsTable('#excelDataTable', myCurrentList);
