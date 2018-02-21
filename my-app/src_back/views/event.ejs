@@ -54,10 +54,19 @@
             var owner_id=document.getElementById("owner_id").innerHTML;
             console.log(user_id);
             console.log(owner_id);
-            if(user_id==owner_id)
+            /*if(user_id==owner_id)
             {
-            ($("<input type='button' id='edit' value='Edit'/>")).insertBefore($("#title"));
-            $('#edit').click(function(){EditEvent();});
+                var user_input=document.querySelectorAll('.user-input');
+                Arrays.prototype.forEach(user_input,item =>{
+                    var edit_button=$("<input type='button' name='edit' value='Edit'/>")
+                    item.append(edit_button);
+                    edit_button.click(Edit(item));
+                    });
+            }*/
+            var pool_results=document.getElementById('pool_results').innerHTML;
+            if(pool_results!='0')
+            {
+                $('<p>A free poll was conducted. Chosen option is: '+pool_results+'</p>').insertBefore($('#description'));
             }
 
         });
@@ -222,8 +231,7 @@
                 var options=[];
                 //Set chart data
                 FreePoll = JSON.parse(document.getElementById('polls').innerHTML)[i];
-                console.log(i);
-                if(FreePoll.status=='open'){
+                console.log(document.getElementById('polls').innerHTML);
                 $('<a id="free-poll">Open-question poll ongoing.Click here to view.</a><br>').insertBefore(time);
                 for (var j = 0; j < FreePoll.options.length; j++) {
                     var t = [];
@@ -239,7 +247,6 @@
                     SetOptions('Other',options);
                     ShowPollResults();
                 });
-            }
             }
         });
 
@@ -503,12 +510,9 @@
             return votes;
         }
 
-        function EditEvent(){
-            var user_input=document.getElementsByClassName('user-input');
-            var user_input_copy;
-            Array.prototype.forEach.call(user_input,item => {
-                console.log(item.innerHTML);
-            })
+        function Edit(item){
+            var name=item.name;
+            item.append
         }
 
 
@@ -613,7 +617,7 @@
                             </a>
                         </div>
                         <div class="form-group col-md-6">
-                           <span id="title" class="form-control user-input" style="text-align:center;"><H3>
+                           <span id="title" class="form-control" style="text-align:center;"><H3 class="user-input">
                                     <%= title %>
                                 </H3></span>
                             <br/>
@@ -640,7 +644,7 @@
                                                                                                     style="display: none"
                                                                                                     onclick="OpenMap()"><%= event_place %></a>
                             </p>
-                            <p class="form-control user-input" id="description">Description: <br/> <%= event_desc %></p>
+                            <p class="form-control user-input" name="description" id="description">Description: <br/> <%= event_desc %></p>
                             </span>
 
                         </div>
@@ -660,6 +664,7 @@
                 <p id="user_id" style="display:none; color:white;"><%= user_id %></p>
                 <p id="event_id" style="display:none; color:white;"><%= event_id %>
                 <p id="owner_id" style="display:none"><%=owner_id%></p>
+                <p id="pool_results" style="display:none"><%=pool_results%></p>
 
                 <form id="poll_data" method="POST"
                       style="display:none; ">
