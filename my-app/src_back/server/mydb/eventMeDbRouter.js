@@ -83,8 +83,8 @@ router.get('/event/:event_id/:user_id', function (req, res) {
                 going_users: (event["goingName"] == undefined ? [] : event["goingName"]),
                 invited_users:
                     event["invitedName"] == undefined ? [] : event["invitedName"],
-                invited_ids : (event["invited_users"] == undefined ? [] : event["invited_users"]),
-                going_ids: (event["going_users"]==undefined ? [] : event["going_users"]),
+                invited_ids: (event["invited_users"] == undefined ? [] : event["invited_users"]),
+                going_ids: (event["going_users"] == undefined ? [] : event["going_users"]),
                 pollArray: (event["pollArray"] == undefined ? [] : JSON.stringify(event["pollArray"])),
                 pollCounter: event["pollCounter"],
                 owner_id: event["ownerId"],
@@ -124,8 +124,8 @@ router.get('/joinEvent/:event_id/:user_id', function (req, res) {
 
 router.get('/unattend/:event_id/:user_id', function (req, res) {
     console.log('-------unattend--------')
-    console.log('event_id:',req.params.event_id)
-    console.log('user_id:',req.params.user_id)
+    console.log('event_id:', req.params.event_id)
+    console.log('user_id:', req.params.user_id)
     let p = us.leave_event(req.params.event_id, req.params.user_id);
     p.then(_ => {
         res.redirect('/eventMe/event/' + req.params.event_id + '/' + req.params.user_id);
@@ -151,13 +151,13 @@ router.get('/unattend/:event_id/:user_id', function (req, res) {
 
 router.get('/delete_event/:event_id/:user_id', function (req, res) {
     console.log('-------delete_event--------')
-    console.log('event_id:',req.params.event_id)
-    console.log('user_id:',req.params.user_id)
+    console.log('event_id:', req.params.event_id)
+    console.log('user_id:', req.params.user_id)
     es.delete_my_event(req.params.event_id, req.params.user_id)
         .then(_ => {
-        console.log('delelted event - event deleted')
-        res.redirect(req.get('referer'));
-    });
+            console.log('delelted event - event deleted')
+            res.redirect(req.get('referer'));
+        });
 });
 
 /*
@@ -194,7 +194,7 @@ router.post('/addOpenEvent/:user_id', (req, res) => {
     return new Promise((resolve, reject) => {
         console.log(' is trying to create new event');
         console.log(req.body);
-        es.addOpenEvent(req.params["user_id"], req.body["Activity_name"], req.body["google-location"], req.body["categories"], req.body["description"], req.body["Activity_time"],req.body)
+        es.addOpenEvent(req.params["user_id"], req.body["Activity_name"], req.body["google-location"], req.body["categories"], req.body["description"], req.body["Activity_time"], req.body)
             .then(_ => {
                 let newUrl = '/eventMe/frontpage/' + req.params["user_id"];
                 console.log(newUrl);
@@ -271,11 +271,10 @@ router.post('/newUser', (req, res) => {
                 if (user.length > 0) {
                     console.log('user is already in the db, updating location and redirecting to frontpage');
                     user[0].current_location = location
-                    var friends_id_only=[]
+                    var friends_id_only = []
                     console.log(friend_list)
                     var counter
-                    for(counter = 0; counter < friend_list.length ; counter++)
-                    {
+                    for (counter = 0; counter < friend_list.length; counter++) {
                         friends_id_only[counter] = friend_list[counter].id
                     }
                     user[0].friends_list = friends_id_only;
@@ -339,7 +338,7 @@ router.get('/frontpage/:fb_id', (req, res) => {
             else {
                 console.log(' user is not  in the db!!!!!!!!!!!!!!!!!!!!!');
             }
-        }).catch(err=> reject(err))
+        }).catch(err => reject(err))
 });
 
 /*
@@ -359,7 +358,7 @@ router.get('/frontpage/:fb_id', (req, res) => {
 *************************************
  */
 
-router.get('/myOwnEvents/:fb_id', (req, res) => {
+router.get('/myownevents/:fb_id', (req, res) => {
     console.log('------myOwnEvents page---------')
     let fb_id = req.params.fb_id;
     us.getUserByFb(fb_id)
@@ -370,7 +369,7 @@ router.get('/myOwnEvents/:fb_id', (req, res) => {
                     .then(events_array => {
                         console.log('these are the user full events array:');
                         console.log(events_array);
-                        res.render('myOwnEvents', {
+                        res.render('myownevents', {
                             invited_events: events_array,
                             user_id: fb_id,
                             location: user[0].current_location
@@ -420,8 +419,7 @@ router.get('/eventsiattend/:fb_id', (req, res) => {
                     }).catch(err => reject(err))
 
             }
-            else
-            {
+            else {
                 console.log(' user is not  in the db!!!!!!!!!!!!!!!!!!!!!');
             }
         })
@@ -490,18 +488,18 @@ router.get('/getMyInvitedEvents/:user_id', (req, res) => {
  */
 
 router.post('/vote/:user_id', (req, res) => {
-   return new Promise((resolve, reject) => {
-       console.log('I am using my right to vote !  go trump!')
-       user_id = req.params.user_id
-       event_id = req.body.eventId
-       cur_pull = req.body.pollNum
-       my_vote = req.body.myVote
-       es.vote(user_id ,event_id ,cur_pull - 1, my_vote).then(_=>{
-           console.log('I managed to vote!!, maybe i shoudent have voted for trump...')
-           res.redirect('/eventMe/event/' + event_id + '/' + user_id);
-           resolve()
-       }).catch(err => reject(err))
-   })
+    return new Promise((resolve, reject) => {
+        console.log('I am using my right to vote !  go trump!')
+        user_id = req.params.user_id
+        event_id = req.body.eventId
+        cur_pull = req.body.pollNum
+        my_vote = req.body.myVote
+        es.vote(user_id, event_id, cur_pull - 1, my_vote).then(_ => {
+            console.log('I managed to vote!!, maybe i shoudent have voted for trump...')
+            res.redirect('/eventMe/event/' + event_id + '/' + user_id);
+            resolve()
+        }).catch(err => reject(err))
+    })
 });
 
 
@@ -552,7 +550,6 @@ module.exports = router;
 //             }).catch(err => reject(err))
 //     })
 // });
-
 
 
 // //GET home page.
