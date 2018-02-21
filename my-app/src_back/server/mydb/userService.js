@@ -55,6 +55,7 @@ class userService {
                     for(var event_ounter = 0; event_ounter< my_friends_events_list[f_ounter].length; event_ounter++)
                     {
                         new_user.invited_events.push(my_friends_events_list[f_ounter][event_ounter])
+                        add_me_to_event_as_invited(new_user.fb_id, new_user.f_name, my_friends_events_list[f_ounter][event_ounter])
                     }
                 }
                 userDAO.insert_user(new_user)
@@ -288,6 +289,17 @@ function update_my_friend_get_his_events(my_friends_events_list,friend_index, my
                 resolve()
             }).catch(err => reject(err))
     })
+}
+
+function add_me_to_event_as_invited(my_id ,my_name, event_id)
+{
+    console.log('-------add_me_to_event_as_invited----------')
+    eventDAO.get_event(event_id).then(req_event=>{
+        req_event[0].invited_users.push(my_id)
+        req_event[0].invitedName.push(my_name)
+        eventDAO.update_event(event_id, req_event[0])
+    }).catch(err=> reject(err))
+
 }
 
 function funcGetUserByFb(fb_id) {
