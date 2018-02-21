@@ -14,7 +14,7 @@ function getList(){
         }
     });
     for (var listIndex = 2; listIndex < myList.length; listIndex++) {
-        if (myList[listIndex]["Distance"] !== "" || myList[listIndex]["Distance"] !== "") {
+        if (!(myList[listIndex]["Distance"]).includes("km")) {
             var tmpDistance = readyForDistance(myList[listIndex]["Distance"]);
             myList[listIndex]["Distance"] = tmpDistance;
         } else if (myList[listIndex]["Distance"] == "") {
@@ -59,7 +59,7 @@ function boxChecked() {
 
 function displayarrange() {
     var newList = [];
-    for (var listIndex = 2; listIndex < myTmpCurrentList.length; listIndex++) {
+    for (var listIndex = 0; listIndex < myTmpCurrentList.length; listIndex++) {
         if (myTmpCurrentList[listIndex]["Distance"].indexOf("km") !== -1 || myTmpCurrentList[listIndex]["Distance"] !== "under poll") {
             newList.push(Object.assign({}, myTmpCurrentList[listIndex]));
         }
@@ -70,7 +70,7 @@ function displayarrange() {
         newList[listIndextmp]["Distance"] = distancecurr;
     }
     var newArrangeList = newList.sort(function(a,b) {return (a["Distance"] > b["Distance"]) ? 1 : ((b["Distance"] > a["Distance"]) ? -1 : 0);} );
-    for (var listIndexSec = 2; listIndexSec < myTmpCurrentList.length; listIndexSec++) {
+    for (var listIndexSec = 0; listIndexSec < myTmpCurrentList.length; listIndexSec++) {
         if (myTmpCurrentList[listIndexSec]["Distance"].indexOf("km") == -1) {
             newArrangeList.push(myTmpCurrentList[listIndexSec]);
         }
