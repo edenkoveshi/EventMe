@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html">
 <head>
+    <link href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAA9dipAJlqHQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgICAgICAgICAgICAgICAAIBAQEBAQEBAQEBAQEBAgACAQEBAQEBAQEBAQEBAQIAAgEBAQICAgICAgICAgICAAIBAQECAAAAAAAAAAAAAAACAQEBAgAAAAAAAAAAAAAAAgEBAQICAgICAgIAAAAAAAIBAQEBAQEBAQECAAAAAAACAQEBAQEBAQEBAgAAAAAAAgEBAQICAgICAgIAAAAAAAIBAQECAAAAAAAAAAAAAAACAQEBAgAAAAAAAAAAAAAAAgEBAQICAgICAgICAgICAAIBAQEBAQEBAQEBAQEBAgACAQEBAQEBAQEBAQEBAQIAAgICAgICAgICAgICAgICAAABAAAAAQAAAAEAAAABAAAH/wAAB/8AAAAfAAAAHwAAAB8AAAAfAAAH/wAAB/8AAAABAAAAAQAAAAEAAAABAAA=" rel="icon" type="image/x-icon" />
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -70,9 +71,9 @@
         function search(array, x) {
             for (var i = 0; i < array.length; i++) {
                 if (JSON.stringify(array[i]) == x)
-                    return true;
+                    return i;
             }
-            return false;
+            return -1;
 
         }
 
@@ -88,7 +89,7 @@
                 }
                 if (going_users != "") {
                     going_users = JSON.parse('[' + going_users + ']');
-                    if (search(going_users, user_id)) {//look for current user in going users & set poll number
+                    if (search(going_users, user_id)!=-1) {//look for current user in going users & set poll number
                         if (type == "Location") {
                             poll = LocationsPoll;
                             pollNum = 1;
@@ -120,7 +121,7 @@
         function ClosePoll(type)
         {
             var max_votes=0;
-            var votes=Votes();
+            var votes=Votes(type);
             for(var i=0;i<votes.length;i++)
             {
                 if(max_votes<votes[i])
@@ -178,19 +179,19 @@
                         addr.push(t);
                     }
                     PollChart(addr, 'Location');
-                    SetOptions('Location',addresses)
+                    SetOptions('Location',addresses);
                     ShowPollResults();
                 };
             }
             if (document.getElementById('event-time').innerHTML == "When: ") {
                 TimePoll = JSON.parse(document.getElementById('polls').innerHTML)[i];
                 var tabledata = [];
-                var options=[];
+                var opts=[];
                 //Set chart data
                 for (var j = 0; j < TimePoll.options.length; j++) {
                     var t = [];
                     t.push(ChangeDisplay(TimePoll.options[j].option));
-                    options.push(ChangeDisplay(TimePoll.options[j].option));
+                    opts.push(ChangeDisplay(TimePoll.options[j].option));
                     t.push(TimePoll.options[j].votes);
                     t.push(getRandomColor());
                     tabledata.push(t);
@@ -200,7 +201,7 @@
                 $("<a id='time-poll-msg'>Time&Date is under poll. Click here to view.</a><br>").insertBefore($('#event-type'));
                 $('#time-poll-msg').click(function () {
                     PollChart(tabledata, 'Date-time');
-                    SetOptions('Date-time',options);
+                    SetOptions('Date-time',opts);
                     ShowPollResults();
                 });
             }
@@ -208,11 +209,13 @@
                 var time=document.getElementById('time-poll-msg');
                 if(time==undefined)
                     time=document.getElementById('event-time');
-                $('<a id="free-poll">Open-question poll ongoing.Click here to view.</a><br>').insertBefore(time);
                 var tabledata2 = [];
                 var options=[];
                 //Set chart data
                 FreePoll = JSON.parse(document.getElementById('polls').innerHTML)[i];
+                console.log(i);
+                if(FreePoll.status=='open'){
+                $('<a id="free-poll">Open-question poll ongoing.Click here to view.</a><br>').insertBefore(time);
                 for (var j = 0; j < FreePoll.options.length; j++) {
                     var t = [];
                     t.push(FreePoll.options[j].option);
@@ -227,6 +230,7 @@
                     SetOptions('Other',options);
                     ShowPollResults();
                 });
+            }
             }
         });
 
@@ -450,6 +454,11 @@
                 item.onclick=function(){
                     var id=item.id;
                     var option=document.getElementById(id+" label").innerHTML;
+                    if(type=='Location')
+                    {
+                        var i=search(addresses,'"'+option+'"');
+                        option=LocationsPoll.options[i].option;
+                    }
                     Vote(type,option);
                 }
             });
@@ -458,8 +467,10 @@
             var owner_id=document.getElementById('owner_id').innerHTML;
             if(user_id==owner_id)
             {
-                $('#vote-form').append($("<input type='button' id='close-poll' value='Close poll!')/>"));
+                $('#vote-form').append($("<input type='button' id='close-poll' value='Close poll!'/>"));
                 $('#close-poll').click(function(){ClosePoll(type);});
+                $('#maps-modal').append($("<button id='edit'>Edit</button>"));
+                $('#edit').click(function(){EditEvent();});
             }
 
         }
@@ -467,6 +478,7 @@
         //calculate number of votes in a poll,used for google chart customization
         function Votes(type)
         {
+            console.log(type);
             var poll;
             if(type=="Location")
             {
@@ -477,10 +489,15 @@
             else
                 poll=TimePoll;
             var votes=[];
+            console.log(poll);
             for(var i=0;i<poll.options.length;i++) {
                 votes.push(poll.options[i].votes)
             }
             return votes;
+        }
+
+        function EditEvent(){
+
         }
 
 
@@ -547,9 +564,9 @@
         }
 
     </style>
-    <head>
-        <title>EventMe - Event</title>
-    </head>
+</head>
+
+
 <body onload="OpenMap()">
 <div class="container demo-2">
     <div id="large-header" class="large-header" style="background: grey">
@@ -606,12 +623,13 @@
                             <% } %>
                         </div>
                         <div class="form-group col-md-6">
-                            <p class="form-control" id="event-type">What: <%= event_type %></p>
-                            <p class="form-control" id="location-premable" style="display: none"><a id="location"
+                            <p class="form-control" id="event-type">What:</p>
+                            <p class="form-control user-input" id="event-type"><%= event_type %></p>
+                            <p class="form-control" id="location-premable" style="display: none" class="user-input"><a id="location"
                                                                                                     style="display: none"
                                                                                                     onclick="OpenMap()"><%= event_place %></a>
                             </p>
-                            <p class="form-control">Description: <br/> <%= event_desc %></p>
+                            <p class="form-control" id="description">Description: <br/> <%= event_desc %></p>
                             </span>
 
                         </div>
