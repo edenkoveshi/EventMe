@@ -101,14 +101,16 @@
                 <tr>
                     <th>Type</th>
                     <th>Title</th>
-                    <th><button onclick="displayarrange()"  class="mybutton" ><span>Distance</span></button></th>
+                    <th><a onclick="displayarrange()" class="btn btn-info btn-lg" style="white-space: normal; background-color: rgba(248,131,121,0.8); color: black; border-color: black"><span>Distance</span></a></th>
                     <th>Time</th>
                     <th>Owner</th>
                 <tr/>
                 <% for (var i = 0; i < invited_events.length; i++) { %>
                     <% var eventtime = invited_events[i]["time"];
                        var eventime2 = eventtime.split("T");
-                       var finaltime = eventime2[0] + " " + eventime2[1]; %>
+                       var eventime3 = eventime2[0].split("-");
+                       var finaltime = eventime3[2] +"/"+eventime3[1]+"/"+ eventime3[0]+" " + eventime2[1]
+                    %>
                 <tr>
                     <td><%= invited_events[i]["type"] %></td>
                     <td>
