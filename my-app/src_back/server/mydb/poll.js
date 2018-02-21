@@ -16,6 +16,8 @@ class  poll
         }
 
         this.array_length = array_length
+        this.status = "open"
+        this.winner = "no winner defined yet"
 
     }
 }
