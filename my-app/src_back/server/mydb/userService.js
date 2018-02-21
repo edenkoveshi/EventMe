@@ -34,21 +34,29 @@ class userService {
                 friends_id_only[counter] = friends_list[counter].id
             }
             let new_user = new User(fb_id, f_name, friends_id_only, location);
-            console.log('the use is:')
+            console.log('the user is:')
             console.log(new_user)
             var friends_count = friends_id_only.length
             var promises = []
+            var my_friends_events_list = []
             var a_promise
             var i
             for (i = 0; i < friends_count; i++)
             {
                 console.log('i = '+ i)
-                a_promise = update_my_friend_get_his_events(new_user, fb_id, friends_id_only[i])
+                a_promise = update_my_friend_get_his_events(my_friends_events_list,i, fb_id, friends_id_only[i])
                 console.log('try to push a promise')
                 promises.push(a_promise)
                 console.log('i pushed a promise')
             }
             Promise.all(promises).then(_=>{
+                for(var f_ounter = 0; f_ounter< friends_count; f_ounter++)
+                {
+                    for(var event_ounter = 0; event_ounter< my_friends_events_list[f_ounter].length; event_ounter++)
+                    {
+                        new_user.invited_events.push(my_friends_events_list[f_ounter][event_ounter])
+                    }
+                }
                 userDAO.insert_user(new_user)
                     .then(_=> {
                         console.log('saved! ', new_user)
@@ -245,7 +253,7 @@ class userService {
 module.exports = new userService()
 
 
-function update_my_friend_get_his_events(my_user, my_fb_id, friend_id)
+function update_my_friend_get_his_events(my_friends_events_list,friend_index, my_fb_id, friend_id)
 {
     console.log('update_my_friend_get_his_events')
     return new Promise((resolve, reject) => {
@@ -253,7 +261,7 @@ function update_my_friend_get_his_events(my_user, my_fb_id, friend_id)
             .then(a_friend=> {
                 console.log('funcGetUserByFb.then')
                 console.log(my_fb_id)
-
+                my_friends_events_list[friend_index] = []
                 if(a_friend.length >0)
                 {
                     if(a_friend[0].friends_list.indexOf(my_fb_id) < 0)
@@ -274,7 +282,7 @@ function update_my_friend_get_his_events(my_user, my_fb_id, friend_id)
                     var p_events = a_friend[0].own_public_events
                     for(var i=0; i < p_events.length; i++)
                     {
-                        my_user.open_friends_events.push(p_events[i])
+                        my_friends_events_list[friend_index].push(p_events[i])
                     }
                 }
                 resolve()
