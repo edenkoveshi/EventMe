@@ -32,14 +32,14 @@ class WebServer {
         };
 
         server = https.createServer(options, app);
-        server2 = http.createServer(app);
+        //server2 = http.createServer(app);
 
         /**
          * Listen on provided port, on all network interfaces.
          */
 
         server.listen(port);
-        server2.listen(80);
+        //server2.listen(80);
         server.on('error', this.onError);
         server.on('listening', this.onListening);
 
