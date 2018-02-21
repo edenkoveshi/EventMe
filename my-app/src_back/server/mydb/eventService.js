@@ -180,6 +180,19 @@ class eventService {
                 }).catch(err => reject(err))
         })
     }
+    edit_event(event_id, target, new_content){
+        console.log('------------edit_event-----------------')
+        return new Promise((resolve, reject) =>{
+            eventDAO.get_event(event_id)
+                .then(requested_events=>{
+                    requested_events[0][target] = new_content;
+                    eventDAO.update_event(event_id, requested_events[0]).then(_=>{
+                        resolve();
+                    }).catch(err => reject(err))
+                }).catch(err => reject(err))
+        }).catch(err => reject(err))
+    }
+
     close_vote(user_id ,event_id ,cur_pull , poll_type){
         console.log ('--------------close_vote---------------')
         return new Promise((resolve, reject) =>{

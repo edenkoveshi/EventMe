@@ -308,6 +308,42 @@ router.post('/newUser', (req, res) => {
 
 /*
 ************************************
+            edit page
+    params : fb_id
+    body :
+            event_id
+            target
+            new_content
+    redirect : none
+    render page: createevent
+    render contant :
+                    eventid
+
+    public page
+    change a specific part of the event
+*************************************
+ */
+
+
+router.post('/edit/:user_id', (req, res) => {
+    return new Promise((resolve, reject) => {
+        console.log('I dont like this event, lets edit it')
+        var user_id = req.params.user_id
+        var event_id = req.body.eventId
+        var target = req.body.target
+        var new_content = req.body.new_content
+        let newUrl = '/eventMe/myownevents/' + req.params["user_id"];
+        es.edit_event(event_id, target, new_content).then(_=>{
+            res.redirect(newUrl);
+            resolve();
+        }).catch(err => reject(err))
+    })
+});
+
+
+
+/*
+************************************
             frontpage page
     params : fb_id
     body : none
