@@ -196,7 +196,6 @@ class eventService {
                             winner.votes = requested_events[0].pollArray[cur_pull].options[i].votes;
                         }
                     }
-                    requested_events[0].pollArray[cur_pull].pool_results = requested_events[0].pollArray[cur_pull].winner;
                     requested_events[0].pollArray[cur_pull].status = "close";   //closing the poll
                     requested_events[0].pollArray[cur_pull].winner = requested_events[0].pollArray[cur_pull].options[winner.option].option;   // saving the winning option to the event
 
@@ -208,7 +207,11 @@ class eventService {
                     else if(poll_type == 'Date-time')
                     {
                         requested_events[0].time = requested_events[0].pollArray[cur_pull].winner;
+                    }else
+                    {
+                        requested_events[0].pool_results = requested_events[0].pollArray[cur_pull].winner;
                     }
+
                     for(var j = cur_pull; j<(requested_events[0].pollArray[cur_pull].length - 1); j++)
                     {
                         requested_events[0].pollArray[j] = requested_events[0].pollArray[j + 1];
