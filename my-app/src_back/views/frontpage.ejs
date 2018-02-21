@@ -80,7 +80,9 @@
         }
 
     </style>
-</head>
+    <head>
+        <title>EventMe - Home</title>
+    </head>
 <body onload="getList()">
 <div class="container-fluid demo-2">
         <div id="large-header" class="large-header">
@@ -122,7 +124,6 @@
                     <td id="distance"><%= invited_events[i]["location"] %></td>
                     <td style="display:none"><%= invited_events[i]["eventId"] %></td>
                     <p id="user_location" style="display:none"><%= location %></p>
-                    <td><%= invited_events[i]["time"] %></td>
                     <td><%= finaltime %></td>
                     <td><%= invited_events[i]["ownerName"] %></td>
                 </tr>
