@@ -212,7 +212,7 @@ class eventService {
                         requested_events[0].pool_results = requested_events[0].pollArray[cur_pull].winner;
                     }
 
-                    for(var j = cur_pull; j<(requested_events[0].pollArray[cur_pull].length - 1); j++)
+                    for(var j = cur_pull; j<(requested_events[0].pollArray.length - 1); j++)
                     {
                         requested_events[0].pollArray[j] = requested_events[0].pollArray[j + 1];
                     }
