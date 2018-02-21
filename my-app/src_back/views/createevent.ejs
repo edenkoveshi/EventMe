@@ -8,6 +8,7 @@
     <meta name="description" content="Examples for creative website header animations using Canvas and JavaScript"/>
     <meta name="keywords" content="header, canvas, animated, creative, inspiration, javascript"/>
     <meta name="author" content="Codrops"/>
+    <link rel="shortcut icon" href="../../favicon.ico">
     <link rel="stylesheet" type="text/css" href="../../css/normalize.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/styles.css"/>
     <link rel="stylesheet" type="text/css" href="../../css/component.css"/>
@@ -571,6 +572,7 @@
             });
 
             // ------ GET CURRENT LOCATION ------
+            var current_location;
             var Location = new Promise(function (resolve, reject) {
                 //Get current location using geolocation service
                 if (navigator.geolocation) {
@@ -587,6 +589,7 @@
             Location.then(function (result) {
                 //Adjust map
                 result = JSON.parse(result);
+                current_location=result;
                 map.setCenter(result);
                 if (!LocationPollCheck()) {
                     marker.setPosition(result);
@@ -634,51 +637,69 @@
             //var markers = [];
             searchBox.addListener('places_changed', function () {
                 var places = searchBox.getPlaces();
-                if (places.length == 0) {
+                if (places.length ==0){
+                    window.alert('Invalid address.Please try again');
                     return;
                 }
                 //get details of each place
+                if(places.length>1) //if query matches more than one place, choose closest one
+                {
+                    var min=CalcDistance(places[0].geometry.location,current_location);
+                    var chosen_place=places[0]
+                    for(var i=1;i<places.length;i++)
+                    {
+                        var dist=CalcDistance(places[i].geometry.location,current_location);
+                        if(dist<min)
+                        {
+                            min=dist;
+                            chosen_place=places[i];
+                        }
+                    }
+                    places=[];
+                    places.push(chosen_place);
+
+                }
                 var bounds = new google.maps.LatLngBounds();
                 places.forEach(function (place) {
-                    if (!place.geometry) {
-                        console.log("Returned place contains no geometry");
-                        return;
-                    }
-                    // Create a marker for each place.
-                    if (LocationPollCheck()) {
-                        if (window.confirm('Choose this location?')) {
-                            if (markers.length > 16)
-                                window.alert('You have reached maximal number of locations');
-                            else {
-                                markers.push(new google.maps.Marker({
-                                    map: map,
-                                    icon: 'https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FFFFFF',
-                                    title: place.name,
-                                    position: place.geometry.location
+                        if (!place.geometry) {
+                            console.log("Returned place contains no geometry");
+                            return;
+                        }
+                        // Create a marker for each place.
+                        if (LocationPollCheck()) {
+                            if (window.confirm('Choose this location?')) {
+                                if (markers.length > 16)
+                                    window.alert('You have reached maximal number of locations');
+                                else {
+                                    markers.push(new google.maps.Marker({
+                                        map: map,
+                                        icon: 'https://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=%E2%80%A2|FFFFFF',
+                                        title: place.name,
+                                        position: place.geometry.location
 
-                                }));
-                                marker.setMap(null);
-                                location_poll.push(place.geometry.location + " ");
-                                location_no_poll.value = "";
+                                    }));
+                                    marker.setMap(null);
+                                    location_poll.push(place.geometry.location + " ");
+                                    location_no_poll.value = "";
+                                }
                             }
                         }
-                    }
-                    else {
-                        marker.setPosition(place.geometry.location);
-                        marker.setMap(map);
-                        location_no_poll.value = place.geometry.location;
-                        location_poll.value = "";
-                        for (i = 0; i < markers.length; i++) {
-                            markers[i].setMap(null);
+                        else {
+                            marker.setPosition(place.geometry.location);
+                            marker.setMap(map);
+                            location_no_poll.value = place.geometry.location;
+                            location_poll.value = "";
+                            for (i = 0; i < markers.length; i++) {
+                                markers[i].setMap(null);
+                            }
                         }
-                    }
-                    map.setCenter(place.geometry.location);
-                    if (place.geometry.viewport) {
-                        // Only geocodes have viewport.
-                        bounds.union(place.geometry.viewport);
-                    } else {
-                        bounds.extend(place.geometry.location);
-                    }
+                        map.setCenter(place.geometry.location);
+                        if (place.geometry.viewport) {
+                            // Only geocodes have viewport.
+                            bounds.union(place.geometry.viewport);
+                        } else {
+                            bounds.extend(place.geometry.location);
+                        }
                 });
                 map.fitBounds(bounds);
             });
@@ -754,6 +775,38 @@
     function AddFreePollOptions() {
         $("<input type=text name='free-poll-option'/>").insertBefore($('#free-poll-button'));
         $("<br>").insertBefore($('#free-poll-button'));
+    }
+
+    function CalcDistance(location1,location2)
+    {
+        //-----------Calculate distance between event and user locations---------------
+        var R = 6371e3; // metres
+        var lat1 = location1.lat;
+        var lon1 = location1.lng;
+        var lat2 = location2.lat;
+        var lon2 = location2.lng;
+        var φ1 = radians(lat1);
+        var φ2 = radians(lat2);
+        var Δφ = radians(lat2 - lat1);
+        var Δλ = radians(lon2 - lon1);
+
+        var a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+            Math.cos(φ1) * Math.cos(φ2) *
+            Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        var d = R * c;
+        d = Math.round(d * 100) / 100;
+
+        return (parseInt(d/100))/10 +'km';
+
+
+
+    }
+
+    function radians(x) {
+        var pi = Math.PI;
+        return x * (pi / 180);
     }
 
     //Time validation function
