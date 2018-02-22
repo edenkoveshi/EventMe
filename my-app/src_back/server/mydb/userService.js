@@ -213,7 +213,6 @@ class userService {
     get_my_attending_events(user_id) {
         return new Promise((resolve, reject) => {
             userDAO.get_User_by_fb_id(user_id)
-            userDAO.get_User_by_fb_id(user_id)
                 .then(user => {
                     console.log("this is user[0]: ");
                     console.log(user);
