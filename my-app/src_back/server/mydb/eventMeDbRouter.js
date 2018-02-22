@@ -258,6 +258,7 @@ router.post('/addOpenEvent/:user_id', (req, res) => {
 *************************************
  */
 router.get('/newUserTest/:fb_id/:f_name', (req, res) => {
+    res.cookie('user_id', us.hashID(req.params.fb_id));
     return new Promise((resolve, reject) => {
         let friend_list = [{name: 'barak', id: '10155189617577308'}, {
             name: 'itay',
@@ -544,7 +545,8 @@ router.get('/showMeUsers', (req, res) => {
 
 // 404 routing
 router.get('*', function (req, res) {
-    res.status(404).send('404 : The page you have requested does not exist.');
+    res.render('welcome');
+    //res.status(404).send('404 : The page you have requested does not exist.');
 });
 
 /*

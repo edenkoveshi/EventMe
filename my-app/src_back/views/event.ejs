@@ -52,16 +52,11 @@
             }
             var user_id=document.getElementById("user_id").innerHTML;
             var owner_id=document.getElementById("owner_id").innerHTML;
-            console.log(user_id);
-            console.log(owner_id);
             if(user_id==owner_id)
             {
-                var user_input=document.getElementsByClassName('user-input');
-                /*Array.prototype.forEach.call(user_input,function(item){
-                    var edit_button=$("<input type='button' name='edit' value='Edit'/>");
-                    item.parentNode.appendChild(edit_button);
-                    edit_button.click(Edit(item));
-                    });*/
+                    var edit_button=$("<input type='button' id='edit' value='Edit' class='form-control'/>");
+                    edit_button.click(EditEvent());
+                $('#event-details').append(edit_button);
             }
             var pool_results=document.getElementById('pool_results').innerHTML;
             if(pool_results!='0')
@@ -122,6 +117,7 @@
                         else {
                             poll = FreePoll;
                             pollNum = parseInt(document.getElementById('poll-counter').innerHTML);
+                            console.log(pollNum);
                         }
                             document.getElementById('myVote').value = vote;
                             document.getElementById('pollNum').value = pollNum;
@@ -216,7 +212,7 @@
                 }
                 i++;
                 document.getElementById('event-time').style = "display:none";
-                $("<a id='time-poll-msg'>Time&Date is under poll. Click here to view.</a><br>").insertBefore($('#event-type'));
+                $("<input type='button' id='time-poll-msg' class='form-control' value='Time&Date is under poll. Click here to view'/><br>").insertBefore($('#event-type'));
                 $('#time-poll-msg').click(function () {
                     PollChart(tabledata, 'Date-time');
                     SetOptions('Date-time',opts);
@@ -232,7 +228,7 @@
                 //Set chart data
                 FreePoll = JSON.parse(document.getElementById('polls').innerHTML)[i];
                 console.log(document.getElementById('polls').innerHTML);
-                $('<a id="free-poll">Open-question poll ongoing.Click here to view.</a><br>').insertBefore(time);
+                $('<input type="button" id="free-poll" class="form-control" value="Open-question poll ongoing.Click here to view"/><br>').insertBefore(time);
                 for (var j = 0; j < FreePoll.options.length; j++) {
                     var t = [];
                     t.push(FreePoll.options[j].option);
@@ -483,8 +479,10 @@
             var owner_id=document.getElementById('owner_id').innerHTML;
             if(user_id==owner_id)
             {
+                $(document).ready(function(){
                 $('#vote-form').append($("<input class='form-control' type='button' id='close-poll' value='Determine the final votes'/></br>"));
                 $('#close-poll').click(function(){ClosePoll(type);});
+                });
             }
 
         }
@@ -492,7 +490,6 @@
         //calculate number of votes in a poll,used for google chart customization
         function Votes(type)
         {
-            console.log(type);
             var poll;
             if(type=="Location")
             {
@@ -510,17 +507,10 @@
             return votes;
         }
 
-        /*function Edit(item){
-            var name=item.name;
-            item.append
-        }*/
-
         function LeaveEvent(){
             var user_id=document.getElementById('user_id').innerHTML;
             var event_id=document.getElementById('event_id').innerHTML;
             var owner_id=document.getElementById('owner_id').innerHTML;
-            console.log(user_id);
-            console.log(owner_id);
             if(user_id==owner_id)
             {
                 window.alert('If you wish to leave the event,please delete it in "My Own Events" page')
@@ -530,6 +520,11 @@
                 window.alert("You have left the event");
                 window.location.href="/eventMe/unattend/"+event_id.trim()+'/'+user_id.trim();
             }
+        }
+
+        function EditEvent(){
+            $('#poll-data').action=""; //enter redirection url here
+            $('#poll-data').submit();
         }
 
 
@@ -621,7 +616,7 @@
                                 <div class="form-group col-md-6">
                                     <h3 class="form-control">Going: <br/></h3>
                                     <% for (let i = 0; i < going_users.length; i++) { %>
-                                    <%= going_users[i] %><br/>f
+                                    <%= going_users[i] %><br/>
                                     <% } %>
                                 </div>
                                 <div class="form-group col-md-6">
@@ -643,7 +638,7 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md">
+                                <div id="event-details" class="form-group col-md">
                                     <span id="title" class="form-control" style="text-align:center; background-color: black; color:white;"><H3 class="user-input">
                                     <%= title %>
                                 </H3></span>

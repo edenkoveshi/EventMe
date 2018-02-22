@@ -60,11 +60,10 @@ class eventService {
                     console.log('the new event is:')
                     console.log(new_event)
                     eventDAO.create_event(new_event)
-                        .then(_=> {
-                            let updated_own_open_event_list = own_user[0].own_public_events
-                            updated_own_open_event_list.push(event_id)
-                            userDAO.update_user_created_events(owner_id, own_user[0].created_events)
-                            userDAO.update_user_own_public_events(owner_id,updated_own_open_event_list)
+                        .then(_=>{
+                            own_user[0].own_public_events.push(event_id)
+                            own_user[0].going_events.push(event_id)
+                            userDAO.update_user(own_user[0].fb_id, own_user[0])
                             invite_users_to_my_open_event(event_id, own_user[0].friends_list)
                             resolve()
                         }).catch(err => reject(err))
@@ -145,6 +144,7 @@ class eventService {
                                 while (!found){
                                     if(requested_events[0].pollArray[cur_pull].options[j].option == old_vote){
                                         found = true;
+                                        console.log('found! j='+j);
                                     }
                                     else{
                                         j++;
@@ -156,7 +156,13 @@ class eventService {
                                     }
                                 }
                                 requested_events[0].pollArray[cur_pull].options[j].votes--;
-                                requested_events[0].pollArray[cur_pull].voted_users.splice(requested_events[0].pollArray[cur_pull].voted_users.indexOf( user_id ,my_vote),1);
+                                console.log("going to delete from list:")
+                                console.log(requested_events[0].pollArray[cur_pull].voted_users)
+                                console.log("looking to delete:")
+                                console.log("old_vote: "+old_vote);
+                                console.log(i);
+
+                                requested_events[0].pollArray[cur_pull].voted_users.splice(i,1);
                             }
                         }
 
