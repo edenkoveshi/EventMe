@@ -54,12 +54,9 @@
             var owner_id=document.getElementById("owner_id").innerHTML;
             if(user_id==owner_id)
             {
-                var user_input=document.getElementsByClassName('user-input');
-                /*Array.prototype.forEach.call(user_input,function(item){
-                    var edit_button=$("<input type='button' name='edit' value='Edit'/>");
-                    item.parentNode.appendChild(edit_button);
-                    edit_button.click(Edit(item));
-                    });*/
+                    var edit_button=$("<input type='button' id='edit' value='Edit' class='form-control'/>");
+                    edit_button.click(EditEvent());
+                $('#event-details').append(edit_button);
             }
             var pool_results=document.getElementById('pool_results').innerHTML;
             if(pool_results!='0')
@@ -482,8 +479,10 @@
             var owner_id=document.getElementById('owner_id').innerHTML;
             if(user_id==owner_id)
             {
+                $(document).ready(function(){
                 $('#vote-form').append($("<input class='form-control' type='button' id='close-poll' value='Determine the final votes'/></br>"));
                 $('#close-poll').click(function(){ClosePoll(type);});
+                });
             }
 
         }
@@ -491,7 +490,6 @@
         //calculate number of votes in a poll,used for google chart customization
         function Votes(type)
         {
-            console.log(type);
             var poll;
             if(type=="Location")
             {
@@ -509,17 +507,10 @@
             return votes;
         }
 
-        /*function Edit(item){
-            var name=item.name;
-            item.append
-        }*/
-
         function LeaveEvent(){
             var user_id=document.getElementById('user_id').innerHTML;
             var event_id=document.getElementById('event_id').innerHTML;
             var owner_id=document.getElementById('owner_id').innerHTML;
-            console.log(user_id);
-            console.log(owner_id);
             if(user_id==owner_id)
             {
                 window.alert('If you wish to leave the event,please delete it in "My Own Events" page')
@@ -529,6 +520,11 @@
                 window.alert("You have left the event");
                 window.location.href="/eventMe/unattend/"+event_id.trim()+'/'+user_id.trim();
             }
+        }
+
+        function EditEvent(){
+            $('#poll-data').action=""; //enter redirection url here
+            $('#poll-data').submit();
         }
 
 
@@ -642,7 +638,7 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md">
+                                <div id="event-details" class="form-group col-md">
                                     <span id="title" class="form-control" style="text-align:center; background-color: black; color:white;"><H3 class="user-input">
                                     <%= title %>
                                 </H3></span>
