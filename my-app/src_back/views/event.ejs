@@ -216,7 +216,7 @@
                 }
                 i++;
                 document.getElementById('event-time').style = "display:none";
-                $("<a id='time-poll-msg'>Time&Date is under poll. Click here to view.</a><br>").insertBefore($('#event-type'));
+                $("<input type='button' id='time-poll-msg' class='form-control' value='Time&Date is under poll. Click here to view'/><br>").insertBefore($('#event-type'));
                 $('#time-poll-msg').click(function () {
                     PollChart(tabledata, 'Date-time');
                     SetOptions('Date-time',opts);
@@ -232,7 +232,7 @@
                 //Set chart data
                 FreePoll = JSON.parse(document.getElementById('polls').innerHTML)[i];
                 console.log(document.getElementById('polls').innerHTML);
-                $('<a id="free-poll">Open-question poll ongoing.Click here to view.</a><br>').insertBefore(time);
+                $('<input type="button" id="free-poll" class="form-control" value="Open-question poll ongoing.Click here to view"/><br>').insertBefore(time);
                 for (var j = 0; j < FreePoll.options.length; j++) {
                     var t = [];
                     t.push(FreePoll.options[j].option);
