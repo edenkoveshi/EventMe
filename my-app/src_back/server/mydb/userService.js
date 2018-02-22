@@ -1,6 +1,7 @@
 const DB = require('../data/DB')
 const userDAO = require('./userDAO')
 const eventDAO = require('./eventDAO')
+const es = require('./eventService');
 var User = require('./user')
 
 
@@ -100,7 +101,7 @@ class userService {
                             save_accepted_event(user[0], event_id)
                             eventDAO.get_event(event_id)
                                 .then(event => {
-                                    console.log('approve_participation-. my event:', event[0])
+                                    console.log('approve_participation-. my event:', event[0].eventId)
                                     console.log('approve_participation - event.length:', event.length)
                                     if (event.length > 0) {
                                         console.log('approve_participation - event length is good')
@@ -326,9 +327,10 @@ function updated_left_user(event, user_id, user_name) {
     event.invited_users.push(user_id)
     event.invitedName.push(user_name)
     console.log('updated_left_user - going to save the event:')
-    console.log(event)
+    //console.log(event)
     return new Promise((resolve, reject) => {
-        eventDAO.update_event(event.eventId, event)
+        var updated_event = es.remove_all_my_votes(event);
+        eventDAO.update_event(updated_event[0].eventId, updated_event[0])
             .then(user => {
                 resolve()
             }).catch(err => reject(err))
