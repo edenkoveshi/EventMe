@@ -216,7 +216,7 @@
                 }
                 i++;
                 document.getElementById('event-time').style = "display:none";
-                $("<a id='time-poll-msg'>Time&Date is under poll. Click here to view.</a><br>").insertBefore($('#event-type'));
+                $("<input type='button' id='time-poll-msg' class='form-control' value='Time&Date is under poll. Click here to view'/><br>").insertBefore($('#event-type'));
                 $('#time-poll-msg').click(function () {
                     PollChart(tabledata, 'Date-time');
                     SetOptions('Date-time',opts);
@@ -232,7 +232,7 @@
                 //Set chart data
                 FreePoll = JSON.parse(document.getElementById('polls').innerHTML)[i];
                 console.log(document.getElementById('polls').innerHTML);
-                $('<a id="free-poll">Open-question poll ongoing.Click here to view.</a><br>').insertBefore(time);
+                $('<input type="button" id="free-poll" class="form-control" value="Open-question poll ongoing.Click here to view"/><br>').insertBefore(time);
                 for (var j = 0; j < FreePoll.options.length; j++) {
                     var t = [];
                     t.push(FreePoll.options[j].option);
@@ -483,7 +483,7 @@
             var owner_id=document.getElementById('owner_id').innerHTML;
             if(user_id==owner_id)
             {
-                $('#vote-form').append($("<input type='button' id='close-poll' value='Close poll!'/>"));
+                $('#vote-form').append($("<input class='form-control' type='button' id='close-poll' value='Determine the final votes'/></br>"));
                 $('#close-poll').click(function(){ClosePoll(type);});
             }
 
@@ -571,17 +571,6 @@
             clear: left;
         }
 
-        h1 {
-            font-size: 45px;
-            font-weight: 100;
-            letter-spacing: 15px;
-            text-align: center;
-        }
-
-        h1, #main_content, #dog_link {
-            padding: 15px;
-        }
-
         a {
             color: #06c;
         }
@@ -608,71 +597,72 @@
                 <form id="event-form" style="padding:15px;">
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <img class="form-control" src="/img/<%= event_img %>">
-                        </div>
-                        <div class="form-group col-md-6">
-                            <div class="form-control" id="maps-modal">
-                                <div class="modal-content">
-                                    <div id="googleMap"></div>
+                            <div class="form-row">
+                                <div class="form-group col-md">
+                                    <img class="form-control" src="/img/<%= event_img %>">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <a style="background-color: rgba(0,255,128,1); border-color: darkred; weight:bold; color:black;" class="form-control" href="/eventMe/joinEvent/<%= event_id %>/<%= user_id %>">
+                                        Join event <img height=50px, onClick='alert("You have joined: <%= title %> ")' width=50px
+                                                        src="../../../img\tick.png"/>
+                                    </a>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <a style="background-color: rgba(255,102,102,1); border-color: darkred; weight:bold; color: black;" class="form-control"
+                                       onClick='LeaveEvent()'>Leave event
+                                        <img height=50px, ,width=50px
+                                             src="../../../img\x.png"/>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <h3 class="form-control">Going: <br/></h3>
+                                    <% for (let i = 0; i < going_users.length; i++) { %>
+                                    <%= going_users[i] %><br/>f
+                                    <% } %>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <h3 class="form-control">Invited: <br/></h3>
+                                    <% for (let i = 0; i < invited_users.length; i++) { %>
+                                    <%= invited_users[i] %><br/>
+                                    <% } %>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-3">
-                            <h4 class="form-control" style="weight:bold;">Join event<br/></h4>
-                            <a style="background-color: coral; border-color: darkred;" class="form-control" href="/eventMe/joinEvent/<%= event_id %>/<%= user_id %>">
-                                <img height=50px, onClick='alert("You have joined: <%= title %> ")' width=50px
-                                     src="../../../img\tick.png"/>
-                            </a>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <h4 class="form-control" style="weight:bold;">Leave event<br/></h4>
-                            <a style="background-color: coral; border-color: darkred;" class="form-control"
-                               onClick='LeaveEvent()'>
-                                <img height=50px, ,width=50px
-                                     src="../../../img\x.png"/>
-                            </a>
-                        </div>
                         <div class="form-group col-md-6">
-                           <span id="title" class="form-control" style="text-align:center;"><H3 class="user-input">
+                            <div class="form-row">
+                                <div class="form-group col-md">
+                                    <div class="form-control" id="maps-modal">
+                                        <div class="modal-content">
+                                            <div id="googleMap"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md">
+                                    <span id="title" class="form-control" style="text-align:center; background-color: black; color:white;"><H3 class="user-input">
                                     <%= title %>
                                 </H3></span>
-                            <br/>
-                            <p class="form-control user-input" id="event-time">When: <%= event_time %></p>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-3">
-                            <h3 class="form-control">Going: <br/></h3>
-                            <% for (let i = 0; i < going_users.length; i++) { %>
-                            <%= going_users[i] %><br/>
-                            <% } %>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <h3 class="form-control">Invited: <br/></h3>
-                            <% for (let i = 0; i < invited_users.length; i++) { %>
-                            <%= invited_users[i] %><br/>
-                            <% } %>
-                        </div>
-                        <div id="event-info" class="form-group col-md-6">
-                            <p class="form-control" id="event-type">What:</p>
-                            <p class="form-control user-input" id="event-type"><%= event_type %></p>
-                            <p class="form-control" id="location-premable" style="display: none"><a id="location" class="user-input"
-                                                                                                    style="display: none"
-                                                                                                    onclick="OpenMap()"><%= event_place %></a>
-                            </p>
-                            <p class="form-control user-input" name="description" id="description">Description: <br/> <%= event_desc %></p>
-                            </span>
-
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6" style="overflow:hidden;">
-                            <form id="vote-form"></form>
-                            <input type="button" class="form-control" id="close-chart" style="display:none" value="close"></input>
-                            <div id="google-chart" style="color:black;display:none;background-color: #f9f1e9;"></div>
-                            <p style="display:none;background-color: #f9f1e9; " id="polls"><%= pollArray %></p>
+                                    <br/>
+                                    <p class="form-control user-input" id="event-time">When: <%= event_time %></p>
+                                    <p class="form-control user-input" id="event-type">Event type: <%= event_type %></p>
+                                    <p class="form-control" id="location-premable" style="display: none"><a id="location" class="user-input"
+                                                                                                            style="display: none"
+                                                                                                            onclick="OpenMap()"><%= event_place %></a>
+                                    </p>
+                                    <form id="vote-form"></form>
+                                    <input type="button" class="form-control" id="close-chart" style="display:none" value="close"></input>
+                                    <div id="google-chart" style="color:black;display:none;background-color: #f9f1e9;"></div>
+                                    <p style="display:none;background-color: #f9f1e9; " id="polls"><%= pollArray %></p>
+                                    <br/>
+                                    <p class="form-control user-input" name="description" id="description">Description: <br/> <%= event_desc %></p>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
