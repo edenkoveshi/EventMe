@@ -156,7 +156,7 @@ class eventService {
                                     }
                                 }
                                 requested_events[0].pollArray[cur_pull].options[j].votes--;
-                                requested_events[0].pollArray[cur_pull].voted_users.splice(requested_events[0].pollArray[cur_pull].voted_users.indexOf( user_id ,my_vote),1);
+                                requested_events[0].pollArray[cur_pull].voted_users.splice(requested_events[0].pollArray[cur_pull].voted_users.indexOf( user_id ,requested_events[0].pollArray[cur_pull].options[j]),1);
                             }
                         }
 
