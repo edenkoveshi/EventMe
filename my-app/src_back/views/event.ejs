@@ -54,15 +54,15 @@
             var owner_id=document.getElementById("owner_id").innerHTML;
             console.log(user_id);
             console.log(owner_id);
-            /*if(user_id==owner_id)
+            if(user_id==owner_id)
             {
-                var user_input=document.querySelectorAll('.user-input');
-                Arrays.prototype.forEach(user_input,item =>{
-                    var edit_button=$("<input type='button' name='edit' value='Edit'/>")
-                    item.append(edit_button);
+                var user_input=document.getElementsByClassName('user-input');
+                /*Array.prototype.forEach.call(user_input,function(item){
+                    var edit_button=$("<input type='button' name='edit' value='Edit'/>");
+                    item.parentNode.appendChild(edit_button);
                     edit_button.click(Edit(item));
-                    });
-            }*/
+                    });*/
+            }
             var pool_results=document.getElementById('pool_results').innerHTML;
             if(pool_results!='0')
             {
@@ -510,9 +510,26 @@
             return votes;
         }
 
-        function Edit(item){
+        /*function Edit(item){
             var name=item.name;
             item.append
+        }*/
+
+        function LeaveEvent(){
+            var user_id=document.getElementById('user_id').innerHTML;
+            var event_id=document.getElementById('event_id').innerHTML;
+            var owner_id=document.getElementById('owner_id').innerHTML;
+            console.log(user_id);
+            console.log(owner_id);
+            if(user_id==owner_id)
+            {
+                window.alert('If you wish to leave the event,please delete it in "My Own Events" page')
+            }
+            else
+            {
+                window.alert("You have left the event");
+                window.location.href="/eventMe/unattend/"+event_id.trim()+'/'+user_id.trim();
+            }
         }
 
 
@@ -611,8 +628,9 @@
                         </div>
                         <div class="form-group col-md-3">
                             <h4 class="form-control" style="weight:bold;">Leave event<br/></h4>
-                            <a style="background-color: coral; border-color: darkred;" class="form-control" href="/eventMe/unattend/<%= event_id %>/<%= user_id %>">
-                                <img height=50px, onClick='alert("You have left: <%= title %> ")' ,width=50px
+                            <a style="background-color: coral; border-color: darkred;" class="form-control"
+                               onClick='LeaveEvent()'>
+                                <img height=50px, ,width=50px
                                      src="../../../img\x.png"/>
                             </a>
                         </div>
