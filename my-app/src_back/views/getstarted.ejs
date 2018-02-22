@@ -149,15 +149,6 @@
     }</script>
 <!-- Import JQuery  -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script>
-    //Set check listener for checkbox
-    $(document).ready(function () {
-        $("#cb").click(function () {
-                $("#fb_login").toggle(this.checked);
-            }
-        )
-    });
-</script>
 <div class="container-fluid demo-2">
     <div class="content">
         <div id="large-header" class="large-header">
@@ -171,11 +162,8 @@
             <div class="modal-content" id="myModal" style="background-color:White;">
                 <div class="modal-body">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <a id="fb_login" style="display: none;" onclick="return FBLogin()"><img style="width: 100%;" src="../../img/FB_login.png"></a>
+                    <a id="fb_login" onclick="return FBLogin()"><img style="width: 100%;" src="../../img/FB_login.png"></a>
                     <form action="">
-                        <label class="checkbox-inline" style="width: 150px"><input id="cb" style="width: 20px"
-                                                                                   type="checkbox" value="">Share My
-                            Location</label>
                     </form>
                     <form id="user_info" action="/eventMe/newUser" method="POST">
                         <input type="hidden" name="fb_id"/>
