@@ -52,8 +52,6 @@
             }
             var user_id=document.getElementById("user_id").innerHTML;
             var owner_id=document.getElementById("owner_id").innerHTML;
-            console.log(user_id);
-            console.log(owner_id);
             if(user_id==owner_id)
             {
                 var user_input=document.getElementsByClassName('user-input');
@@ -122,6 +120,7 @@
                         else {
                             poll = FreePoll;
                             pollNum = parseInt(document.getElementById('poll-counter').innerHTML);
+                            console.log(pollNum);
                         }
                             document.getElementById('myVote').value = vote;
                             document.getElementById('pollNum').value = pollNum;
@@ -621,7 +620,7 @@
                                 <div class="form-group col-md-6">
                                     <h3 class="form-control">Going: <br/></h3>
                                     <% for (let i = 0; i < going_users.length; i++) { %>
-                                    <%= going_users[i] %><br/>f
+                                    <%= going_users[i] %><br/>
                                     <% } %>
                                 </div>
                                 <div class="form-group col-md-6">

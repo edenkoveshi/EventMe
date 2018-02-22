@@ -145,6 +145,7 @@ class eventService {
                                 while (!found){
                                     if(requested_events[0].pollArray[cur_pull].options[j].option == old_vote){
                                         found = true;
+                                        console.log('found! j='+j);
                                     }
                                     else{
                                         j++;
@@ -156,7 +157,13 @@ class eventService {
                                     }
                                 }
                                 requested_events[0].pollArray[cur_pull].options[j].votes--;
-                                requested_events[0].pollArray[cur_pull].voted_users.splice(requested_events[0].pollArray[cur_pull].voted_users.indexOf( user_id ,requested_events[0].pollArray[cur_pull].options[j]),1);
+                                console.log("going to delete from list:")
+                                console.log(requested_events[0].pollArray[cur_pull].voted_users)
+                                console.log("looking to delete:")
+                                console.log("old_vote: "+old_vote);
+                                console.log(i);
+
+                                requested_events[0].pollArray[cur_pull].voted_users.splice(i,1);
                             }
                         }
 
