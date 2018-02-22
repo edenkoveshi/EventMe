@@ -17,6 +17,10 @@ router.get('/welcome', function (req, res) {
 
 
 router.get('/createEvent/:user_id', function (req, res) {
+    if (us.checkUserID(req.params.user_id, req) == false) {
+        res.render('welcome')
+    }
+    ;
     res.render('createevent', {user_id: req.params.user_id});
 });
 /*
@@ -68,6 +72,12 @@ router.get('/getstarted', function (req, res) {
  */
 
 router.get('/event/:event_id/:user_id', function (req, res) {
+
+    if (us.checkUserID(req.params.user_id, req) == false) {
+        res.render('welcome')
+    }
+    ;
+
     let p = es.getEvent(req.params.event_id);
     p.then((event) => {
         console.log(event);
@@ -94,7 +104,7 @@ router.get('/event/:event_id/:user_id', function (req, res) {
                 pollArray: (event["pollArray"] == undefined ? [] : JSON.stringify(event["pollArray"])),
                 pollCounter: event["pollCounter"],
                 owner_id: event["ownerId"],
-                pool_results:event["pool_results"]
+                pool_results: event["pool_results"]
                 //pollQuestion: event["pollQuestion"],
             })
             ;
@@ -106,6 +116,11 @@ router.get('/event/:event_id/:user_id', function (req, res) {
 });
 
 router.get('/joinEvent/:event_id/:user_id', function (req, res) {
+    if (us.checkUserID(req.params.user_id, req) == false) {
+        res.render('welcome')
+    }
+    ;
+
     let p = us.approve_participation(req.params.event_id, req.params.user_id);
     p.then(_ => {
         res.redirect('/eventMe/event/' + req.params.event_id + '/' + req.params.user_id);
@@ -133,6 +148,11 @@ router.get('/unattend/:event_id/:user_id', function (req, res) {
     console.log('-------unattend--------')
     console.log('event_id:', req.params.event_id)
     console.log('user_id:', req.params.user_id)
+    if (us.checkUserID(req.params.user_id, req) == false) {
+        res.render('welcome')
+    }
+    ;
+
     let p = us.leave_event(req.params.event_id, req.params.user_id);
     p.then(_ => {
         res.redirect('/eventMe/event/' + req.params.event_id + '/' + req.params.user_id);
@@ -160,6 +180,11 @@ router.get('/delete_event/:event_id/:user_id', function (req, res) {
     console.log('-------delete_event--------')
     console.log('event_id:', req.params.event_id)
     console.log('user_id:', req.params.user_id)
+    if (us.checkUserID(req.params.user_id, req) == false) {
+        res.render('welcome')
+    }
+    ;
+
     es.delete_my_event(req.params.event_id, req.params.user_id)
         .then(_ => {
             console.log('delelted event - event deleted')
@@ -198,6 +223,11 @@ router.get('/delete_event/:event_id/:user_id', function (req, res) {
 *************************************
  */
 router.post('/addOpenEvent/:user_id', (req, res) => {
+    if (us.checkUserID(req.params.user_id, req) == false) {
+        res.render('welcome')
+    }
+    ;
+
     return new Promise((resolve, reject) => {
         console.log(' is trying to create new event');
         console.log(req.body);
@@ -268,6 +298,7 @@ router.post('/newUser', (req, res) => {
     return new Promise((resolve, reject) => {
         // console.log(req.body);
         var fb_id = req.body.fb_id;
+        res.cookie('user_id', us.hashID(fb_id));
         var f_name = req.body.f_name;
         var location = req.body.location;
         var friend_list = JSON.parse(req.body.friend_list);
@@ -326,6 +357,11 @@ router.post('/newUser', (req, res) => {
 
 
 router.post('/edit/:user_id', (req, res) => {
+    if (us.checkUserID(req.params.user_id, req) == false) {
+        res.render('welcome')
+    }
+    ;
+
     return new Promise((resolve, reject) => {
         console.log('I dont like this event, lets edit it')
         var user_id = req.params.user_id
@@ -333,13 +369,12 @@ router.post('/edit/:user_id', (req, res) => {
         var target = req.body.target
         var new_content = req.body.new_content
         let newUrl = '/eventMe/myownevents/' + req.params["user_id"];
-        es.edit_event(event_id, target, new_content).then(_=>{
+        es.edit_event(event_id, target, new_content).then(_ => {
             res.redirect(newUrl);
             resolve();
         }).catch(err => reject(err))
     })
 });
-
 
 
 /*
@@ -361,7 +396,13 @@ router.post('/edit/:user_id', (req, res) => {
 
 router.get('/frontpage/:fb_id', (req, res) => {
     console.log('------frontpage---------')
+
     let fb_id = req.params.fb_id;
+    if (us.checkUserID(fb_id, req) == false) {
+        res.render('welcome')
+    }
+    ;
+
     us.getUserByFb(fb_id)
         .then(user => {
             if (user.length > 0) {
@@ -403,6 +444,11 @@ router.get('/frontpage/:fb_id', (req, res) => {
 
 router.get('/myownevents/:fb_id', (req, res) => {
     console.log('------myOwnEvents page---------')
+    if (us.checkUserID(req.params.fb_id, req) == false) {
+        res.render('welcome')
+    }
+    ;
+
     let fb_id = req.params.fb_id;
     us.getUserByFb(fb_id)
         .then(user => {
@@ -446,6 +492,11 @@ router.get('/myownevents/:fb_id', (req, res) => {
 router.get('/eventsiattend/:fb_id', (req, res) => {
     console.log('------eventsiattend page---------')
     let fb_id = req.params.fb_id;
+    if (us.checkUserID(fb_id, req) == false) {
+        res.render('welcome')
+    }
+    ;
+
     us.getUserByFb(fb_id)
         .then(user => {
             if (user.length > 0) {
@@ -511,6 +562,11 @@ router.get('*', function (req, res) {
 router.get('/getMyInvitedEvents/:user_id', (req, res) => {
     return new Promise((resolve, reject) => {
         console.log('getting all of my invited arrays:');
+        if (us.checkUserID(req.params.user_id, req) == false) {
+            res.render('welcome')
+        }
+        ;
+
         us.get_my_invited_events(req.params.user_id)
             .then(events_array => {
                 console.log('recieved ', events_array.length, ' arreys');
@@ -534,6 +590,11 @@ router.post('/vote/:user_id', (req, res) => {
     return new Promise((resolve, reject) => {
         console.log('I am using my right to vote !  go trump!')
         user_id = req.params.user_id
+        if (us.checkUserID(req.params.user_id, req) == false) {
+            res.render('welcome')
+        }
+        ;
+
         event_id = req.body.eventId
         cur_pull = req.body.pollNum
         my_vote = req.body.myVote
@@ -579,32 +640,3 @@ router.post('/closepoll', (req, res) => {
 
 
 module.exports = router;
-
-
-// router.get('/getUserByFbId/:user_fb_id', (req, res) => {
-//     return new Promise((resolve, reject) => {
-//         console.log('requesting user');
-//         let usr_fb_id = req.params.user_fb_id;
-//         us.getUserByFb(usr_fb_id)
-//             .then(req_user => {
-//                 console.log('user requested recieved = ', req_user[0].fb_id);
-//                 res.render('req_user');
-//                 resolve()
-//             }).catch(err => reject(err))
-//     })
-// });
-
-
-// //GET home page.
-// router.get('/', function (req, res) {
-//     res.render('getstarted');
-// });
-//
-// router.get('/welcome', function (req, res) {
-//     res.render('welcome');
-// });
-//
-//
-// router.get('/createEvent/:user_id', function (req, res) {
-//     res.render('createevent', {user_id: req.params.user_id});
-// });
