@@ -258,6 +258,7 @@ router.post('/addOpenEvent/:user_id', (req, res) => {
 *************************************
  */
 router.get('/newUserTest/:fb_id/:f_name', (req, res) => {
+    res.cookie('user_id', us.hashID(req.params.fb_id));
     return new Promise((resolve, reject) => {
         let friend_list = [{name: 'barak', id: '10155189617577308'}, {
             name: 'itay',
