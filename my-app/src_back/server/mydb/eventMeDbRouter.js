@@ -545,7 +545,8 @@ router.get('/showMeUsers', (req, res) => {
 
 // 404 routing
 router.get('*', function (req, res) {
-    res.status(404).send('404 : The page you have requested does not exist.');
+    res.render('welcome');
+    //res.status(404).send('404 : The page you have requested does not exist.');
 });
 
 /*
