@@ -5,7 +5,7 @@ function getList(){
 
     $('#excelDataTable tr').each(function(row, tr){
         myList[row]={
-            "Type" : $(tr).find('td:eq(0)').text(),
+            "Type" : $(tr).find('td:eq(0)').attr('id'),
             "Title" : $(tr).find('td:eq(1)').text(),
             "Distance" : $(tr).find('td:eq(2)').text(),
             "Time" :$(tr).find('td:eq(4)').text(),
@@ -186,16 +186,32 @@ function buildEventsTable(selector, myList) {
             if (columns[colIndex] == "Title") {
                 row$.append($('<td>'+'<a href='+link+'>'+cellValue+'</a>'+'</td>'+'</tr>'));
             }
+            else if (columns[colIndex] == "Type") {
+                var types = cellValue.split(',');
+                var types_put_already = new Array();
+                for (var typeindex = 0; typeindex < types.length; typeindex++) {
+                    var type = types[typeindex].split('_');
+                    if (type.length > 1) {
+                        if (!types_put_already.includes(type[1])) {
+                            types_put_already.push(type[1]);
+                        }
+
+                    }
+                    if (type.length == 1) {
+                        if (!types_put_already.includes(type[0])) {
+                            types_put_already.push(type[0]);
+                        }
+
+                    }
+                }row$.append($('<td>' + types_put_already + '</td>' + '</tr>'));
+            }
             else if (columns[colIndex] == "Owner" && arrayHref[4] == "myownevents") {
                 row$.append($('<td>'+cellValue+'</td>'+'</tr>'));
                 row$.append($('<td>'+'<a style="white-space: normal; background-color: rgba(248,131,121,0.8); color: black; border-color: black" class="btn btn-info btn-lg" href='+hrefdelete+'>delete</a>'+'</td>'+'</tr>'));
-            } else if (columns[colIndex] == "Title") {
-
             }
             else {
                 row$.append($('<td>'+cellValue+'</td>'+'</tr>'));
             }
-
         }
         $(selector).append(row$);
     }
