@@ -188,7 +188,7 @@ class userService {
                 .then(user => {
                     console.log("this is user[0]: ");
                     console.log(user);
-                    let a_promise = get_all_my_full_events(user[0].invited_events);
+                    let a_promise = get_all_my_full_events(user[0], 'invited_events');
                     a_promise.then(full_events_array => {
                         resolve(full_events_array)
                     }).catch(err => reject(err))
@@ -202,7 +202,7 @@ class userService {
                 .then(user => {
                     console.log("this is user[0]: ");
                     console.log(user);
-                    let a_promise = get_all_my_full_events(user[0].own_public_events);
+                    let a_promise = get_all_my_full_events(user[0], 'own_public_events');
                     a_promise.then(full_events_array => {
                         resolve(full_events_array)
                     }).catch(err => reject(err))
@@ -216,7 +216,7 @@ class userService {
                 .then(user => {
                     console.log("this is user[0]: ");
                     console.log(user);
-                    let a_promise = get_all_my_full_events(user[0].going_events);
+                    let a_promise = get_all_my_full_events(user[0], 'going_events');
                     a_promise.then(full_events_array => {
                         resolve(full_events_array)
                     }).catch(err => reject(err))
@@ -347,8 +347,14 @@ function updated_accepted_user(event, user_id, user_name) {
             }).catch(err => reject(err))
     })
 }
-
-function get_all_my_full_events(user_invited_events) {
+function move_event_to_old(user, invited_list, event_id)
+{
+    user[invited_list].splice(user.invited_events.indexOf(event_id), 1)
+    user.old_events.push(event_id)
+    userDAO.update_user(user.fb_id, user)
+}
+function get_all_my_full_events(user, invited_list) {
+    var user_invited_events = user[invited_list]
     console.log("USER INVITED EVENTS:" + user_invited_events);
     return new Promise((resolve, reject) => {
         let full_event_list = [];
@@ -356,8 +362,16 @@ function get_all_my_full_events(user_invited_events) {
         let a_promise;
         for (let i = 0; i < user_invited_events.length; i++) {
             a_promise = eventDAO.get_event(user_invited_events[i]).then(full_event => {
-                console.log("Pushed an event, " + full_event[0].eventId);
-                full_event_list.push(full_event[0])
+                console.log('trying to validate event time')
+                if(validate_event_date(full_event[0]))
+                {
+                    console.log("Pushed an event, " + full_event[0].eventId);
+                    full_event_list.push(full_event[0])
+                }else
+                {
+                    move_event_to_old(user, invited_list, full_event[0].eventId)
+                }
+
             }).catch(err => reject(err));
             promises.push(a_promise)
         }
@@ -365,4 +379,31 @@ function get_all_my_full_events(user_invited_events) {
             resolve(full_event_list)
         }).catch(err => reject(err))
     }).catch(err => reject(err))
+}
+
+function validate_event_date(event){
+    console.log("-------validate_event_date--------");
+    return ValidateTime(event.time);
+}
+function parseISOString(s) {
+    console.log("-------parseISOString--------");
+    var b = s.split(/\D+/);
+    return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], 0, 0));
+}
+function ValidateTime(time) {
+    console.log("-------ValidateTime--------");
+    if (time == undefined)
+    {
+        return true;
+    }
+    var chosen = parseISOString(time);
+    var current = new Date();
+    if (chosen.getTime() - current.getTime() < 3540000)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
