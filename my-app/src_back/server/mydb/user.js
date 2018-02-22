@@ -13,6 +13,7 @@ class  user
         this.own_private_events = []
         this.created_events = 0
         this.current_location = location
+        this.old_events = []
     }
 }
 
