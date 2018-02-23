@@ -362,7 +362,7 @@ function get_all_my_full_events(user, invited_list) {
         let a_promise;
         for (let i = 0; i < user_invited_events.length; i++) {
             a_promise = eventDAO.get_event(user_invited_events[i]).then(full_event => {
-                console.log('trying to validate event time')
+                console.log('trying to validate event time for event Id '+full_event[0].eventId)
                 if(validate_event_date(full_event[0]))
                 {
                     console.log("Pushed an event, " + full_event[0].eventId);
@@ -391,8 +391,8 @@ function parseISOString(s) {
     return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], 0, 0));
 }
 function ValidateTime(time) {
-    console.log("-------ValidateTime--------");
-    if (time == undefined)
+    console.log("-------ValidateTime--------" + time );
+    if ((time == undefined)|| (time == ""))
     {
         return true;
     }
@@ -404,6 +404,8 @@ function ValidateTime(time) {
     }
     else
     {
+        console.log('the event willl expire in: '+ (chosen.getTime() - current.getTime())/3540000 )
+
         return true;
     }
 }
