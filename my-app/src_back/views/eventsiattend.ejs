@@ -141,27 +141,29 @@
                 </br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br>
             </div>
             <script>
-                $(document).ready(function(){
-                    var event_loc=$('#excelDataTable tr td:nth-child(3)').text();
-                    event_loc=event_loc.split(')');
-                    var distances=[];
-                    var str="";
-                    for(var i=0;i<event_loc.length-1;i++)
-                    {
-                        distances[i]=CalcDistance(event_loc[i]);
-                        console.log(distances[i]);
-                    }
-                    var table=document.getElementById('excelDataTable');
-                    for(var i=2;i<table.rows.length;i++) {
-                        if (distances[i-2] == undefined){
-                            table.rows[i].cells[2].innerHTML="under poll"
-                        } else {
-                            table.rows[i].cells[2].innerHTML = distances[i - 2];
+                    $(document).ready(function () {
+                        var event_loc = new Array();
+                        var distances = [];
+                        var t = document.getElementById('excelDataTable').children[1];
+                        for (var i = 0; i < t.children.length; i++) {
+                            var val1 = t.children[i].children[2].innerText;
+                            if (val1 == "") {
+                                distances[i] = "";
+                            } else {
+                                event_loc = val1.split(')');
+                                distances[i] = CalcDistance(event_loc[0]);
+                                console.log(distances[i]);
+                            }
                         }
-                    }
-                    //$('#excelDataTable tr td:nth-child(3)').text(str.substr(0,str.length-1));
-
-                });
+                        var table = document.getElementById('excelDataTable');
+                        for (var i = 2; i < table.rows.length; i++) {
+                            if (distances[i - 2] == "") {
+                                table.rows[i].cells[2].innerHTML = "under poll"
+                            } else {
+                                table.rows[i].cells[2].innerHTML = distances[i - 2];
+                            }
+                        }
+                    });
 
                 function CalcDistance(x)
                 {
