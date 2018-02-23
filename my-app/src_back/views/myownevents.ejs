@@ -96,20 +96,17 @@
 <div class="container-fluid demo-2">
     <div id="large-header" class="large-header"><!-- Include navigation bar -->
         <% include tmpnav %>
-        <% if (invited_events.length <= 0) { %>
-        <div class="container-fluid">
-            <a class="btn btn-info btn-lg" href="/eventMe/createevent/<%= user_id %>"
-               style="white-space: normal; background-color: black; color: white; border-color: white">No Upcoming
-                Events. Create Your Own By Clicking Here</a>
-        </div>
+        <div class="container-fluid" id="cf">
+                <% if (invited_events.length <= 0) { %>
+                <div class="container-fluid" >
+                    <a class="btn btn-info btn-lg" href="/eventMe/createevent/<%= user_id %>" style="white-space: normal; background-color: black; color: white; border-color: white">No Upcoming Events. Create Your Own By Clicking Here</a>
+                </div>
 
-        <% } %>
+                <% } %>
 
-        <% if (invited_events.length > 0) { %>
-        <div class='card'>
-            <div class="card-body">
-                <div class="app-table-responsive">
-                    <table class="table table-hover" id="excelDataTable">
+                <% if (invited_events.length > 0) { %>
+                    <div class="table-responsive" style="border-width: 0px;">
+                        <table class="table table-hover" id="excelDataTable">
                         <thead class="thead-dark">
                         <tr>
                             <th>Type</th>
@@ -170,8 +167,9 @@
                         </tr>
                         <% } %>
                         </tbody>
-                    </table>
-                </div>
+                        </table>
+                        </br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br>
+                    </div>
                 <script>
                     $(document).ready(function () {
                         var event_loc = $('#excelDataTable tr td:nth-child(3)').text();
@@ -230,9 +228,7 @@
                         return x * (pi / 180);
                     }
 
-                </script>
-                <% } %>
-            </div>
+                </script><% } %>
         </div>
     </div>
 </div><!-- /container -->
