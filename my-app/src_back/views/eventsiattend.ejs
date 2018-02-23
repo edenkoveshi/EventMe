@@ -89,10 +89,7 @@
 <div class="container-fluid demo-2">
         <div id="large-header" class="large-header">
             <% include tmpnav %>
-
-            <div class="container-fluid">
-             <div class="table-responsive" style="border-width: 0px;">
-
+            <div class="container-fluid" id="cf">
              <% if (invited_events.length <= 0) { %>
                 <div class="container-fluid" >
                 <a class="btn btn-info btn-lg" href="/eventMe/createevent/<%= user_id %>" style="white-space: normal; background-color: black; color: white; border-color: white">No Upcoming Events. Create Your Own By Clicking Here</a>
@@ -100,7 +97,9 @@
              <% } %>
 
             <% if (invited_events.length > 0) { %>
-            <table class="table table-striped" id="excelDataTable">
+            <div class="table-responsive" style="border-width: 0px;">
+                <table class="table table-hover" id="excelDataTable">
+                <thead class="thead-dark">
                 <tr>
                     <th>Type</th>
                     <th>Title</th>
@@ -108,6 +107,8 @@
                     <th>Time</th>
                     <th>Owner</th>
                 <tr/>
+                </thead>
+                <tbody>
                 <% for (var i = 0; i < invited_events.length; i++) { %>
                     <% var eventtime = invited_events[i]["time"];
                     if (eventtime == "") {
@@ -130,9 +131,12 @@
                     <p id="user_location" style="display:none"><%= location %></p>
                     <td><%= finaltime %></td>
                     <td><%= invited_events[i]["ownerName"] %></td>
-                </tr>
-            </table>
-            <% } %>
+                 </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+                </br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br>
+            </div>
             <script>
                 $(document).ready(function(){
                     var event_loc=$('#excelDataTable tr td:nth-child(3)').text();
@@ -198,7 +202,8 @@
                     return x * (pi / 180);
                 }
 
-            </script><% } %>
+            </script>
+            <% } %>
             </div>
 
         </div>
