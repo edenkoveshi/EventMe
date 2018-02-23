@@ -1,6 +1,7 @@
 const DB = require('../data/DB')
 const userDAO = require('./userDAO')
 const eventDAO = require('./eventDAO')
+const es = require('./eventService');
 var User = require('./user')
 
 
@@ -100,7 +101,7 @@ class userService {
                             save_accepted_event(user[0], event_id)
                             eventDAO.get_event(event_id)
                                 .then(event => {
-                                    console.log('approve_participation-. my event:', event[0])
+                                    console.log('approve_participation-. my event:', event[0].eventId)
                                     console.log('approve_participation - event.length:', event.length)
                                     if (event.length > 0) {
                                         console.log('approve_participation - event length is good')
@@ -186,8 +187,6 @@ class userService {
         return new Promise((resolve, reject) => {
             userDAO.get_User_by_fb_id(user_id)
                 .then(user => {
-                    console.log("this is user[0]: ");
-                    console.log(user);
                     let a_promise = get_all_my_full_events(user[0], 'invited_events');
                     a_promise.then(full_events_array => {
                         resolve(full_events_array)
@@ -326,9 +325,10 @@ function updated_left_user(event, user_id, user_name) {
     event.invited_users.push(user_id)
     event.invitedName.push(user_name)
     console.log('updated_left_user - going to save the event:')
-    console.log(event)
+    //console.log(event)
     return new Promise((resolve, reject) => {
-        eventDAO.update_event(event.eventId, event)
+        var updated_event = es.remove_all_my_votes(event);
+        eventDAO.update_event(updated_event[0].eventId, updated_event[0])
             .then(user => {
                 resolve()
             }).catch(err => reject(err))
@@ -362,7 +362,7 @@ function get_all_my_full_events(user, invited_list) {
         let a_promise;
         for (let i = 0; i < user_invited_events.length; i++) {
             a_promise = eventDAO.get_event(user_invited_events[i]).then(full_event => {
-                console.log('trying to validate event time')
+                console.log('trying to validate event time for event Id '+full_event[0].eventId)
                 if(validate_event_date(full_event[0]))
                 {
                     console.log("Pushed an event, " + full_event[0].eventId);
@@ -391,8 +391,8 @@ function parseISOString(s) {
     return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], 0, 0));
 }
 function ValidateTime(time) {
-    console.log("-------ValidateTime--------");
-    if (time == undefined)
+    console.log("-------ValidateTime--------" + time );
+    if ((time == undefined)|| (time == ""))
     {
         return true;
     }
@@ -404,6 +404,8 @@ function ValidateTime(time) {
     }
     else
     {
+        console.log('the event willl expire in: '+ (chosen.getTime() - current.getTime())/3540000 )
+
         return true;
     }
 }

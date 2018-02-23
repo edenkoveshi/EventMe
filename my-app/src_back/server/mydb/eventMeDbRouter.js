@@ -360,23 +360,94 @@ router.post('/newUser', (req, res) => {
 router.post('/edit/:user_id', (req, res) => {
     if (us.checkUserID(req.params.user_id, req) == false) {
         res.render('welcome')
+    };
+    console.log('-----------edit page-------------------');
+    let p = es.getEvent(req.body.event_id);
+    p.then((event) => {
+        console.log('going to edit eventif '+req.body.event_id)
+        if (event !== undefined) {
+            console.log('event found')
+            res.render('edit', {
+                event_id: req.body.event_id,
+                title: event["title"], // 'my event',
+                event_img: event["type"].indexOf("Food") != -1 ? 'food.jpg' :
+                    event["type"].indexOf("Sport") != -1 ? 'sport.jpg' :
+                        event["type"].indexOf("Entertainment") != -1 ? 'entertainment.jpg' :
+                            event["type"].indexOf("Shopping") != -1 ? 'shopping.jpg' :
+                                event["type"].indexOf("Adventure") != -1 ? 'adventure.jpg' :
+                                    event["type"].indexOf("Party") != -1 ? 'party.jpg' : 'other.jpg',
+                event_time: (event["time"] == undefined ? "" : event["time"]),
+                event_place: (event["location"] == undefined ? "" : event["location"]),
+                event_type: event["type"],
+                event_desc: event["information"],
+                user_id: req.params.user_id,
+                going_users: (event["goingName"] == undefined ? [] : event["goingName"]),
+                invited_users:
+                    event["invitedName"] == undefined ? [] : event["invitedName"],
+                invited_ids: (event["invited_users"] == undefined ? [] : event["invited_users"]),
+                going_ids: (event["going_users"] == undefined ? [] : event["going_users"]),
+                pollArray: (event["pollArray"] == undefined ? [] : JSON.stringify(event["pollArray"])),
+                pollCounter: event["pollCounter"],
+                owner_id: event["ownerId"],
+                pool_results: event["pool_results"]
+            });
+        }
+        else {
+            console.log('event was not found!!!')
+            res.render('404');
+        }
+    });
+});
+
+/*
+************************************
+            save_edited_event page
+    params : user_id
+    body :
+            user_id
+            Activity_name
+            google-location
+            categories
+            description
+            Activity_time
+
+            poll_counter   --- tells how many relevant polls exist
+            poll1          --- an array containing the polls possibilities
+            poll1_length   --- tels how many possibilities in the poll
+            poll1_question --- string containing the polls headline/question
+
+            poll2..
+            poll3..
+
+
+    redirect : myownevents
+    render page:  ---
+    render contant : ----
+
+
+    public page
+    save the new data to the event
+*************************************
+ */
+
+router.post('/save_edited_event/:user_id', (req, res) => {
+    if (us.checkUserID(req.params.user_id, req) == false) {
+        res.render('welcome')
     }
     ;
 
     return new Promise((resolve, reject) => {
-        console.log('I dont like this event, lets edit it')
-        var user_id = req.params.user_id
-        var event_id = req.body.eventId
-        var target = req.body.target
-        var new_content = req.body.new_content
-        let newUrl = '/eventMe/myownevents/' + req.params["user_id"];
-        es.edit_event(event_id, target, new_content).then(_ => {
-            res.redirect(newUrl);
-            resolve();
-        }).catch(err => reject(err))
+        console.log(' is trying to create new event');
+        console.log(req.body);
+        es.save_edited_event(req.body["eventId"], req.body["Activity_name"], req.body["google-location"], req.body["categories"], req.body["description"], req.body["Activity_time"])
+            .then(_ => {
+                let newUrl = '/eventMe/myownevents/' + req.params["user_id"];
+                console.log(newUrl);
+                res.redirect(newUrl);
+                resolve()
+            }).catch(err => reject(err))
     })
 });
-
 
 /*
 ************************************
@@ -410,8 +481,6 @@ router.get('/frontpage/:fb_id', (req, res) => {
                 console.log(' good job - user is in the DB');
                 us.get_my_invited_events(req.params.fb_id)
                     .then(events_array => {
-                        console.log('these are the user full events array:');
-                        console.log(events_array);
                         res.render('frontpage', {
                             invited_events: events_array,
                             user_id: fb_id,

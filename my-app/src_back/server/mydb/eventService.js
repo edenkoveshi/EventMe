@@ -2,11 +2,29 @@ const DB = require('../data/DB')
 const eventDAO = require('./eventDAO')
 const userDAO = require('./userDAO')
 var Event = require('./event')
+const us = require('./userService');
 var Poll=require('./poll')
 
 
 
 class eventService {
+    save_edited_event(eventId, title ,location, type, info, time){
+        return new Promise((resolve, reject) => {
+            eventDAO.get_event(eventId).then(event=>{
+                if(event.length > 0){
+                    event[0].eventId = eventId;
+                    event[0].title = title;
+                    event[0].location = location;
+                    event[0].type = type;
+                    event[0].info = info;
+                    event[0].time = time;
+                    update_event(event[0].eventId, event[0]).then(_=>{
+                        resolve(event[0])
+                    })
+                }
+            }).catch(err=> reject(err))
+        });
+    }
 
     addOpenEvent(owner_id, title ,location, type, info, time, body) {
         return new Promise((resolve, reject) => {
@@ -134,53 +152,22 @@ class eventService {
                     }
                     else
                     {
-                        //check if the user voted before -> if he did, delete his previos vote
-                        for(var i = 0; i<requested_events[0].pollArray[cur_pull].voted_users.length; i++){
-                            if(requested_events[0].pollArray[cur_pull].voted_users[i].user == user_id){
-                                console.log('the user '+user_id + 'already voted in event ' + event_id + 'poll '+ cur_pull);
-                                console.log('deleting old vote so the new vote could be recieved');
-                                let old_vote = requested_events[0].pollArray[cur_pull].voted_users[i].vote;
-                                var j = 0;
-                                var found = false;
-                                while (!found){
-                                    if(requested_events[0].pollArray[cur_pull].options[j].option == old_vote){
-                                        found = true;
-                                        console.log('found! j='+j);
-                                    }
-                                    else{
-                                        j++;
-                                    }
-                                    if(j > requested_events[0].pollArray[cur_pull].options.length)
-                                    {
-                                        console.log("altough user has already voted, couldnt match his vote to any other vote")
-                                        resolve()
-                                    }
-                                }
-                                requested_events[0].pollArray[cur_pull].options[j].votes--;
-                                console.log("going to delete from list:")
-                                console.log(requested_events[0].pollArray[cur_pull].voted_users)
-                                console.log("looking to delete:")
-                                console.log("old_vote: "+old_vote);
-                                console.log(i);
-
-                                requested_events[0].pollArray[cur_pull].voted_users.splice(i,1);
-                            }
-                        }
+                        var updated_event = remove_old_votes(requested_events, cur_pull);
 
                         console.log(' poll before vote:')
-                        console.log(requested_events[0].pollArray[cur_pull])
-                        requested_events[0].pollArray[cur_pull].voted_users.push({user : user_id, vote : my_vote})
-                        for(var i = 0; i<requested_events[0].pollArray[cur_pull].options.length; i++)
+                        console.log(updated_event[0].pollArray[cur_pull])
+                        updated_event[0].pollArray[cur_pull].voted_users.push({user : user_id, vote : my_vote})
+                        for(var i = 0; i<updated_event[0].pollArray[cur_pull].options.length; i++)
                         {
-                            if(requested_events[0].pollArray[cur_pull].options[i].option == my_vote)
+                            if(updated_event[0].pollArray[cur_pull].options[i].option == my_vote)
                             {
-                                requested_events[0].pollArray[cur_pull].options[i].votes++
+                                updated_event[0].pollArray[cur_pull].options[i].votes++
                             }
                         }
-                        eventDAO.update_event(event_id, requested_events[0])
+                        eventDAO.update_event(event_id, updated_event[0])
                             .then(_=>{
                                 console.log(' poll after vote :')
-                                console.log(requested_events[0].pollArray[cur_pull])
+                                console.log(updated_event[0].pollArray[cur_pull])
                                 resolve()
                             }).catch(err => reject(err))
                     }
@@ -245,6 +232,15 @@ class eventService {
                     }).catch(err => reject(err))
                 }).catch(err => reject(err))
         }).catch(err => reject(err))
+    }
+
+    remove_all_my_votes(event){
+        console.log("--------remove_all_my_votes--------");
+        var res_event = [event];
+        for(var i =0; i<event.pollCounter; i++){
+            res_event = remove_old_votes(res_event, i)
+        }
+        return res_event
     }
 }
 
@@ -369,4 +365,34 @@ function add_an_event_to_user_invited_list(event_id, user_id){
 
 
     })
+}
+
+function remove_old_votes(requested_events, cur_pull)
+{
+    //check if the user voted before -> if he did, delete his previos vote
+    for(var i = 0; i<requested_events[0].pollArray[cur_pull].voted_users.length; i++){
+        if(requested_events[0].pollArray[cur_pull].voted_users[i].user == user_id){
+            console.log('the user '+user_id + 'already voted in event ' + requested_events[0].eventId + 'poll '+ cur_pull);
+            console.log('deleting old vote so the new vote could be recieved');
+            let old_vote = requested_events[0].pollArray[cur_pull].voted_users[i].vote;
+            var j = 0;
+            var found = false;
+            while (!found){
+                if(requested_events[0].pollArray[cur_pull].options[j].option == old_vote){
+                    found = true;
+                }
+                else{
+                    j++;
+                }
+                if(j > requested_events[0].pollArray[cur_pull].options.length)
+                {
+                    console.log("altough user has already voted, couldnt match his vote to any other vote")
+                    resolve()
+                }
+            }
+            requested_events[0].pollArray[cur_pull].options[j].votes--;
+            requested_events[0].pollArray[cur_pull].voted_users.splice(i,1);
+        }
+    }
+    return requested_events;
 }
