@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" class="no-js">
 <head>
-    <link href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAA9dipAJlqHQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgICAgICAgICAgICAgICAAIBAQEBAQEBAQEBAQEBAgACAQEBAQEBAQEBAQEBAQIAAgEBAQICAgICAgICAgICAAIBAQECAAAAAAAAAAAAAAACAQEBAgAAAAAAAAAAAAAAAgEBAQICAgICAgIAAAAAAAIBAQEBAQEBAQECAAAAAAACAQEBAQEBAQEBAgAAAAAAAgEBAQICAgICAgIAAAAAAAIBAQECAAAAAAAAAAAAAAACAQEBAgAAAAAAAAAAAAAAAgEBAQICAgICAgICAgICAAIBAQEBAQEBAQEBAQEBAgACAQEBAQEBAQEBAQEBAQIAAgICAgICAgICAgICAgICAAABAAAAAQAAAAEAAAABAAAH/wAAB/8AAAAfAAAAHwAAAB8AAAAfAAAH/wAAB/8AAAABAAAAAQAAAAEAAAABAAA=" rel="icon" type="image/x-icon" />
+    <link href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAA9dipAJlqHQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgICAgICAgICAgICAgICAAIBAQEBAQEBAQEBAQEBAgACAQEBAQEBAQEBAQEBAQIAAgEBAQICAgICAgICAgICAAIBAQECAAAAAAAAAAAAAAACAQEBAgAAAAAAAAAAAAAAAgEBAQICAgICAgIAAAAAAAIBAQEBAQEBAQECAAAAAAACAQEBAQEBAQEBAgAAAAAAAgEBAQICAgICAgIAAAAAAAIBAQECAAAAAAAAAAAAAAACAQEBAgAAAAAAAAAAAAAAAgEBAQICAgICAgICAgICAAIBAQEBAQEBAQEBAQEBAgACAQEBAQEBAQEBAQEBAQIAAgICAgICAgICAgICAgICAAABAAAAAQAAAAEAAAABAAAH/wAAB/8AAAAfAAAAHwAAAB8AAAAfAAAH/wAAB/8AAAABAAAAAQAAAAEAAAABAAA="
+          rel="icon" type="image/x-icon"/>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -115,7 +116,7 @@
                         </div>
                         <div class="form-group col-md-8">
                             <input class="form-control" type="datetime-local" name="Activity_time" id="event-time"
-                                   style="display:inline-block" value="<%=time%>"/>
+                                   style="display:inline-block" value="<%= time %>"/>
                         </div>
                     </div>
                     <div class="form-row">
@@ -123,7 +124,7 @@
                             <label for="inputPassword4">Location: </label>
                             <label for="inputPassword4" id="location-polled">(default - current location)</label>
                             <input type="text" name="google-location" id="location" class="form-control"
-                                   style="display:none" value="<%=location%>"/>
+                                   style="display:none" value="<%= location %>"/>
                         </div>
                         <div class="form-group col-md-6">
                             <input type="button" class="form-control" id="Activity_location" value="Click here"
@@ -318,7 +319,8 @@
                             <input class="form-control" type="hidden" name="categories">Description (optional):</input>
                         </div>
                         <div class="form-group col-md-6">
-                            <input class="form-control" placeholder="Description" name="description" value=<%=description%>>
+                            <input class="form-control" placeholder="Description" name="description"
+                                   value=<%= description %>>
                         </div>
                     </div>
                     <div class="form-row">
@@ -381,25 +383,23 @@
                     <input id="pac-input" class="controls" type="text" placeholder="Enter Location Here"
                            style="left:0px"/>
                     <div style="z-index: 1;" id="googleMap"></div>
-                    <!--<input type="text" class="form-control" name="google-location" style="display:none"/>-->
                 </div>
             </div>
         </div>
     </div>
-    <!-- Related demos -->
 </div><!-- /container -->
 <script>
-    var time=document.getElementById('event-time').value;
-    if(time==undefined) document.getElementById('event-time').value="";
-    var description=document.getElementById('description').value;
-    if(description==undefined) document.getElementById('description').value="";
-    var type=document.getElementById('event-type');
-    var types=type.split(',');
-    types.forEach(function(item,index){
-      $('#'+item).prop('checked',true);
+    var time = document.getElementById('event-time').value;
+    if (time == undefined) document.getElementById('event-time').value = "";
+    var description = document.getElementById('description').value;
+    if (description == undefined) document.getElementById('description').value = "";
+    var type = document.getElementById('event-type');
+    var types = type.split(',');
+    types.forEach(function (item, index) {
+        $('#' + item).prop('checked', true);
     });
 </script>
-<script src ="../../js/createevent.js"></script>
+<script src="../../js/createevent.js"></script>
 <!-- Import Google Maps -->
 <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCu3KurWBoVaFCgz3J6jjoYcnmIVY2i6B0&libraries=places&callback=initMap"></script>
@@ -414,12 +414,6 @@
 </script>
 <script type="text/javascript"
         src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js">
-</script>
-<script type="text/javascript"
-        src="https://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
-</script>
-<script type="text/javascript"
-        src="https://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.pt-BR.js">
 </script>
 </body>
 </html>

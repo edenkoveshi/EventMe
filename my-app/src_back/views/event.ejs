@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/html">
 <head>
-    <link href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAA9dipAJlqHQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgICAgICAgICAgICAgICAAIBAQEBAQEBAQEBAQEBAgACAQEBAQEBAQEBAQEBAQIAAgEBAQICAgICAgICAgICAAIBAQECAAAAAAAAAAAAAAACAQEBAgAAAAAAAAAAAAAAAgEBAQICAgICAgIAAAAAAAIBAQEBAQEBAQECAAAAAAACAQEBAQEBAQEBAgAAAAAAAgEBAQICAgICAgIAAAAAAAIBAQECAAAAAAAAAAAAAAACAQEBAgAAAAAAAAAAAAAAAgEBAQICAgICAgICAgICAAIBAQEBAQEBAQEBAQEBAgACAQEBAQEBAQEBAQEBAQIAAgICAgICAgICAgICAgICAAABAAAAAQAAAAEAAAABAAAH/wAAB/8AAAAfAAAAHwAAAB8AAAAfAAAH/wAAB/8AAAABAAAAAQAAAAEAAAABAAA=" rel="icon" type="image/x-icon" />
+    <link href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoBQAAFgAAACgAAAAQAAAAIAAAAAEACAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAAAA9dipAJlqHQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgICAgICAgICAgICAgICAAIBAQEBAQEBAQEBAQEBAgACAQEBAQEBAQEBAQEBAQIAAgEBAQICAgICAgICAgICAAIBAQECAAAAAAAAAAAAAAACAQEBAgAAAAAAAAAAAAAAAgEBAQICAgICAgIAAAAAAAIBAQEBAQEBAQECAAAAAAACAQEBAQEBAQEBAgAAAAAAAgEBAQICAgICAgIAAAAAAAIBAQECAAAAAAAAAAAAAAACAQEBAgAAAAAAAAAAAAAAAgEBAQICAgICAgICAgICAAIBAQEBAQEBAQEBAQEBAgACAQEBAQEBAQEBAQEBAQIAAgICAgICAgICAgICAgICAAABAAAAAQAAAAEAAAABAAAH/wAAB/8AAAAfAAAAHwAAAB8AAAAfAAAH/wAAB/8AAAABAAAAAQAAAAEAAAABAAA="
+          rel="icon" type="image/x-icon"/>
     <meta charset="UTF-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -44,40 +45,38 @@
         var chart;
 
         //display dates in readable format
-        $(document).ready(function(){
-            if(document.getElementById('event-time').innerHTML != "When: ") //no date poll
+        $(document).ready(function () {
+            if (document.getElementById('event-time').innerHTML != "When: ") //no date poll
             {
-                var event_time=document.getElementById('event-time').innerHTML.split(' ')[1];
-                document.getElementById('event-time').innerHTML = "When: "+ChangeDisplay(event_time);
+                var event_time = document.getElementById('event-time').innerHTML.split(' ')[1];
+                document.getElementById('event-time').innerHTML = "When: " + ChangeDisplay(event_time);
             }
-            var user_id=document.getElementById("user_id").innerHTML;
-            var owner_id=document.getElementById("owner_id").innerHTML;
-            if(user_id==owner_id)
-            {
-                    var edit_button=$("<input type='button' id='edit' value='Edit' class='form-control'/>");
-                    edit_button.click(EditEvent());
+            var user_id = document.getElementById("user_id").innerHTML;
+            var owner_id = document.getElementById("owner_id").innerHTML;
+            if (user_id == owner_id) {
+                var edit_button = $("<input type='button' id='edit' value='Edit' class='form-control'/>");
+                edit_button.click(EditEvent());
                 $('#event-details').append(edit_button);
             }
-            var pool_results=document.getElementById('pool_results').innerHTML;
-            if(pool_results!='0')
-            {
-                $('<p>A free poll was conducted. Chosen option is: '+pool_results+'</p>').insertBefore($('#description'));
+            var pool_results = document.getElementById('pool_results').innerHTML;
+            if (pool_results != '0') {
+                $('<p>A free poll was conducted. Chosen option is: ' + pool_results + '</p>').insertBefore($('#description'));
             }
 
         });
 
         //ChangeDisplay and RevertDisplay used to change date display format
-        function ChangeDisplay(date){
-            var x=date.split('T');//T replaced with ,
-            var y=x[0].split('-');//date change to DD/MM/YY format
-            var newdate=y[2]+'/'+y[1]+'/'+y[0]+' '+x[1];
+        function ChangeDisplay(date) {
+            var x = date.split('T');//T replaced with ,
+            var y = x[0].split('-');//date change to DD/MM/YY format
+            var newdate = y[2] + '/' + y[1] + '/' + y[0] + ' ' + x[1];
             return newdate;
         }
 
-        function RevertDisplay(date){
-            var x=date.split(' '); //the reverse operation
-            var y=x[0].split('/')
-            return y[2]+'-'+y[1]+'-'+y[0]+'T'+x[1];
+        function RevertDisplay(date) {
+            var x = date.split(' '); //the reverse operation
+            var y = x[0].split('/')
+            return y[2] + '-' + y[1] + '-' + y[0] + 'T' + x[1];
         }
 
         //used in Vote function
@@ -102,7 +101,7 @@
                 }
                 if (going_users != "") {
                     going_users = JSON.parse('[' + going_users + ']');
-                    if (search(going_users, user_id)!=-1) {//look for current user in going users & set poll number
+                    if (search(going_users, user_id) != -1) {//look for current user in going users & set poll number
                         if (type == "Location") {
                             poll = LocationsPoll;
                             pollNum = 1;
@@ -112,17 +111,17 @@
                             if (LocationUnderPoll())
                                 pollNum = 2;
                             else pollNum = 1;
-                            vote=RevertDisplay(vote);
+                            vote = RevertDisplay(vote);
                         }
                         else {
                             poll = FreePoll;
                             pollNum = parseInt(document.getElementById('poll-counter').innerHTML);
                             console.log(pollNum);
                         }
-                            document.getElementById('myVote').value = vote;
-                            document.getElementById('pollNum').value = pollNum;
-                            $('#poll_data').attr('action',"/eventMe/vote/"+user_id);
-                            $('#poll_data').submit();
+                        document.getElementById('myVote').value = vote;
+                        document.getElementById('pollNum').value = pollNum;
+                        $('#poll_data').attr('action', "/eventMe/vote/" + user_id);
+                        $('#poll_data').submit();
                     }
                     else {
                         window.alert("If you wish to vote, you must first confirm your attendance");
@@ -132,16 +131,14 @@
             });
         }
 
-        function ClosePoll(type)
-        {
-            var max_votes=0;
-            var votes=Votes(type);
-            for(var i=0;i<votes.length;i++)
-            {
-                if(max_votes<votes[i])
-                    max_votes=votes[i];
+        function ClosePoll(type) {
+            var max_votes = 0;
+            var votes = Votes(type);
+            for (var i = 0; i < votes.length; i++) {
+                if (max_votes < votes[i])
+                    max_votes = votes[i];
             }
-            if(max_votes==0)
+            if (max_votes == 0)
                 window.alert('You must have at least 1 vote before closing poll');
             else {
                 $('#event_type').val(type);
@@ -160,14 +157,14 @@
                 }
                 //reusing poll-data form
                 $('#pollNum').val(pollNum);
-                $('#poll_data').attr('action',"/eventMe/closepoll");
+                $('#poll_data').attr('action', "/eventMe/closepoll");
                 $('#poll_data').submit();
             }
         }
 
         //Center map on chosen address in poll chart
         function CenterMap() {
-            var i=chart.getSelection()[0].row;
+            var i = chart.getSelection()[0].row;
             var coords = LocationsPoll.options[i].option.split(" ");
             var _lat = parseFloat(coords[0].split(",")[0].substring(1));
             var _lng = parseFloat(coords[1].substring(0, coords[1].length - 1));
@@ -193,14 +190,14 @@
                         addr.push(t);
                     }
                     PollChart(addr, 'Location');
-                    SetOptions('Location',addresses);
+                    SetOptions('Location', addresses);
                     ShowPollResults();
                 };
             }
             if (document.getElementById('event-time').innerHTML == "When: ") {
                 TimePoll = JSON.parse(document.getElementById('polls').innerHTML)[i];
                 var tabledata = [];
-                var opts=[];
+                var opts = [];
                 //Set chart data
                 for (var j = 0; j < TimePoll.options.length; j++) {
                     var t = [];
@@ -215,16 +212,16 @@
                 $("<input type='button' id='time-poll-msg' class='form-control' value='Time&Date is under poll. Click here to view'/><br>").insertBefore($('#event-type'));
                 $('#time-poll-msg').click(function () {
                     PollChart(tabledata, 'Date-time');
-                    SetOptions('Date-time',opts);
+                    SetOptions('Date-time', opts);
                     ShowPollResults();
                 });
             }
             if (parseInt(document.getElementById('poll-counter').innerHTML) > i) {
-                var time=document.getElementById('time-poll-msg');
-                if(time==undefined)
-                    time=document.getElementById('event-time');
+                var time = document.getElementById('time-poll-msg');
+                if (time == undefined)
+                    time = document.getElementById('event-time');
                 var tabledata2 = [];
-                var options=[];
+                var options = [];
                 //Set chart data
                 FreePoll = JSON.parse(document.getElementById('polls').innerHTML)[i];
                 console.log(document.getElementById('polls').innerHTML);
@@ -240,7 +237,7 @@
                 i++;
                 $('#free-poll').click(function () {
                     PollChart(tabledata2, 'Other');
-                    SetOptions('Other',options);
+                    SetOptions('Other', options);
                     ShowPollResults();
                 });
             }
@@ -252,14 +249,14 @@
             var chart = document.getElementById('google-chart');
             var close = document.getElementById('close-chart');
             chart.style = "display:block;color:black;";
-            close.style="display:block";
-            close.onclick=function(){
-                chart.style="display:none";
-                close.style="display:none";
+            close.style = "display:block";
+            close.onclick = function () {
+                chart.style = "display:none";
+                close.style = "display:none";
                 $('#vote-title').remove();
                 $('input[type="radio"][name="option"],label[id^="option"]').remove();
-                var closepoll=document.getElementById('close-poll');
-                if(closepoll!=undefined) $('#close-poll').remove();
+                var closepoll = document.getElementById('close-poll');
+                if (closepoll != undefined) $('#close-poll').remove();
             }
         }
 
@@ -284,7 +281,7 @@
             coordinates.forEach(function (item, index) {
                 var latlng = item.substring(1, coordinates[i].length - 3);
                 var coords = latlng.split(" ");
-                latlng = coords[0] + coords[1].substring(0,coords[1].length-1);
+                latlng = coords[0] + coords[1].substring(0, coords[1].length - 1);
                 //Make an http request for google geocode services to get coordinates address
                 var xmlHttp = new XMLHttpRequest();
                 var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + latlng + "&key=AIzaSyCu3KurWBoVaFCgz3J6jjoYcnmIVY2i6B0";
@@ -373,7 +370,7 @@
             // Set chart title
             var title;
             if (type == "Location") {
-                title = LocationsPoll.poll_question+"\nClick on the bar to view location on map";
+                title = LocationsPoll.poll_question + "\nClick on the bar to view location on map";
 
             }
             else if (type == "Date-time") {
@@ -387,51 +384,50 @@
             // instantiates the bar chart, passes in the data and
             // draws it.
             function drawChart() {
-                $(document).ready(function(){
-                // Create the data table.
-                var dataarray = [];
-                dataarray.push(['Option', 'Votes', {role: 'style'}]);
-                x.forEach(function (item) {
-                    dataarray.push(item);
-                });
+                $(document).ready(function () {
+                        // Create the data table.
+                        var dataarray = [];
+                        dataarray.push(['Option', 'Votes', {role: 'style'}]);
+                        x.forEach(function (item) {
+                            dataarray.push(item);
+                        });
 
-                var data = new google.visualization.arrayToDataTable(dataarray);
+                        var data = new google.visualization.arrayToDataTable(dataarray);
 
-                //Customize axis values
-                var ticks=Votes(type);
-                var max_votes=0;
-                for(var i=0;i<ticks.length;i++)
-                {
-                    if(max_votes<ticks[i])
-                        max_votes=ticks[i];
-                }
+                        //Customize axis values
+                        var ticks = Votes(type);
+                        var max_votes = 0;
+                        for (var i = 0; i < ticks.length; i++) {
+                            if (max_votes < ticks[i])
+                                max_votes = ticks[i];
+                        }
 
-                //Set options
-                var options = {
-                    'title': title,
-                    'width': 400,
-                    'height': 300,
-                    'bar': {groupWidth: "95%"},
-                    'legend': {position: "none"},
-                    'focusTarget': 'category',
-                    'backgroundColor': 'transparent',
-                    'vAxis':{
-                        viewWindow:{min:0,max:max_votes},
-                        ticks:ticks,
-                    },
-                };
-
-
-                chart = new google.visualization.ColumnChart(document.getElementById('google-chart'));
+                        //Set options
+                        var options = {
+                            'title': title,
+                            'width': 400,
+                            'height': 300,
+                            'bar': {groupWidth: "95%"},
+                            'legend': {position: "none"},
+                            'focusTarget': 'category',
+                            'backgroundColor': 'transparent',
+                            'vAxis': {
+                                viewWindow: {min: 0, max: max_votes},
+                                ticks: ticks,
+                            },
+                        };
 
 
-                // Instantiate and draw our chart, passing in some options.
-                chart.draw(data, options);
-                if(type=='Location')
-                    //set on-click handler to show location on map
-                    google.visualization.events.addListener(chart, 'select', CenterMap);
-            }
-        );
+                        chart = new google.visualization.ColumnChart(document.getElementById('google-chart'));
+
+
+                        // Instantiate and draw our chart, passing in some options.
+                        chart.draw(data, options);
+                        if (type == 'Location')
+                        //set on-click handler to show location on map
+                            google.visualization.events.addListener(chart, 'select', CenterMap);
+                    }
+                );
             }
         }
 
@@ -446,84 +442,79 @@
         }
 
         //Set voting options
-        function SetOptions(type,options)
-        {
+        function SetOptions(type, options) {
             $('#vote-form').remove();
             ($('<form id="vote-form"/>')).insertBefore($('#google-chart'));
-            var title=$('<p id="vote-title">Vote:</p>');
+            var title = $('<p id="vote-title">Vote:</p>');
             $('#vote-form').append(title);
             //add radio buttons and labels
             for (var i = 0; i < options.length; i++) {
-                var option=options[i];
-                var radioBtn = $('<input type="radio" name="option" id="option'+i+'"/>');
-                var label=$('<label for="option'+i+'" id="option'+i+' label">'+option+'</label><br>');
+                var option = options[i];
+                var radioBtn = $('<input type="radio" name="option" id="option' + i + '"/>');
+                var label = $('<label for="option' + i + '" id="option' + i + ' label">' + option + '</label><br>');
                 $('#vote-form').append(radioBtn);
                 $('#vote-form').append(label);
             }
             //set vote listeners
-            var radios=document.getElementsByName('option');
-            radios.forEach(function(item,index){
-                item.onclick=function(){
-                    var id=item.id;
-                    var option=document.getElementById(id+" label").innerHTML;
-                    if(type=='Location')
-                    {
-                        var i=search(addresses,'"'+option+'"');
-                        option=LocationsPoll.options[i].option;
+            var radios = document.getElementsByName('option');
+            radios.forEach(function (item, index) {
+                item.onclick = function () {
+                    var id = item.id;
+                    var option = document.getElementById(id + " label").innerHTML;
+                    if (type == 'Location') {
+                        var i = search(addresses, '"' + option + '"');
+                        option = LocationsPoll.options[i].option;
                     }
-                    Vote(type,option);
+                    Vote(type, option);
                 }
             });
             //if current user is event owner,add a 'close poll' button
-            var user_id=document.getElementById('user_id').innerHTML;
-            var owner_id=document.getElementById('owner_id').innerHTML;
-            if(user_id==owner_id)
-            {
-                $(document).ready(function(){
-                $('#vote-form').append($("<input class='form-control' type='button' id='close-poll' value='Determine the final votes'/></br>"));
-                $('#close-poll').click(function(){ClosePoll(type);});
+            var user_id = document.getElementById('user_id').innerHTML;
+            var owner_id = document.getElementById('owner_id').innerHTML;
+            if (user_id == owner_id) {
+                $(document).ready(function () {
+                    $('#vote-form').append($("<input class='form-control' type='button' id='close-poll' value='Determine the final votes'/></br>"));
+                    $('#close-poll').click(function () {
+                        ClosePoll(type);
+                    });
                 });
             }
 
         }
 
         //calculate number of votes in a poll,used for google chart customization
-        function Votes(type)
-        {
+        function Votes(type) {
             var poll;
-            if(type=="Location")
-            {
-                poll=LocationsPoll;
+            if (type == "Location") {
+                poll = LocationsPoll;
             }
-            else if(type=="Other")
-                poll=FreePoll;
+            else if (type == "Other")
+                poll = FreePoll;
             else
-                poll=TimePoll;
-            var votes=[];
+                poll = TimePoll;
+            var votes = [];
             console.log(poll);
-            for(var i=0;i<poll.options.length;i++) {
+            for (var i = 0; i < poll.options.length; i++) {
                 votes.push(poll.options[i].votes)
             }
             return votes;
         }
 
-        function LeaveEvent(){
-            var user_id=document.getElementById('user_id').innerHTML;
-            var event_id=document.getElementById('event_id').innerHTML;
-            var owner_id=document.getElementById('owner_id').innerHTML;
-            if(user_id==owner_id)
-            {
+        function LeaveEvent() {
+            var user_id = document.getElementById('user_id').innerHTML;
+            var event_id = document.getElementById('event_id').innerHTML;
+            var owner_id = document.getElementById('owner_id').innerHTML;
+            if (user_id == owner_id) {
                 window.alert('If you wish to leave the event,please delete it in "My Own Events" page')
             }
-            else
-            {
+            else {
                 window.alert("You have left the event");
-                window.location.href="/eventMe/unattend/"+event_id.trim()+'/'+user_id.trim();
+                window.location.href = "/eventMe/unattend/" + event_id.trim() + '/' + user_id.trim();
             }
         }
 
-        function EditEvent(){
-            $('#poll-data').action=""; //enter redirection url here
+        function EditEvent() {
+            $('#poll-data').action = ""; //enter redirection url here
             $('#poll-data').submit();
         }
 
@@ -572,10 +563,10 @@
 
         svg {
             background-color: #f9f1e9;
-            color:black;
+            color: black;
         }
 
-        .form-row{
+        .form-row {
             padding: 8px;
         }
 
@@ -584,35 +575,42 @@
 
 
 <body onload="OpenMap()">
-<div class="container demo-2">
+<div class="container demo-2"><!-- container -->
     <div id="large-header" class="large-header" style="background: grey">
         <% include createeventbar %>
+        <!-- include the navigation bar -->
         <div id="event-properties" class="center">
             <div class="container">
-                <form id="event-form" style="padding:5px;">
+                <form id="event-form" style="padding:5px;"> <!-- the event is displayed in a bootstrap form -->
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <div class="form-row">
                                 <div class="form-group col-md">
                                     <img class="form-control" src="/img/<%= event_img %>">
+                                    <!-- an image is diplayed according to the event type -->
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md">
-                                    <span id="title" class="form-control" style="text-align:center; background-color: black; color:white;"><H3 class="user-input">
-                                            <%= title %>
+                                    <span id="title" class="form-control"
+                                          style="text-align:center; background-color: black; color:white;"><H3
+                                                class="user-input">
+                                            <%= title %> <!-- the event's title -->
                                         </H3></span>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    <a style="background-color: rgba(0,255,128,1); border-color: darkred; weight:bold; color:black;" class="form-control" href="/eventMe/joinEvent/<%= event_id %>/<%= user_id %>">
-                                        Join event <img height=50px, onClick='alert("You have joined: <%= title %> ")' width=50px
+                                    <a style="background-color: rgba(0,255,128,1); border-color: darkred; weight:bold; color:black;"
+                                       class="form-control" href="/eventMe/joinEvent/<%= event_id %>/<%= user_id %>">
+                                        Join event <img height=50px, onClick='alert("You have joined: <%= title %> ")'
+                                                        width=50px
                                                         src="../../../img\tick.png"/>
                                     </a>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <a style="background-color: rgba(255,102,102,1); border-color: darkred; weight:bold; color: black;" class="form-control"
+                                    <a style="background-color: rgba(255,102,102,1); border-color: darkred; weight:bold; color: black;"
+                                       class="form-control"
                                        onClick='LeaveEvent()'>Leave event
                                         <img height=50px, ,width=50px
                                              src="../../../img\x.png"/>
@@ -626,6 +624,7 @@
                                     <div class="form-control" id="maps-modal">
                                         <div class="modal-content">
                                             <div id="googleMap"></div>
+                                            <!-- a small google map, centered around the event's location -->
                                         </div>
                                     </div>
                                 </div>
@@ -634,37 +633,42 @@
                                 <div id="event-details" class="form-group col-md">
                                     <p class="form-control user-input" id="event-time">When: <%= event_time %></p>
                                     <p class="form-control user-input" id="event-type">Event type: <%= event_type %></p>
-                                    <p class="form-control" id="location-premable" style="display: none"><a id="location" class="user-input"
-                                                                                                            style="display: none"
-                                                                                                            onclick="OpenMap()"><%= event_place %></a>
+                                    <p class="form-control" id="location-premable" style="display: none"><a
+                                                id="location" class="user-input"
+                                                style="display: none"
+                                                onclick="OpenMap()"><%= event_place %></a>
                                     </p>
                                     <form id="vote-form"></form>
-                                    <input type="button" class="form-control" id="close-chart" style="display:none" value="close"></input>
-                                    <div id="google-chart" style="color:black;display:none;background-color: #f9f1e9;"></div>
+                                    <input type="button" class="form-control" id="close-chart" style="display:none"
+                                           value="close"></input>
+                                    <div id="google-chart"
+                                         style="color:black;display:none;background-color: #f9f1e9;"></div>
                                     <p style="display:none;background-color: #f9f1e9; " id="polls"><%= pollArray %></p>
                                     <br/>
-                                    <p class="form-control user-input" name="description" id="description">Description: <br/> <%= event_desc %></p>
+                                    <p class="form-control user-input" name="description" id="description">Description:
+                                        <br/> <%= event_desc %></p>
                                     </span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <h3 class="form-control">Going: <br/></h3>
-                                <% for (let i = 0; i < going_users.length; i++) { %>
-                                <%= going_users[i] %><br/>
-                                <% } %>
-                            </div>
-                            <div class="form-group col-md-6">
-                                <h3 class="form-control">Invited: <br/></h3>
-                                <% for (let i = 0; i < invited_users.length; i++) { %>
-                                <%= invited_users[i] %><br/>
-                                <% } %>
-                            </div>
+                        <div class="form-group col-md-6">
+                            <h3 class="form-control">Going: <br/></h3>
+                            <!-- create a row for each user that is going to the event -->
+                            <% for (let i = 0; i < going_users.length; i++) { %>
+                            <%= going_users[i] %><br/>
+                            <% } %>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <h3 class="form-control">Invited: <br/></h3><!-- create a row for each invited user -->
+                            <% for (let i = 0; i < invited_users.length; i++) { %>
+                            <%= invited_users[i] %><br/>
+                            <% } %>
+                        </div>
                     </div>
                     <div class="form-row">
-                    </br>
+                        </br>
                     </div>
                 </form>
 
@@ -672,13 +676,13 @@
                 <p id="going_ids" style="display:none; color:white;"><%= going_ids %></p>
                 <p id="user_id" style="display:none; color:white;"><%= user_id %></p>
                 <p id="event_id" style="display:none; color:white;"><%= event_id %>
-                <p id="owner_id" style="display:none"><%=owner_id%></p>
-                <p id="pool_results" style="display:none"><%=pool_results%></p>
+                <p id="owner_id" style="display:none"><%= owner_id %></p>
+                <p id="pool_results" style="display:none"><%= pool_results %></p>
 
                 <form id="poll_data" method="POST"
                       style="display:none; ">
-                    <input style="display:none; color:white;" name="user_id" value=<%= user_id %> />
-                    <input style="display:none; color:white;" name="eventId" value=<%= event_id %> />
+                    <input style="display:none; color:white;" name="user_id" value=<%= user_id %>/>
+                    <input style="display:none; color:white;" name="eventId" value=<%= event_id %>/>
                     <input style="display:none; color:white;" name="pollNum" id="pollNum"/>
                     <input style="display:none; color:white;" name="myVote" id="myVote"/>
                     <input style="display:none" name="event_type" id="event_type"/>
