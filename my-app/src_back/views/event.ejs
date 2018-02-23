@@ -576,7 +576,7 @@
         }
 
         .form-row{
-            padding: 10px;
+            padding: 8px;
         }
 
     </style>
@@ -589,12 +589,19 @@
         <% include createeventbar %>
         <div id="event-properties" class="center">
             <div class="container">
-                <form id="event-form" style="padding:15px;">
+                <form id="event-form" style="padding:5px;">
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <div class="form-row">
                                 <div class="form-group col-md">
                                     <img class="form-control" src="/img/<%= event_img %>">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md">
+                                    <span id="title" class="form-control" style="text-align:center; background-color: black; color:white;"><H3 class="user-input">
+                                            <%= title %>
+                                        </H3></span>
                                 </div>
                             </div>
                             <div class="form-row">
@@ -612,20 +619,6 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <h3 class="form-control">Going: <br/></h3>
-                                    <% for (let i = 0; i < going_users.length; i++) { %>
-                                    <%= going_users[i] %><br/>
-                                    <% } %>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <h3 class="form-control">Invited: <br/></h3>
-                                    <% for (let i = 0; i < invited_users.length; i++) { %>
-                                    <%= invited_users[i] %><br/>
-                                    <% } %>
-                                </div>
-                            </div>
                         </div>
                         <div class="form-group col-md-6">
                             <div class="form-row">
@@ -639,10 +632,6 @@
                             </div>
                             <div class="form-row">
                                 <div id="event-details" class="form-group col-md">
-                                    <span id="title" class="form-control" style="text-align:center; background-color: black; color:white;"><H3 class="user-input">
-                                    <%= title %>
-                                </H3></span>
-                                    <br/>
                                     <p class="form-control user-input" id="event-time">When: <%= event_time %></p>
                                     <p class="form-control user-input" id="event-type">Event type: <%= event_type %></p>
                                     <p class="form-control" id="location-premable" style="display: none"><a id="location" class="user-input"
@@ -659,6 +648,23 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <h3 class="form-control">Going: <br/></h3>
+                                <% for (let i = 0; i < going_users.length; i++) { %>
+                                <%= going_users[i] %><br/>
+                                <% } %>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <h3 class="form-control">Invited: <br/></h3>
+                                <% for (let i = 0; i < invited_users.length; i++) { %>
+                                <%= invited_users[i] %><br/>
+                                <% } %>
+                            </div>
+                    </div>
+                    <div class="form-row">
+                    </br>
                     </div>
                 </form>
 
