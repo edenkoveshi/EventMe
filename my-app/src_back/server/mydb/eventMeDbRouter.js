@@ -481,8 +481,6 @@ router.get('/frontpage/:fb_id', (req, res) => {
                 console.log(' good job - user is in the DB');
                 us.get_my_invited_events(req.params.fb_id)
                     .then(events_array => {
-                        console.log('these are the user full events array:');
-                        console.log(events_array);
                         res.render('frontpage', {
                             invited_events: events_array,
                             user_id: fb_id,

@@ -187,8 +187,6 @@ class userService {
         return new Promise((resolve, reject) => {
             userDAO.get_User_by_fb_id(user_id)
                 .then(user => {
-                    console.log("this is user[0]: ");
-                    console.log(user);
                     let a_promise = get_all_my_full_events(user[0], 'invited_events');
                     a_promise.then(full_events_array => {
                         resolve(full_events_array)
