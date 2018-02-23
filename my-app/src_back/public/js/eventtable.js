@@ -14,7 +14,7 @@ function getList(){
         }
     });
     for (var listIndex = 2; listIndex < myList.length; listIndex++) {
-        if (!(myList[listIndex]["Distance"]).includes("km") && myList[listIndex]["Distance"] !== "") {
+        if (!((myList[listIndex]["Distance"]).includes("km")) && myList[listIndex]["Distance"] !== "" && myList[listIndex]["Distance"] !== "under poll") {
             var tmpDistance = readyForDistance(myList[listIndex]["Distance"]);
             myList[listIndex]["Distance"] = tmpDistance;
         } else if (myList[listIndex]["Distance"] == "") {
@@ -195,13 +195,11 @@ function buildEventsTable(selector, myList) {
                         if (!types_put_already.includes(type[1])) {
                             types_put_already.push(type[1]);
                         }
-
                     }
                     if (type.length == 1) {
                         if (!types_put_already.includes(type[0])) {
                             types_put_already.push(type[0]);
                         }
-
                     }
                 }row$.append($('<td>' + types_put_already + '</td>' + '</tr>'));
             }

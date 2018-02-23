@@ -91,9 +91,6 @@
 <div class="container-fluid demo-2">
     <div id="large-header" class="large-header">
         <% include tmpnav %>
-
-
-
         <% if (invited_events.length <= 0) { %>
         <div class="container-fluid" >
             <a class="btn btn-info btn-lg" href="/eventMe/createevent/<%= user_id %>" style="white-space: normal; background-color: black; color: white; border-color: white">No Upcoming Events. Create Your Own By Clicking Here</a>
@@ -146,8 +143,6 @@
                         %>
                         <tr>
                             <td id="<%= invited_events[i]["type"] %>"><%= types_put_already %></td>
-
-
                             <td>
                                 <a href="/eventMe/event/<%= invited_events[i]["eventId"] %>/<%= user_id%>">
                                     <%= invited_events[i]["title"] %>
