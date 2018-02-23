@@ -7,6 +7,23 @@ var Poll=require('./poll')
 
 
 class eventService {
+    save_edited_event(eventId, title ,location, type, info, time){
+        return new Promise((resolve, reject) => {
+            eventDAO.get_event(eventId).then(event=>{
+                if(event.length > 0){
+                    event[0].eventId = eventId;
+                    event[0].title = title;
+                    event[0].location = location;
+                    event[0].type = type;
+                    event[0].info = info;
+                    event[0].time = time;
+                    update_event(event[0].eventId, event[0]).then(_=>{
+                        resolve(event[0])
+                    })
+                }
+            }).catch(err=> reject(err))
+        });
+    }
 
     addOpenEvent(owner_id, title ,location, type, info, time, body) {
         return new Promise((resolve, reject) => {
