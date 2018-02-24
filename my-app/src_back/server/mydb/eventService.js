@@ -85,11 +85,10 @@ class eventService {
                     console.log('the new event is:')
                     console.log(new_event)
                     eventDAO.create_event(new_event)
-                        .then(_=> {
-                            let updated_own_open_event_list = own_user[0].own_public_events
-                            updated_own_open_event_list.push(event_id)
-                            userDAO.update_user_created_events(owner_id, own_user[0].created_events)
-                            userDAO.update_user_own_public_events(owner_id,updated_own_open_event_list)
+                        .then(_=>{
+                            own_user[0].own_public_events.push(event_id)
+                            own_user[0].going_events.push(event_id)
+                            userDAO.update_user(own_user[0].fb_id, own_user[0])
                             invite_users_to_my_open_event(event_id, own_user[0].friends_list)
                             resolve()
                         }).catch(err => reject(err))
