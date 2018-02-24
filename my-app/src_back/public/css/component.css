@@ -214,7 +214,14 @@ input[type=text]:focus {
         background-color:White;
     }
     #fb_login_img { width: 100%;
-        position: relative;}
+        position: relative;
+    }
+    #gglmodalcontent {
+        width: 50%;
+        margin-left:auto;
+        margin-right: auto;
+        overflow-y: scroll;
+    }
 }
 
 @media only screen and (min-width: 760px) {
@@ -224,5 +231,11 @@ input[type=text]:focus {
     }
     #fb_login_img { width: 500px;
         position: relative;
+    }
+    #gglmodalcontent {
+        width: 50%;
+        margin-left:auto;
+        margin-right: auto;
+        overflow-y: scroll;
     }
 }
