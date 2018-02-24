@@ -631,8 +631,23 @@
                             </div>
                             <div class="form-row">
                                 <div id="event-details" class="form-group col-md">
+                                    <%
+                                    var eventtype = event_type;
+                                    var types = eventtype.split(',');
+                                    var types_put_already = new Array();
+                                    %>
+                                    <% for (var typeindex = 0; typeindex < types.length; typeindex++) { %>
+                                    <% var type = types[typeindex].split('_');
+                                        if (type.length > 1) {
+                                            types_put_already.push(" " + type[0] +" " + type[1]);
+                                        }
+                                        if (type.length == 1) {
+                                            types_put_already.push(" " + type[0]);
+                                        }
+                                    }
+                                    %>
                                     <p class="form-control user-input" id="event-time">When: <%= event_time %></p>
-                                    <p class="form-control user-input" id="event-type">Event type: <%= event_type %></p>
+                                    <p class="form-control user-input" id="event-type">Event type: <%= types_put_already %></p>
                                     <p class="form-control" id="location-premable" style="display: none"><a
                                                 id="location" class="user-input"
                                                 style="display: none"

@@ -136,13 +136,13 @@
                         <% for (var typeindex = 0; typeindex < types.length; typeindex++) { %>
                         <% var type = types[typeindex].split('_');
                             if (type.length > 1) {
-                                if (!types_put_already.includes(type[1])) {
-                                    types_put_already.push(type[1]);
+                                if (!types_put_already.includes(" " + type[1])) {
+                                    types_put_already.push(" " + type[1]);
                                 }
                             }
                             if (type.length == 1) {
-                                if (!types_put_already.includes(type[0])) {
-                                    types_put_already.push(type[0]);
+                                if (!types_put_already.includes(" " + type[0])) {
+                                    types_put_already.push(" " + type[0]);
                                 }
                             }
                         }
