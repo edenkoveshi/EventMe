@@ -211,8 +211,8 @@ class userService {
             console.log('trying to update user');
             console.log(user);
             userDAO.update_user(user.fb_id, user)
-                .then(user => {
-                    console.log('user updated ' + user[0].fb_id);
+                .then(updated_user => {
+                    console.log('user updated ');
                     resolve()
                 }).catch(err => reject(err))
         })
@@ -310,7 +310,7 @@ function updated_left_user(event, user_id, user_name) {
     console.log('updated_left_user - going to save the event:');
     //console.log(event)
     return new Promise((resolve, reject) => {
-        let updated_event = es.remove_all_my_votes(event);
+        let updated_event = es.remove_all_my_votes(event, user_id);
         eventDAO.update_event(updated_event[0].eventId, updated_event[0])
             .then(user => {
                 resolve()
