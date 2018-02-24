@@ -78,7 +78,6 @@ router.get('/event/:event_id/:user_id', function (req, res) {
 
     let p = es.getEvent(req.params.event_id);
     p.then((event) => {
-        console.log(event);
         if (event !== undefined) {
             res.render('event', {
                 event_id: req.params.event_id,
@@ -306,7 +305,6 @@ router.post('/newUser', (req, res) => {
                 us.update_user(user[0])
                     .then(_ => {
                         res.redirect(frontpage);
-                        resolve()
                     }).catch(err => reject(err))
 
             } else {

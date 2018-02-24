@@ -127,7 +127,6 @@ class userService {
             userDAO.get_User_by_fb_id(user_id)
                 .then(user => {
                     if (user.length > 0) {
-                        console.log('leave_event-. my user:', user[0]);
                         let do_i_participate_in_user = user[0].going_events.indexOf(event_id);
                         if (do_i_participate_in_user > -1) {
                             eventDAO.get_event(event_id)
@@ -303,32 +302,15 @@ function save_accepted_event(user, event_id) {
 }
 
 function updated_left_user(event, user_id, user_name) {
-    event.going_users.splice(event.invited_users.indexOf(user_id), 1);
-    event.goingName.splice(event.invited_users.indexOf(user_name), 1);
-    event.invited_users.push(user_id);
-    event.invitedName.push(user_name);
+    event_id = event.eventId;
+    eventDAO.leave_event(event_id, user_id, user_name);
     console.log('updated_left_user - going to save the event:');
     //console.log(event)
-    return new Promise((resolve, reject) => {
-        let updated_event = es.remove_all_my_votes(event, user_id);
-        eventDAO.update_event(updated_event[0].eventId, updated_event[0])
-            .then(user => {
-                resolve()
-            }).catch(err => reject(err))
-    })
+    let updated_event = es.remove_all_my_votes(event, user_id);
 }
 
 function updated_accepted_user(event, user_id, user_name) {
-    event.invited_users.splice(event.invited_users.indexOf(user_id), 1);
-    event.invitedName.splice(event.invitedName.indexOf(user_name), 1);
-    event.going_users.push(user_id);
-    event.goingName.push(user_name);
-    return new Promise((resolve, reject) => {
-        eventDAO.update_event(event.eventId, event)
-            .then(user => {
-                resolve()
-            }).catch(err => reject(err))
-    })
+    eventDAO.join_event(event.eventId, user_id, user_name)
 }
 function move_event_to_old(user, invited_list, event_id)
 {

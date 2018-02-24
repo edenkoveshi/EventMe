@@ -157,24 +157,27 @@ class eventService {
                     }
                     else
                     {
+                        console.log("this is the poll before change:");
+                        console.log(requested_events[0].pollArray[cur_pull]);
                         let updated_event = remove_old_votes(requested_events, cur_pull, user_id);
-
-                        console.log(' poll before vote:');
+                        console.log("finished removig old votes, now the poll looks like this:");
                         console.log(updated_event[0].pollArray[cur_pull]);
-                        updated_event[0].pollArray[cur_pull].voted_users.push({user : user_id, vote : my_vote});
                         for(let i = 0; i<updated_event[0].pollArray[cur_pull].options.length; i++)
                         {
                             if(updated_event[0].pollArray[cur_pull].options[i].option == my_vote)
                             {
-                                updated_event[0].pollArray[cur_pull].options[i].votes++
+                                if(cur_pull == 0){
+                                    eventDAO.change_vote0(event_id, user_id, my_vote, i, true)
+                                }else if(cur_pull == 1){
+                                    eventDAO.change_vote1(event_id, user_id, my_vote, i, true)
+                                }else {
+                                    eventDAO.change_vote2(event_id, user_id, my_vote, i, true)
+                                }
                             }
                         }
-                        eventDAO.update_event(event_id, updated_event[0])
-                            .then(_=>{
-                                console.log(' poll after vote :');
-                                console.log(updated_event[0].pollArray[cur_pull]);
-                                resolve()
-                            }).catch(err => reject(err))
+                        console.log("finished adding new votes, now the poll looks like this:");
+                        console.log(updated_event[0].pollArray[cur_pull]);
+                        resolve();
                     }
                 }).catch(err => reject(err))
         })
@@ -335,9 +338,7 @@ function remove_attending_event_from_my_list(user_id,event_id){
 }
 
 function invite_users_to_my_open_event(event_id, invited_list){
-    // console.log('invite_users_to_my_open_event')
-    // console.log(event_id)
-    // console.log(invited_list)
+
     for(let i=0; i < invited_list.length; i++)
     {
         add_an_event_to_user_invited_list(event_id, invited_list[i])
@@ -362,6 +363,7 @@ function add_an_event_to_user_invited_list(event_id, user_id){
 
 function remove_old_votes(requested_events, cur_pull, user_id)
 {
+    console.log("--------remove_old_votes--------")
     //check if the user voted before -> if he did, delete his previos vote
     for(let i = 0; i<requested_events[0].pollArray[cur_pull].voted_users.length; i++){
         if(requested_events[0].pollArray[cur_pull].voted_users[i].user == user_id){
@@ -383,9 +385,18 @@ function remove_old_votes(requested_events, cur_pull, user_id)
                     return ;
                 }
             }
-            requested_events[0].pollArray[cur_pull].options[j].votes--;
-            requested_events[0].pollArray[cur_pull].voted_users.splice(i,1);
+            console.log("eventId = "+requested_events[0].eventId+", user id = "+user_id+" old vote = "+ old_vote)
+            console.log("going to remove the "+j+ "vote, in the "+cur_pull+" poll")
+            if(cur_pull ==0){
+                eventDAO.change_vote0(requested_events[0].eventId, user_id, old_vote,j,false);
+            }else if(cur_pull ==1){
+                eventDAO.change_vote1(requested_events[0].eventId, user_id, old_vote,j,false);
+            }else{
+                eventDAO.change_vote2(requested_events[0].eventId, user_id, old_vote,j,false);
+            }
+            return requested_events;
         }
     }
+    console.log('user hasnt voted - no need to remove old votes')
     return requested_events;
 }

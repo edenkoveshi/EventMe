@@ -38,6 +38,7 @@
                 margin: 5px;
             }
         }
+
         @media only screen and (max-width: 760px) {
             body {
                 font: 300 15px/1.5 "Helvetica Neue", helvetica, arial, sans-serif;
@@ -45,7 +46,7 @@
             }
         }
 
-            article {
+        article {
             width: 100%;
             margin: 0 auto;
             background: #000;
@@ -111,52 +112,51 @@
                    style="white-space: normal; background-color: black; color: white; border-color: white">No Upcoming
                     Events. Create Your Own By Clicking Here</a>
             </div>
-
             <% } %>
 
-                <% if (invited_events.length > 0) { %>
-                    <div class="table-responsive" style="border-width: 0px;">
-                        <table class="table table-hover" id="excelDataTable">
-                        <thead class="thead-dark">
-                        <tr>
-                            <th>Title</th>
-                            <th><a onclick="displayarrange()" class="btn btn-info btn-lg"
-                                   style="white-space: normal; background-color: rgba(248,131,121,0.8); color: black; border-color: black"><span>Distance</span></a>
-                            </th>
-                            <th>Time</th>
-                            <th>Type</th>
-                            <th>Owner</th>
-                            <th>
-                        <tr/>
-                        </thead>
-                        <tbody>
-                        <% for (var i = 0; i < invited_events.length; i++) { %>
-                        <% var eventtime = invited_events[i]["time"];
-                            if (eventtime == "") {
-                                finaltime = "under poll"
-                            } else {
-                                var eventime2 = eventtime.split("T");
-                                var eventime3 = eventime2[0].split("-");
-                                var finaltime = eventime3[2] + "/" + eventime3[1] + "/" + eventime3[0] + " " + eventime2[1]
-                            }
-                            var eventtype = invited_events[i]["type"];
-                            var types = eventtype.split(',');
-                            var types_put_already = new Array();
-                        %>
-                        <% for (var typeindex = 0; typeindex < types.length; typeindex++) { %>
-                        <% var type = types[typeindex].split('_');
-                            if (type.length > 1) {
-                                if (!types_put_already.includes(" " + type[1])) {
-                                    types_put_already.push(" " + type[1]);
-                                }
-                            }
-                            if (type.length == 1) {
-                                if (!types_put_already.includes(" " + type[0])) {
-                                    types_put_already.push(" " + type[0]);
-                                }
+            <% if (invited_events.length > 0) { %>
+            <div class="table-responsive" style="border-width: 0px;">
+                <table class="table table-hover" id="excelDataTable">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Title</th>
+                        <th><a onclick="displayarrange()" class="btn btn-info btn-lg"
+                               style="white-space: normal; background-color: rgba(248,131,121,0.8); color: black; border-color: black"><span>Distance</span></a>
+                        </th>
+                        <th>Time</th>
+                        <th>Type</th>
+                        <th>Owner</th>
+                        <th> </th>
+                    <tr/>
+                    </thead>
+                    <tbody>
+                    <% for (var i = 0; i < invited_events.length; i++) { %>
+                    <% var eventtime = invited_events[i]["time"];
+                        if (eventtime == "") {
+                            finaltime = "under poll"
+                        } else {
+                            var eventime2 = eventtime.split("T");
+                            var eventime3 = eventime2[0].split("-");
+                            var finaltime = eventime3[2] + "/" + eventime3[1] + "/" + eventime3[0] + " " + eventime2[1]
+                        }
+                        var eventtype = invited_events[i]["type"];
+                        var types = eventtype.split(',');
+                        var types_put_already = new Array();
+                    %>
+                    <% for (var typeindex = 0; typeindex < types.length; typeindex++) { %>
+                    <% var type = types[typeindex].split('_');
+                        if (type.length > 1) {
+                            if (!types_put_already.includes(" " + type[1])) {
+                                types_put_already.push(" " + type[1]);
                             }
                         }
-                        %>
+                        if (type.length == 1) {
+                            if (!types_put_already.includes(" " + type[0])) {
+                                types_put_already.push(" " + type[0]);
+                            }
+                        }
+                    }
+                    %>
                     <tr class='clickable-row'
                         data-href="/eventMe/event/<%= invited_events[i]["eventId"] %>/<%= user_id %>">
                         <td>
@@ -175,11 +175,12 @@
                                class="btn btn-info btn-lg"
                                href="/eventMe/delete_event/<%= invited_events[i]["eventId"] %>/<%= user_id %>">delete</a>
                         </td>
+
                     </tr>
                     <% } %>
                     </tbody>
                 </table>
-                </br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br>
+
             </div>
             <script>
                 $(document).ready(function () {
