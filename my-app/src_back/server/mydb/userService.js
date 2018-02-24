@@ -127,7 +127,6 @@ class userService {
             userDAO.get_User_by_fb_id(user_id)
                 .then(user => {
                     if (user.length > 0) {
-                        console.log('leave_event-. my user:', user[0]);
                         let do_i_participate_in_user = user[0].going_events.indexOf(event_id);
                         if (do_i_participate_in_user > -1) {
                             eventDAO.get_event(event_id)
