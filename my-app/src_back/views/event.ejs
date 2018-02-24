@@ -445,12 +445,13 @@
             for (var i = 0; i < options.length; i++) {
                 var option = options[i];
                 var radioBtn = $('<input type="radio" name="option" id="option' + i + '"/>');
-                var label = $('<label for="option' + i + '" id="option' + i + ' label">' + option + '</label><br>');
+                var label = $('<label for="option' + i + '" id="option' + i + ' label" name="option label">' + option + '</label><br>');
                 $('#vote-form').append(radioBtn);
                 $('#vote-form').append(label);
             }
             //set vote listeners
             var radios = document.getElementsByName('option');
+            var labels = document.getElementsByName('option label')
             radios.forEach(function (item, index) {
                 item.onclick = function () {
                     var id = item.id;
@@ -459,6 +460,8 @@
                         var i = search(addresses, '"' + option + '"');
                         option = LocationsPoll.options[i].option;
                     }
+                    $('#vote-form').attr('style','display:none');
+                    ($('<p>Thank you for voting!</p>')).insertBefore($('#google-chart'));
                     Vote(type, option);
                 }
             });
