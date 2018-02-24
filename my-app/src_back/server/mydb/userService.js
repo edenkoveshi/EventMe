@@ -1,65 +1,48 @@
-const DB = require('../data/DB')
-const userDAO = require('./userDAO')
-const eventDAO = require('./eventDAO')
+//const DB = require('../data/DB');
+const userDAO = require('./userDAO');
+const eventDAO = require('./eventDAO');
 const es = require('./eventService');
-var User = require('./user')
+let User = require('./user');
 
 
 class userService {
 
-    checkIfUserExist(fb_id) {
-        return new Promise((resolve, reject) => {
-            userDAO.get_User_by_fb_id(fb_id)
-                .then(user_array => {
-                    console.log('checkIfUserExist - trying to get user array')
-                    if (user_array.length > 0) {
-                        resolve(true)
-                    }
-                    else {
-                        resolve(false)
-                    }
-                }).catch(err => reject(err))
-        }).catch(err => reject(err))
-    }
-
     addUser(fb_id, f_name, friends_list, location) {
         return new Promise((resolve, reject) => {
-            console.log('adding user')
-            var friends_id_only = []
-            console.log(friends_list)
-            var counter
+            console.log('adding user');
+            let friends_id_only = [];
+            console.log(friends_list);
+            let counter;
             for (counter = 0; counter < friends_list.length; counter++) {
                 friends_id_only[counter] = friends_list[counter].id
             }
             let new_user = new User(fb_id, f_name, friends_id_only, location);
-            console.log('the user is:')
-            console.log(new_user)
-            var friends_count = friends_id_only.length
-            var promises = []
-            var my_friends_events_list = []
-            var a_promise
-            var i
+            console.log('the user is:');
+            console.log(new_user);
+            let friends_count = friends_id_only.length;
+            let promises = [];
+            let my_friends_events_list = [];
+            let a_promise;
+            let i;
             for (i = 0; i < friends_count; i++) {
-                console.log('i = ' + i)
-                a_promise = update_my_friend_get_his_events(my_friends_events_list, i, fb_id, friends_id_only[i])
-                console.log('try to push a promise')
+                console.log('Update my ' + i + " friend");
+                a_promise = update_my_friend_get_his_events(my_friends_events_list, i, fb_id, friends_id_only[i]);
                 promises.push(a_promise)
-                console.log('i pushed a promise')
             }
-            Promise.all(promises).then(_ => {
-                for (var f_ounter = 0; f_ounter < friends_count; f_ounter++) {
-                    for (var event_ounter = 0; event_ounter < my_friends_events_list[f_ounter].length; event_ounter++) {
-                        new_user.invited_events.push(my_friends_events_list[f_ounter][event_ounter])
+            Promise.all(promises).then(_=> {
+                for (let f_ounter = 0; f_ounter < friends_count; f_ounter++) {
+                    for (let event_ounter = 0; event_ounter < my_friends_events_list[f_ounter].length; event_ounter++) {
+                        new_user.invited_events.push(my_friends_events_list[f_ounter][event_ounter]);
                         add_me_to_event_as_invited(new_user.fb_id, new_user.f_name, my_friends_events_list[f_ounter][event_ounter])
                     }
                 }
                 userDAO.insert_user(new_user)
                     .then(_ => {
-                        console.log('saved! ', new_user)
+                        console.log('saved! ', new_user);
                         resolve()
                     }).catch(err => reject(err))
-            }).catch(err => reject(err))
-        }).catch(err => reject(err))
+            })
+        })
     }
 
 
@@ -69,7 +52,7 @@ class userService {
                 .then(user => {
                     resolve(user)
                 }).catch(err => reject(err))
-        }).catch(err => reject(err))
+        })
     }
 
     checkUserID(fb_id, req) {
@@ -88,7 +71,7 @@ class userService {
                 .then(all_user => {
                     resolve(all_user)
                 }).catch(err => reject(err))
-        }).catch(err => reject(err))
+        })
     }
 
     approve_participation(event_id, user_id) {
@@ -96,24 +79,24 @@ class userService {
             userDAO.get_User_by_fb_id(user_id)
                 .then(user => {
                     if (user.length > 0) {
-                        var am_i_invited_in_user = user[0].invited_events.indexOf(event_id)
+                        let am_i_invited_in_user = user[0].invited_events.indexOf(event_id);
                         if (am_i_invited_in_user > -1) {
-                            save_accepted_event(user[0], event_id)
+                            save_accepted_event(user[0], event_id);
                             eventDAO.get_event(event_id)
                                 .then(event => {
-                                    console.log('approve_participation-. my event:', event[0].eventId)
-                                    console.log('approve_participation - event.length:', event.length)
+                                    console.log('approve_participation-. my event:', event[0].eventId);
+                                    console.log('approve_participation - event.length:', event.length);
                                     if (event.length > 0) {
-                                        console.log('approve_participation - event length is good')
-                                        var am_i_invited_in_event = event[0].invited_users.indexOf(user_id)
-                                        console.log('approve_participation - my index in the invited list is:', am_i_invited_in_event)
+                                        console.log('approve_participation - event length is good');
+                                        let am_i_invited_in_event = event[0].invited_users.indexOf(user_id);
+                                        console.log('approve_participation - my index in the invited list is:', am_i_invited_in_event);
                                         if (am_i_invited_in_event > -1) {
                                             updated_accepted_user(event[0], user_id, user[0].f_name)
                                         }
                                         else {
-                                            console.log('approve_participation - user is not invited in event')
-                                            console.log('approve_participation-. my event:', event[0])
-                                            console.log('approve_participation-. user if:', user_id)
+                                            console.log('approve_participation - user is not invited in event');
+                                            console.log('approve_participation-. my event:', event[0]);
+                                            console.log('approve_participation-. user if:', user_id);
                                             console.log('approve_participation-. am i invited:', am_i_invited_in_event)
                                         }
 
@@ -130,36 +113,36 @@ class userService {
                     } else {
                         console.log('approve_participation - couldent find user')
                     }
-                    console.log('event participation saved')
+                    console.log('event participation saved');
                     resolve()
 
                 }).catch(err => reject(err))
-        }).catch(err => reject(err))
+        })
     }
 
 
     leave_event(event_id, user_id) {
         return new Promise((resolve, reject) => {
-            console.log('--------leave_event------')
+            console.log('--------leave_event------');
             userDAO.get_User_by_fb_id(user_id)
                 .then(user => {
                     if (user.length > 0) {
-                        console.log('leave_event-. my user:', user[0])
-                        var do_i_participate_in_user = user[0].going_events.indexOf(event_id)
+                        console.log('leave_event-. my user:', user[0]);
+                        let do_i_participate_in_user = user[0].going_events.indexOf(event_id);
                         if (do_i_participate_in_user > -1) {
-                            save_left_event(user[0], event_id)
+                            save_left_event(user[0], event_id);
                             eventDAO.get_event(event_id)
                                 .then(event => {
-                                    console.log('leave_event-. my event:', event[0])
+                                    console.log('leave_event-. my event:', event[0]);
                                     if (event.length > 0) {
-                                        var do_i_participate = event[0].going_users.indexOf(user_id)
+                                        let do_i_participate = event[0].going_users.indexOf(user_id);
                                         if (do_i_participate > -1) {
                                             updated_left_user(event[0], user_id, user[0].f_name)
                                         }
                                         else {
-                                            console.log('leave_event - the user does not participate in this event')
-                                            console.log('leave_event-. my event:', event[0])
-                                            console.log('leave_event-. user if:', user_id)
+                                            console.log('leave_event - the user does not participate in this event');
+                                            console.log('leave_event-. my event:', event[0]);
+                                            console.log('leave_event-. user if:', user_id);
                                             console.log('leave_event-. do i participate?:', do_i_participate)
                                         }
 
@@ -177,10 +160,10 @@ class userService {
                     } else {
                         console.log('leave_event - couldent find user')
                     }
-                    console.log('left the event')
+                    console.log('left the event');
                     resolve()
                 }).catch(err => reject(err))
-        }).catch(err => reject(err))
+        })
     }
 
     get_my_invited_events(user_id) {
@@ -192,7 +175,7 @@ class userService {
                         resolve(full_events_array)
                     }).catch(err => reject(err))
                 }).catch(err => reject(err))
-        }).catch(err => reject(err))
+        })
     }
 
     get_my_owned_events(user_id) {
@@ -206,7 +189,7 @@ class userService {
                         resolve(full_events_array)
                     }).catch(err => reject(err))
                 }).catch(err => reject(err))
-        }).catch(err => reject(err))
+        })
     }
 
     get_my_attending_events(user_id) {
@@ -225,11 +208,11 @@ class userService {
 
     update_user(user) {
         return new Promise((resolve, reject) => {
-            console.log('trying to update user')
-            console.log(user)
+            console.log('trying to update user');
+            console.log(user);
             userDAO.update_user(user.fb_id, user)
-                .then(user => {
-                    console.log('user updated')
+                .then(updated_user => {
+                    console.log('user updated ');
                     resolve()
                 }).catch(err => reject(err))
         })
@@ -237,33 +220,33 @@ class userService {
 
 }
 
-module.exports = new userService()
+module.exports = new userService();
 
 
 function update_my_friend_get_his_events(my_friends_events_list, friend_index, my_fb_id, friend_id) {
-    console.log('update_my_friend_get_his_events')
+    console.log('update_my_friend_get_his_events');
     return new Promise((resolve, reject) => {
         funcGetUserByFb(friend_id)
             .then(a_friend => {
-                console.log('funcGetUserByFb.then')
-                console.log(my_fb_id)
-                my_friends_events_list[friend_index] = []
+                console.log('funcGetUserByFb.then');
+                console.log(my_fb_id);
+                my_friends_events_list[friend_index] = [];
                 if (a_friend.length > 0) {
                     if (a_friend[0].friends_list.indexOf(my_fb_id) < 0) {
-                        a_friend[0].friends_list.push(my_fb_id)
-                        console.log('trying to update')
-                        userDAO.update_friend_list(a_friend[0].fb_id, a_friend[0].friends_list).then(_ => {
-                            console.log('updated', a_friend[0].fb_id)
+                        a_friend[0].friends_list.push(my_fb_id);
+                        console.log('trying to update');
+                        userDAO.update_friend_list(a_friend[0].fb_id, a_friend[0].friends_list).then(_=> {
+                            console.log('updated', a_friend[0].fb_id);
                             resolve();
                         }).catch(err => reject(err))
                     }
                     else {
-                        console.log('I am already on my friend frends list, no need to update')
+                        console.log('I am already on my friend frends list, no need to update');
                         resolve();
                     }
 
-                    var p_events = a_friend[0].own_public_events
-                    for (var i = 0; i < p_events.length; i++) {
+                    let p_events = a_friend[0].own_public_events;
+                    for (let i = 0; i < p_events.length; i++) {
                         my_friends_events_list[friend_index].push(p_events[i])
                     }
                 }
@@ -273,23 +256,23 @@ function update_my_friend_get_his_events(my_friends_events_list, friend_index, m
 }
 
 function add_me_to_event_as_invited(my_id, my_name, event_id) {
-    console.log('-------add_me_to_event_as_invited----------')
+    console.log('-------add_me_to_event_as_invited----------');
     eventDAO.get_event(event_id).then(req_event => {
-        req_event[0].invited_users.push(my_id)
-        req_event[0].invitedName.push(my_name)
+        req_event[0].invited_users.push(my_id);
+        req_event[0].invitedName.push(my_name);
         eventDAO.update_event(event_id, req_event[0])
     }).catch(err => reject(err))
 
 }
 
 function funcGetUserByFb(fb_id) {
-    console.log('funcGetUserByFb')
+    console.log('funcGetUserByFb');
     return new Promise((resolve, reject) => {
         userDAO.get_User_by_fb_id(fb_id)
             .then(user => {
                 if (user.length > 0) {
-                    console.log('userDAO.get_User_by_fb_id(fb_id).then')
-                    console.log('i wil return a :')
+                    console.log('userDAO.get_User_by_fb_id(fb_id).then');
+                    console.log('i wil return a :');
                     console.log(user[0].fb_id)
                 }
                 resolve(user)
@@ -298,8 +281,8 @@ function funcGetUserByFb(fb_id) {
 }
 
 function save_left_event(user, event_id) {
-    user.going_events.splice(user.invited_events.indexOf(event_id), 1)
-    user.invited_events.push(event_id)
+    user.going_events.splice(user.invited_events.indexOf(event_id), 1);
+    user.invited_events.push(event_id);
     return new Promise((resolve, reject) => {
         userDAO.update_user(user.fb_id, user)
             .then(user => {
@@ -309,8 +292,8 @@ function save_left_event(user, event_id) {
 }
 
 function save_accepted_event(user, event_id) {
-    user.invited_events.splice(user.invited_events.indexOf(event_id), 1)
-    user.going_events.push(event_id)
+    user.invited_events.splice(user.invited_events.indexOf(event_id), 1);
+    user.going_events.push(event_id);
     return new Promise((resolve, reject) => {
         userDAO.update_user(user.fb_id, user)
             .then(user => {
@@ -320,14 +303,14 @@ function save_accepted_event(user, event_id) {
 }
 
 function updated_left_user(event, user_id, user_name) {
-    event.going_users.splice(event.invited_users.indexOf(user_id), 1)
-    event.goingName.splice(event.invited_users.indexOf(user_name), 1)
-    event.invited_users.push(user_id)
-    event.invitedName.push(user_name)
-    console.log('updated_left_user - going to save the event:')
+    event.going_users.splice(event.invited_users.indexOf(user_id), 1);
+    event.goingName.splice(event.invited_users.indexOf(user_name), 1);
+    event.invited_users.push(user_id);
+    event.invitedName.push(user_name);
+    console.log('updated_left_user - going to save the event:');
     //console.log(event)
     return new Promise((resolve, reject) => {
-        var updated_event = es.remove_all_my_votes(event);
+        let updated_event = es.remove_all_my_votes(event, user_id);
         eventDAO.update_event(updated_event[0].eventId, updated_event[0])
             .then(user => {
                 resolve()
@@ -336,10 +319,10 @@ function updated_left_user(event, user_id, user_name) {
 }
 
 function updated_accepted_user(event, user_id, user_name) {
-    event.invited_users.splice(event.invited_users.indexOf(user_id), 1)
-    event.invitedName.splice(event.invitedName.indexOf(user_name), 1)
-    event.going_users.push(user_id)
-    event.goingName.push(user_name)
+    event.invited_users.splice(event.invited_users.indexOf(user_id), 1);
+    event.invitedName.splice(event.invitedName.indexOf(user_name), 1);
+    event.going_users.push(user_id);
+    event.goingName.push(user_name);
     return new Promise((resolve, reject) => {
         eventDAO.update_event(event.eventId, event)
             .then(user => {
@@ -349,12 +332,12 @@ function updated_accepted_user(event, user_id, user_name) {
 }
 function move_event_to_old(user, invited_list, event_id)
 {
-    user[invited_list].splice(user.invited_events.indexOf(event_id), 1)
-    user.old_events.push(event_id)
+    user[invited_list].splice(user.invited_events.indexOf(event_id), 1);
+    user.old_events.push(event_id);
     userDAO.update_user(user.fb_id, user)
 }
 function get_all_my_full_events(user, invited_list) {
-    var user_invited_events = user[invited_list]
+    let user_invited_events = user[invited_list];
     console.log("USER INVITED EVENTS:" + user_invited_events);
     return new Promise((resolve, reject) => {
         let full_event_list = [];
@@ -362,7 +345,7 @@ function get_all_my_full_events(user, invited_list) {
         let a_promise;
         for (let i = 0; i < user_invited_events.length; i++) {
             a_promise = eventDAO.get_event(user_invited_events[i]).then(full_event => {
-                console.log('trying to validate event time for event Id '+full_event[0].eventId)
+                console.log('trying to validate event time for event Id '+full_event[0].eventId);
                 if(validate_event_date(full_event[0]))
                 {
                     console.log("Pushed an event, " + full_event[0].eventId);
@@ -387,7 +370,7 @@ function validate_event_date(event){
 }
 function parseISOString(s) {
     console.log("-------parseISOString--------");
-    var b = s.split(/\D+/);
+    let b = s.split(/\D+/);
     return new Date(Date.UTC(b[0], --b[1], b[2], b[3], b[4], 0, 0));
 }
 function ValidateTime(time) {
@@ -396,15 +379,15 @@ function ValidateTime(time) {
     {
         return true;
     }
-    var chosen = parseISOString(time);
-    var current = new Date();
+    let chosen = parseISOString(time);
+    let current = new Date();
     if (chosen.getTime() - current.getTime() < 3540000)
     {
         return false;
     }
     else
     {
-        console.log('the event willl expire in: '+ (chosen.getTime() - current.getTime())/3540000 )
+        console.log('the event willl expire in: '+ (chosen.getTime() - current.getTime())/3540000 );
 
         return true;
     }
