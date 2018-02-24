@@ -306,7 +306,6 @@ router.post('/newUser', (req, res) => {
                 us.update_user(user[0])
                     .then(_ => {
                         res.redirect(frontpage);
-                        resolve()
                     }).catch(err => reject(err))
 
             } else {
