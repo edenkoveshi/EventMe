@@ -176,11 +176,27 @@ input[type=text]:focus {
     right: 0;
 }
 
-@media only screen and (max-width: 760px) and (orientation : landscape) {
+@media only screen and (max-width: 760px) {
     #typesnav { z-index: 100; width: 100%;
         height: 100%;
         position: absolute;
         overflow-y: scroll; }
 }
 
+@media only screen and (max-width: 760px) {
+    #myModal {
+        background-color:White;
+    }
+    #fb_login_img { width: 100%;
+        position: relative;}
+}
 
+@media only screen and (min-width: 760px) {
+    #myModal {
+        background-color:White;
+        width: 600px;
+    }
+    #fb_login_img { width: 500px;
+        position: relative;
+    }
+}
