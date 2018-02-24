@@ -97,7 +97,7 @@ class eventDAO
 
     change_vote0(event_id, user_id, vote, loc, new_vote)
     {
-        console.log('DAO - removing vote');
+
         if(loc == 0){
             decresevote00(event_id, user_id, new_vote);
         }else if(loc == 1){
@@ -108,6 +108,7 @@ class eventDAO
             decresevote03(event_id, user_id, new_vote);
         }
         if(new_vote){
+            console.log('DAO 0- adding vote');
             DB.db.collection('events').updateOne
             (
                 {'eventId' : event_id},
@@ -115,8 +116,10 @@ class eventDAO
                 {multi: false}
             );
         }else{
+            console.log('DAO 0- removing vote');
             DB.db.collection('events').updateOne
             (
+
                 {'eventId' : event_id},
                 {$pull:{"pollArray.0.voted_users" : {user : user_id , vote : vote}}},
                 {multi: false}
@@ -126,7 +129,6 @@ class eventDAO
     }
     change_vote1(event_id, user_id, vote, loc, new_vote)
     {
-        console.log('DAO - removing vote');
         if(loc == 0){
             decresevote10(event_id, user_id, new_vote);
         }else if(loc == 1){
@@ -137,6 +139,7 @@ class eventDAO
             decresevote13(event_id, user_id, new_vote);
         }
         if(new_vote){
+            console.log('DAO 1- adding vote');
             DB.db.collection('events').updateOne
             (
                 {'eventId' : event_id},
@@ -144,6 +147,7 @@ class eventDAO
                 {multi: false}
             );
         }else{
+            console.log('DAO 1- removing vote');
             DB.db.collection('events').updateOne
             (
                 {'eventId' : event_id},
@@ -165,7 +169,7 @@ class eventDAO
             decresevote23(event_id, user_id, new_vote);
         }
         if(new_vote){
-            console.log('DAO - adding vote');
+            console.log('DAO 2- adding vote');
             DB.db.collection('events').updateOne
             (
                 {'eventId' : event_id},
@@ -173,7 +177,7 @@ class eventDAO
                 {multi: false}
             );
         }else{
-            console.log('DAO - removing vote');
+            console.log('DAO 2- removing vote');
             DB.db.collection('events').updateOne
             (
                 {'eventId' : event_id},

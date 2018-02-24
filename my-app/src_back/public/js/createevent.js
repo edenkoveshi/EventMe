@@ -446,8 +446,8 @@ function ValidateTime(time) {
 function CreateEvent() {
     var location_under_poll = ($('#location-cb').is(':checked')) ? 1 : 0;
     var time_under_poll = ($('#time-cb').is(':checked')) ? 1 : 0;
-    var location_edit_poll=(document.getElementById('location').value=="") ? 1 : 0; //edit page, location is polled
-    var time_edit_poll=(document.getElementById('event-time').value=="") ? 1 : 0 //similiar
+    var location_edit_poll=(document.getElementById('location').value=="") ? 0 : 1; //edit page, location is polled
+    var time_edit_poll=(document.getElementById('event-time').value=="") ? 0 : 1; //similiar
     if(!time_under_poll)
     {
         var t=document.getElementById('time').value;

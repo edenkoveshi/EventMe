@@ -157,8 +157,11 @@ class eventService {
                     }
                     else
                     {
+                        console.log("this is the poll before change:");
+                        console.log(requested_events[0].pollArray[cur_pull]);
                         let updated_event = remove_old_votes(requested_events, cur_pull, user_id);
-                        console.log("finished removig old votes")
+                        console.log("finished removig old votes, now the poll looks like this:");
+                        console.log(updated_event[0].pollArray[cur_pull]);
                         for(let i = 0; i<updated_event[0].pollArray[cur_pull].options.length; i++)
                         {
                             if(updated_event[0].pollArray[cur_pull].options[i].option == my_vote)
@@ -172,6 +175,8 @@ class eventService {
                                 }
                             }
                         }
+                        console.log("finished adding new votes, now the poll looks like this:");
+                        console.log(updated_event[0].pollArray[cur_pull]);
                         resolve();
                     }
                 }).catch(err => reject(err))
@@ -380,7 +385,7 @@ function remove_old_votes(requested_events, cur_pull, user_id)
                     return ;
                 }
             }
-            console.log("evenID = "+requested_events[0].eventId+", user id = "+user_id+" old vote = "+ old_vote)
+            console.log("eventId = "+requested_events[0].eventId+", user id = "+user_id+" old vote = "+ old_vote)
             console.log("going to remove the "+j+ "vote, in the "+cur_pull+" poll")
             if(cur_pull ==0){
                 eventDAO.change_vote0(requested_events[0].eventId, user_id, old_vote,j,false);
