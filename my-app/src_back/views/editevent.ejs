@@ -402,11 +402,11 @@
     {
         document.getElementById('time').style = "display:none";
         document.getElementById('date').style="display:none";
-        document.getElementById('Today').style="display:none";
+        document.getElementById('Morning').style="display:none";
         document.getElementById('Noon').style="display:none";
         document.getElementById('Evening').style="display:none";
         document.getElementById('Today').style="display:none";
-        document.getElementById('Tommorrow').style="display:none";
+        document.getElementById('Tommorow').style="display:none";
         p = document.getElementById('time-polled');
         p.innerHTML=p.innerHTML+":Under Poll";
 
@@ -439,9 +439,7 @@
         var tmp = document.getElementById('location-polled');
         tmp.innerHTML = "Under poll";
     }
-    var type = document.getElementById('event-type').innerHTML;
-    var types = type.split(',');
-    console.log(types);
+    var types = document.getElementById('event-type').innerHTML.split(',');
     types.forEach(function (item, index) {
         $('#' + item).prop('checked', true);
     });

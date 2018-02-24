@@ -201,6 +201,7 @@ function initMap(event) {
                     lat: parseFloat(s[0].substring(1,s[0].length)),
                     lng: parseFloat(s[1].substring(0,s[1].length-1)),
                 }
+                marker.setMap(map);
                 map.setCenter(pos);
                 location_no_poll.value=user_loc;
             }
@@ -221,7 +222,7 @@ function initMap(event) {
             }
             else {
                 if (window.confirm('Choose this location?')) {
-                    if (markers.length > MAX_OPTIONS)
+                    if (markers.length >= MAX_OPTIONS)
                         window.alert('You have reached maximal number of locations');
                     else {
                         var newMarker = new google.maps.Marker({
@@ -390,7 +391,7 @@ function AddDateAndTime() {
 
 //Same here for free polls
 function AddFreePollOptions() {
-    if(free_poll_counter<MAX_OPTIONS)
+    if(free_poll_counter<MAX_OPTIONS-2) //2 base
     {
     $("<input type=text name='free-poll-option'/>").insertBefore($('#free-poll-button'));
     $("<br>").insertBefore($('#free-poll-button'));
@@ -512,6 +513,11 @@ function CreateEvent() {
                 if (all_options[i].value != ""&&all_options[i+1].value!="") {
                     count++;
                 }
+                if(!ValidateTime(all_options[i].value+'T'+all_options[i+1].value))
+                {
+                    window.alert('Please choose a valid date');
+                    polls_valid=0;
+                }
                 for (var j = i+2; j < all_options.length; j+=2) {
                     if (all_options[j] == undefined || all_options[j+1] == undefined) {
                         polls_valid = 0;
@@ -520,8 +526,6 @@ function CreateEvent() {
                     if ((all_options[j].value == all_options[i].value && all_options[i].value != "") &&
                         (all_options[j+1].value==all_options[i+1].value && all_options[i+1].value!=""))
                     {
-                        console.log((all_options[j].value == all_options[i].value && all_options[i].value != "") &&
-                        (all_options[j+1].value==all_options[i+1].value&&all_options[i+1].value!=""))
                         window.alert("Poll options must be different!");
                         polls_valid = 0;
                         break;
