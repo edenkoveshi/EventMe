@@ -402,8 +402,13 @@
     {
         document.getElementById('time').style = "display:none";
         document.getElementById('date').style="display:none";
+        document.getElementById('Today').style="display:none";
+        document.getElementById('Noon').style="display:none";
+        document.getElementById('Evening').style="display:none";
+        document.getElementById('Today').style="display:none";
+        document.getElementById('Tommorrow').style="display:none";
         p = document.getElementById('time-polled');
-        p.value=p.innerHTML+":Under Poll";
+        p.innerHTML=p.innerHTML+":Under Poll";
 
     }
     else
