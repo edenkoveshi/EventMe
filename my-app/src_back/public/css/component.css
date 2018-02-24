@@ -32,7 +32,6 @@
 }
 
 .demo-1 .main-title,
-
 .demo-2 .main-title {
     font-family: 'Clicker Script', cursive;
     font-weight: normal;
@@ -59,13 +58,12 @@
     transform: translate3d(-50%, -50%, 0);
 }
 
-
 .main-title .thin {
     font-weight: 200;
 }
 
 @media only screen and (max-width: 768px) {
-    .demo-1 .main-title{
+    .demo-1 .main-title {
         font-size: 3em;
     }
 
@@ -74,7 +72,7 @@
     }
 }
 
-#excelDataTable tbody{
+#excelDataTable tbody {
     width: 100%;
     height: 100%;
     position: relative;
@@ -103,20 +101,20 @@
     display: block;
     -ms-overflow-style: -ms-autohiding-scrollbar;
     border-radius: 40px;
-    font-size:20px;
+    font-size: 20px;
 }
 
-#excelDataTable td{
-    valign:middle;
-    text-align:center;
+#excelDataTable td {
+    valign: middle;
+    text-align: center;
     width: 20%;
     height: 65px;
     position: relative;
     background-color: rgba(255, 255, 255, 0.75);
 }
 
-#excelDataTable th{
-    text-align:center;
+#excelDataTable th {
+    text-align: center;
     padding-left: 10px;
     color: white;
     font-family: "Helvetica Neue";
@@ -127,19 +125,18 @@
     border-collapse: collapse;
 }
 
-#excelDataTable tr{
+#excelDataTable tr {
     background-color: rgba(0, 0, 0, 0.75);
     border-bottom: 1px solid black;
     border-top: 1px solid black;
     border-collapse: collapse;
 }
 
-#excelDataTable tr:hover{
+#excelDataTable tr:hover {
     background: #b3d4fc;
 }
 
-#excelDataTable a:hover, a:visited, a:link, a:active
-{
+#excelDataTable a:hover, a:visited, a:link, a:active {
     text-decoration: none;
 }
 
@@ -201,22 +198,28 @@ input[type=text]:focus {
 }
 
 @media only screen and (max-width: 760px) {
-    #typesnav { z-index: 100; width: 100%;
+    #typesnav {
+        z-index: 100;
+        width: 100%;
         height: 100%;
         position: absolute;
-        overflow-y: scroll; }
+        overflow-y: scroll;
+    }
 }
 
 @media only screen and (max-width: 760px) {
     #myModal {
-        background-color:White;
+        background-color: White;
     }
-    #fb_login_img { width: 100%;
+
+    #fb_login_img {
+        width: 100%;
         position: relative;
     }
+
     #gglmodalcontent {
         width: 100%;
-        margin-left:auto;
+        margin-left: auto;
         margin-right: auto;
         overflow-y: scroll;
     }
@@ -224,15 +227,18 @@ input[type=text]:focus {
 
 @media only screen and (min-width: 760px) {
     #myModal {
-        background-color:White;
+        background-color: White;
         width: 600px;
     }
-    #fb_login_img { width: 500px;
+
+    #fb_login_img {
+        width: 500px;
         position: relative;
     }
+
     #gglmodalcontent {
         width: 50%;
-        margin-left:auto;
+        margin-left: auto;
         margin-right: auto;
         overflow-y: scroll;
     }
