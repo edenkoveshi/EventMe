@@ -31,13 +31,21 @@
             padding: 0;
         }
 
-        body {
-            font: 300 15px/1.5 "Helvetica Neue", helvetica, arial, sans-serif;
-            background: #333;
-            margin: 15px;
+        @media only screen and (min-width: 760px) {
+            body {
+                font: 300 15px/1.5 "Helvetica Neue", helvetica, arial, sans-serif;
+                background: #333;
+                margin: 5px;
+            }
+        }
+        @media only screen and (max-width: 760px) {
+            body {
+                font: 300 15px/1.5 "Helvetica Neue", helvetica, arial, sans-serif;
+                background: #333;
+            }
         }
 
-        article {
+            article {
             width: 100%;
             margin: 0 auto;
             background: #000;
@@ -111,12 +119,12 @@
                         <table class="table table-hover" id="excelDataTable">
                         <thead class="thead-dark">
                         <tr>
-                            <th>Type</th>
                             <th>Title</th>
                             <th><a onclick="displayarrange()" class="btn btn-info btn-lg"
                                    style="white-space: normal; background-color: rgba(248,131,121,0.8); color: black; border-color: black"><span>Distance</span></a>
                             </th>
                             <th>Time</th>
+                            <th>Type</th>
                             <th>Owner</th>
                             <th>
                         <tr/>
@@ -151,7 +159,6 @@
                         %>
                     <tr class='clickable-row'
                         data-href="/eventMe/event/<%= invited_events[i]["eventId"] %>/<%= user_id %>">
-                        <td id="<%= invited_events[i]["type"] %>"><%= types_put_already %></td>
                         <td>
                             <a href="/eventMe/event/<%= invited_events[i]["eventId"] %>/<%= user_id %>">
                                 <%= invited_events[i]["title"] %>
@@ -161,6 +168,7 @@
                         <td style="display:none"><%= invited_events[i]["eventId"] %></td>
                         <p id="user_location" style="display:none"><%= location %></p>
                         <td><%= finaltime %></td>
+                        <td id="<%= invited_events[i]["type"] %>"><%= types_put_already %></td>
                         <td><%= invited_events[i]["ownerName"] %></td>
                         <td>
                             <a style="white-space: normal; background-color: rgba(248,131,121,0.8); color: black; border-color: black"
@@ -179,7 +187,7 @@
                     var distances = [];
                     var t = document.getElementById('excelDataTable').children[1];
                     for (var i = 0; i < t.children.length; i++) {
-                        var val1 = t.children[i].children[2].innerText;
+                        var val1 = t.children[i].children[1].innerText;
                         if (val1 == "") {
                             distances[i] = "";
                         } else {
@@ -191,9 +199,9 @@
                     var table = document.getElementById('excelDataTable');
                     for (var i = 2; i < table.rows.length; i++) {
                         if (distances[i - 2] == "") {
-                            table.rows[i].cells[2].innerHTML = "under poll"
+                            table.rows[i].cells[1].innerHTML = "under poll"
                         } else {
-                            table.rows[i].cells[2].innerHTML = distances[i - 2];
+                            table.rows[i].cells[1].innerHTML = distances[i - 2];
                         }
                     }
                 });
