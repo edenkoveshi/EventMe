@@ -1,6 +1,10 @@
 var map;
 var markers = [];
 var location_poll = [];
+var date_poll_counter=0;
+var free_poll_counter=0;
+const MAX_OPTIONS = 4;
+const MAX_TYPES = 3;
 
 $(document).ready(function () {
     //----Set onclick functions for time&date buttons-------
@@ -217,7 +221,7 @@ function initMap(event) {
             }
             else {
                 if (window.confirm('Choose this location?')) {
-                    if (markers.length > 16)
+                    if (markers.length > MAX_OPTIONS)
                         window.alert('You have reached maximal number of locations');
                     else {
                         var newMarker = new google.maps.Marker({
@@ -272,7 +276,7 @@ function initMap(event) {
                 // Create a marker for each place.
                 if (LocationPollCheck()) {
                     if (window.confirm('Choose this location?')) {
-                        if (markers.length > 16)
+                        if (markers.length > MAX_OPTIONS)
                             window.alert('You have reached maximal number of locations');
                         else {
                             markers.push(new google.maps.Marker({
@@ -372,16 +376,28 @@ function Poll() { // Get the modal
 
 //Add date and time objects,used for date and time polls
 function AddDateAndTime() {
+    if(date_poll_counter<MAX_OPTIONS)
+    {
     $("<input type=date name='time-poll-option'/>").insertBefore($('#add-options'));
     $("<input type=time name='time-poll-option'/><br>").insertBefore($('#add-options'));
     $("<input type=date name='time-poll-option'/>").insertBefore($('#add-options'));
     $("<input type=time name='time-poll-option'/><br>").insertBefore($('#add-options'));
+    date_poll_counter+=2;
+    }
+    else
+        window.alert('You have reached maximal number of options.');
 }
 
 //Same here for free polls
 function AddFreePollOptions() {
+    if(free_poll_counter<MAX_OPTIONS)
+    {
     $("<input type=text name='free-poll-option'/>").insertBefore($('#free-poll-button'));
     $("<br>").insertBefore($('#free-poll-button'));
+    free_poll_counter++;
+    }
+    else
+        window.alert('You have reached maximal number of options.');
 }
 
 function CalcDistance(location1,location2)
@@ -548,16 +564,6 @@ function CreateEvent() {
         }
     }
 
-    //Look up for a picture
-    /*var file=document.getElementsByName("picture")[0].value;
-    if(file!="") //If field isn't empty
-    {
-        var format=file.split(".")[1];
-        if(format!="png" && format!="jpg") { //make sure format is okay
-            window.alert("Picture format is not valid");
-            all_fields_set = 0;
-        }
-    }*/
 
     //Validate chosen date(s)
     {
@@ -583,7 +589,7 @@ function CreateEvent() {
 
     //If everything is okay submit form, err otherwise
     var poll_questions = [];
-    if (all_fields_set == 1 && polls_valid) {
+    if (all_fields_set && polls_valid && cblist.length<MAX_TYPES) {
         window.alert("Event created successfully!");
         var poll_counter = 0;
         if ($('#location-cb').is(':checked')) {
@@ -634,8 +640,12 @@ function CreateEvent() {
 
         document.getElementById("event-form").submit();
     }
-    else if (polls_valid) {
+    else if (polls_valid && cblist.length <MAX_TYPES) {
         window.alert("Please fill all non-optional fields.");
+    }
+    else if(polls_valid)
+    {
+        window.alert('Please choose at most 3 event types');
     }
     else {
         window.alert("Polls require at least 2 options");
