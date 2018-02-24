@@ -158,7 +158,7 @@ class eventService {
                     else
                     {
                         console.log("this is the poll before change:");
-                        console.log(updated_event[0].pollArray[cur_pull]);
+                        console.log(requested_events[0].pollArray[cur_pull]);
                         let updated_event = remove_old_votes(requested_events, cur_pull, user_id);
                         console.log("finished removig old votes, now the poll looks like this:");
                         console.log(updated_event[0].pollArray[cur_pull]);
