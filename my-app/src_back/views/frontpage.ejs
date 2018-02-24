@@ -117,7 +117,6 @@
                     <tr/>
                     </thead>
                     <tbody>
-
                     <% for (var i = 0; i < invited_events.length; i++) { %>
                     <% var eventtime = invited_events[i]["time"];
                         if (eventtime == "") {
@@ -145,7 +144,6 @@
                         }
                     }
                     %>
-
                     <tr class='clickable-row'
                         data-href="/eventMe/event/<%= invited_events[i]["eventId"] %>/<%= user_id %>">
                         <td id="<%= invited_events[i]["type"] %>"><%= types_put_already %></td>
