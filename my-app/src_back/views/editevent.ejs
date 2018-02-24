@@ -400,9 +400,10 @@
     var time_date = document.getElementById('event-time').value;
     if (time_date == '')
     {
-        document.getElementById('event-time').style = "display:none";
+        document.getElementById('time').style = "display:none";
+        document.getElementById('date').style="display:none";
         p = document.getElementById('time-polled');
-        p.value=p.innerHTML+"Under Poll";
+        p.value=p.innerHTML+":Under Poll";
 
     }
     else

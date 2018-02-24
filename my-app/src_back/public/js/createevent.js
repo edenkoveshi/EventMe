@@ -429,6 +429,8 @@ function ValidateTime(time) {
 function CreateEvent() {
     var location_under_poll = ($('#location-cb').is(':checked')) ? 1 : 0;
     var time_under_poll = ($('#time-cb').is(':checked')) ? 1 : 0;
+    var location_edit_poll=(document.getElementById('location').value=="") ? 1 : 0; //edit page, location is polled
+    var time_edit_poll=(document.getElementById('event-time').value=="") ? 1 : 0 //similiar
     if(!time_under_poll)
     {
         var t=document.getElementById('time').value;
@@ -441,10 +443,10 @@ function CreateEvent() {
     var polls = [];
     var query = 'input[name="Activity_name"]';
     //Check location and time fields if they aren't under poll
-    if (!location_under_poll) {
+    if (!location_under_poll && !location_edit_poll) {
         query += ',input[name="google-location"]';
     }
-    if (!time_under_poll)
+    if (!time_under_poll && !time_edit_poll)
         query += ',input[name="Activity_time"]';
     //Look up for all elements that aren't optional
     var form_input = document.querySelectorAll(query);
