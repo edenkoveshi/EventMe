@@ -54,9 +54,8 @@
             var user_id = document.getElementById("user_id").innerHTML;
             var owner_id = document.getElementById("owner_id").innerHTML;
             if (user_id == owner_id) {
-                var edit_button = $("<input type='button' id='edit' value='Edit' class='form-control'/>");
-                edit_button.click(EditEvent());
-                $('#event-details').append(edit_button);
+                $('#event-details').append($("<input type='button' id='edit_button' value='Edit' class='form-control'/>"));
+                $('#edit_button').click(function(){EditEvent()});
             }
             var pool_results = document.getElementById('pool_results').innerHTML;
             if (pool_results != '0') {
@@ -514,8 +513,10 @@
         }
 
         function EditEvent() {
-            $('#poll-data').action = ""; //enter redirection url here
-            $('#poll-data').submit();
+            var user_id=document.getElementById('user_id').innerHTML;
+            var url="/eventMe/edit/"+user_id;
+            $('#poll_data').attr('action',url) ; //enter redirection url here
+            $('#poll_data').submit();
         }
 
 
@@ -681,8 +682,8 @@
 
                 <form id="poll_data" method="POST"
                       style="display:none; ">
-                    <input style="display:none; color:white;" name="user_id" value=<%= user_id %>/>
-                    <input style="display:none; color:white;" name="eventId" value=<%= event_id %>/>
+                    <input style="display:none; color:white;" name="user_id" value=<%= user_id %> />
+                    <input style="display:none; color:white;" name="eventId" value=<%= event_id %> />
                     <input style="display:none; color:white;" name="pollNum" id="pollNum"/>
                     <input style="display:none; color:white;" name="myVote" id="myVote"/>
                     <input style="display:none" name="event_type" id="event_type"/>
