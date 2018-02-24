@@ -81,7 +81,6 @@ class userService {
                     if (user.length > 0) {
                         let am_i_invited_in_user = user[0].invited_events.indexOf(event_id);
                         if (am_i_invited_in_user > -1) {
-                            save_accepted_event(user[0], event_id);
                             eventDAO.get_event(event_id)
                                 .then(event => {
                                     console.log('approve_participation-. my event:', event[0].eventId);
@@ -91,7 +90,8 @@ class userService {
                                         let am_i_invited_in_event = event[0].invited_users.indexOf(user_id);
                                         console.log('approve_participation - my index in the invited list is:', am_i_invited_in_event);
                                         if (am_i_invited_in_event > -1) {
-                                            updated_accepted_user(event[0], user_id, user[0].f_name)
+                                            updated_accepted_user(event[0], user_id, user[0].f_name);
+                                            save_accepted_event(user[0], event_id);
                                         }
                                         else {
                                             console.log('approve_participation - user is not invited in event');
@@ -130,7 +130,6 @@ class userService {
                         console.log('leave_event-. my user:', user[0]);
                         let do_i_participate_in_user = user[0].going_events.indexOf(event_id);
                         if (do_i_participate_in_user > -1) {
-                            save_left_event(user[0], event_id);
                             eventDAO.get_event(event_id)
                                 .then(event => {
                                     console.log('leave_event-. my event:', event[0]);
@@ -138,6 +137,7 @@ class userService {
                                         let do_i_participate = event[0].going_users.indexOf(user_id);
                                         if (do_i_participate > -1) {
                                             updated_left_user(event[0], user_id, user[0].f_name)
+                                            save_left_event(user[0], event_id);
                                         }
                                         else {
                                             console.log('leave_event - the user does not participate in this event');

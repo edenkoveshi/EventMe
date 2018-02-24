@@ -49,7 +49,6 @@
     height: 20vw;
     min-width: 3.5em;
     min-height: 3.5em;
-    background: url(../img/deco.svg) no-repeat center center;
     background-size: cover;
     position: absolute;
     top: 50%;
@@ -214,7 +213,14 @@ input[type=text]:focus {
         background-color:White;
     }
     #fb_login_img { width: 100%;
-        position: relative;}
+        position: relative;
+    }
+    #gglmodalcontent {
+        width: 100%;
+        margin-left:auto;
+        margin-right: auto;
+        overflow-y: scroll;
+    }
 }
 
 @media only screen and (min-width: 760px) {
@@ -224,5 +230,11 @@ input[type=text]:focus {
     }
     #fb_login_img { width: 500px;
         position: relative;
+    }
+    #gglmodalcontent {
+        width: 50%;
+        margin-left:auto;
+        margin-right: auto;
+        overflow-y: scroll;
     }
 }
