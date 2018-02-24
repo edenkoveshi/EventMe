@@ -97,12 +97,14 @@
     <div id="large-header" class="large-header"><!-- Include navigation bar -->
         <% include tmpnav %>
         <div class="container-fluid" id="cf">
-                <% if (invited_events.length <= 0) { %>
-                <div class="container-fluid" >
-                    <a class="btn btn-info btn-lg" href="/eventMe/createevent/<%= user_id %>" style="white-space: normal; background-color: black; color: white; border-color: white">No Upcoming Events. Create Your Own By Clicking Here</a>
-                </div>
+            <% if (invited_events.length <= 0) { %>
+            <div class="container-fluid">
+                <a class="btn btn-info btn-lg" href="/eventMe/createevent/<%= user_id %>"
+                   style="white-space: normal; background-color: black; color: white; border-color: white">No Upcoming
+                    Events. Create Your Own By Clicking Here</a>
+            </div>
 
-                <% } %>
+            <% } %>
 
                 <% if (invited_events.length > 0) { %>
                     <div class="table-responsive" style="border-width: 0px;">
@@ -141,102 +143,129 @@
                                 }
                             }
                             if (type.length == 1) {
-                                if (!types_put_already.includes(" " + type[0])) {
                                     types_put_already.push(" " + type[0]);
+                                if (!types_put_already.includes(" " + type[0])) {
                                 }
                             }
                         }
-                        %>
-                        <tr>
-                            <td id="<%= invited_events[i]["type"] %>"><%= types_put_already %></td>
-                            <td>
-                                <a href="/eventMe/event/<%= invited_events[i]["eventId"] %>/<%= user_id %>">
-                                    <%= invited_events[i]["title"] %>
-                                </a>
-                            </td>
-                            <td id="distance"><%= invited_events[i]["location"] %></td>
-                            <td style="display:none"><%= invited_events[i]["eventId"] %></td>
-                            <p id="user_location" style="display:none"><%= location %></p>
-                            <td><%= finaltime %></td>
-                            <td><%= invited_events[i]["ownerName"] %></td>
-                            <td>
-                                <a style="white-space: normal; background-color: rgba(248,131,121,0.8); color: black; border-color: black"
-                                   class="btn btn-info btn-lg"
-                                   href="/eventMe/delete_event/<%= invited_events[i]["eventId"] %>/<%= user_id %>">delete</a>
-                            </td>
-                        </tr>
-                        <% } %>
-                        </tbody>
-                        </table>
-                        </br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br>
-                    </div>
-                <script>
-                    $(document).ready(function () {
-                        var event_loc = new Array();
-                        var distances = [];
-                        var t = document.getElementById('excelDataTable').children[1];
-                        for (var i = 0; i < t.children.length; i++) {
-                            var val1 = t.children[i].children[2].innerText;
-                            if (val1 == "") {
-                                distances[i] = "";
-                            } else {
-                                event_loc = val1.split(')');
-                                distances[i] = CalcDistance(event_loc[0]);
-                                console.log(distances[i]);
+                        var eventtype = invited_events[i]["type"];
+                        var types = eventtype.split(',');
+                        var types_put_already = new Array();
+                    %>
+                    <% for (var typeindex = 0; typeindex < types.length; typeindex++) { %>
+                    <% var type = types[typeindex].split('_');
+                        if (type.length > 1) {
+                            if (!types_put_already.includes(type[1])) {
+                                types_put_already.push(type[1]);
                             }
                         }
-                        var table = document.getElementById('excelDataTable');
-                        for (var i = 2; i < table.rows.length; i++) {
-                            if (distances[i - 2] == "") {
-                                table.rows[i].cells[2].innerHTML = "under poll"
-                            } else {
-                                table.rows[i].cells[2].innerHTML = distances[i - 2];
+                        if (type.length == 1) {
+                            if (!types_put_already.includes(type[0])) {
+                                types_put_already.push(type[0]);
                             }
                         }
-                    });
-
-                    function CalcDistance(x) {
-                        //-----------Calculate distance between event and user locations---------------
-                        var R = 6371e3; // metres
-                        var coords = document.getElementById('user_location').innerHTML;
-                        var lat1 = JSON.parse(coords).lat;
-                        //console.log(lat1);
-                        var lon1 = JSON.parse(coords).lng;
-                        //console.log(lon1);
-                        coords = x; //x should be event location taken from table
-                        var latlng = coords.split(',');
-                        //console.log (latlng);
-                        var lat2 = parseFloat(latlng[0].substr(1, latlng[0].length - 1));
-                        //console.log(lat2);
-                        var lon2 = parseFloat(latlng[1].substr(1, latlng[1].length));
-                        //console.log(lon2);
-                        var φ1 = radians(lat1);
-                        var φ2 = radians(lat2);
-                        var Δφ = radians(lat2 - lat1);
-                        var Δλ = radians(lon2 - lon1);
-
-                        var a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-                            Math.cos(φ1) * Math.cos(φ2) *
-                            Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-                        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-                        var d = R * c;
-                        d = Math.round(d * 100) / 100;
-
-                        return (parseInt(d / 100)) / 10 + 'km';
                     }
+                    %>
 
-                    function radians(x) {
-                        var pi = Math.PI;
-                        return x * (pi / 180);
+                    <tr class='clickable-row'
+                        data-href="/eventMe/event/<%= invited_events[i]["eventId"] %>/<%= user_id %>">
+                        <td id="<%= invited_events[i]["type"] %>"><%= types_put_already %></td>
+                        <td>
+                            <a href="/eventMe/event/<%= invited_events[i]["eventId"] %>/<%= user_id %>">
+                                <%= invited_events[i]["title"] %>
+                            </a>
+                        </td>
+                        <td id="distance"><%= invited_events[i]["location"] %></td>
+                        <td style="display:none"><%= invited_events[i]["eventId"] %></td>
+                        <p id="user_location" style="display:none"><%= location %></p>
+                        <td><%= finaltime %></td>
+                        <td><%= invited_events[i]["ownerName"] %></td>
+                        <td>
+                            <a style="white-space: normal; background-color: rgba(248,131,121,0.8); color: black; border-color: black"
+                               class="btn btn-info btn-lg"
+                               href="/eventMe/delete_event/<%= invited_events[i]["eventId"] %>/<%= user_id %>">delete</a>
+                        </td>
+                    </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+                </br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br>
+            </div>
+            <script>
+                $(document).ready(function () {
+                    var event_loc = new Array();
+                    var distances = [];
+                    var t = document.getElementById('excelDataTable').children[1];
+                    for (var i = 0; i < t.children.length; i++) {
+                        var val1 = t.children[i].children[2].innerText;
+                        if (val1 == "") {
+                            distances[i] = "";
+                        } else {
+                            event_loc = val1.split(')');
+                            distances[i] = CalcDistance(event_loc[0]);
+                            console.log(distances[i]);
+                        }
                     }
+                    var table = document.getElementById('excelDataTable');
+                    for (var i = 2; i < table.rows.length; i++) {
+                        if (distances[i - 2] == "") {
+                            table.rows[i].cells[2].innerHTML = "under poll"
+                        } else {
+                            table.rows[i].cells[2].innerHTML = distances[i - 2];
+                        }
+                    }
+                });
 
-                </script><% } %>
+                function CalcDistance(x) {
+                    //-----------Calculate distance between event and user locations---------------
+                    var R = 6371e3; // metres
+                    var coords = document.getElementById('user_location').innerHTML;
+                    var lat1 = JSON.parse(coords).lat;
+                    //console.log(lat1);
+                    var lon1 = JSON.parse(coords).lng;
+                    //console.log(lon1);
+                    coords = x; //x should be event location taken from table
+                    var latlng = coords.split(',');
+                    //console.log (latlng);
+                    var lat2 = parseFloat(latlng[0].substr(1, latlng[0].length - 1));
+                    //console.log(lat2);
+                    var lon2 = parseFloat(latlng[1].substr(1, latlng[1].length));
+                    //console.log(lon2);
+                    var φ1 = radians(lat1);
+                    var φ2 = radians(lat2);
+                    var Δφ = radians(lat2 - lat1);
+                    var Δλ = radians(lon2 - lon1);
+
+                    var a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+                        Math.cos(φ1) * Math.cos(φ2) *
+                        Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+                    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+                    var d = R * c;
+                    d = Math.round(d * 100) / 100;
+
+                    return (parseInt(d / 100)) / 10 + 'km';
+                }
+
+                function radians(x) {
+                    var pi = Math.PI;
+                    return x * (pi / 180);
+                }
+
+            </script>
+            <% } %>
         </div>
     </div>
 </div><!-- /container -->
 <script src="../../js/rAF.js"></script>
 <script src="../../js/getstarted.js"></script>
+<script>
+    jQuery(document).ready(function ($) {
+        $(".clickable-row").click(function () {
+            window.location = $(this).data("href");
+        });
+    });
+</script>
 
 </body>
 </html>

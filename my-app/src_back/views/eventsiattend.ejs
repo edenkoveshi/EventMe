@@ -139,7 +139,8 @@
                             }
                         }
                     %>
-                <tr>
+                <tr class='clickable-row'
+                    data-href="/eventMe/event/<%= invited_events[i]["eventId"] %>/<%= user_id %>">
                     <td id="<%= invited_events[i]["type"] %>"><%= types_put_already %></td>
                     <td>
                         <a href="/eventMe/event/<%= invited_events[i]["eventId"] %>/<%= user_id%>">
@@ -233,6 +234,13 @@
 </div><!-- /container -->
 <script src="../../js/rAF.js"></script>
 <script src="../../js/getstarted.js"></script>
+<script>
+    jQuery(document).ready(function ($) {
+        $(".clickable-row").click(function () {
+            window.location = $(this).data("href");
+        });
+    });
+</script>
 
 </body>
 </html>
