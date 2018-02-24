@@ -249,7 +249,7 @@ function initMap(event) {
             if(places.length>1) //if query matches more than one place, choose closest one
             {
                 var min=CalcDistance(places[0].geometry.location,current_location);
-                var chosen_place=places[0]
+                var chosen_place=places[0];
                 for(var i=1;i<places.length;i++)
                 {
                     var dist=CalcDistance(places[i].geometry.location,current_location);
@@ -481,25 +481,29 @@ function CreateEvent() {
 
     if (time_under_poll) {
         var all_options = document.getElementsByName('time-poll-option');
-        if (all_options.length < 2) {
+        if (all_options.length < 4) {
             polls_valid = 0;
         }
         else {
             var count = 0;
-            for (var i = 0; i < all_options.length; i++) {
-                if (all_options[i] == undefined) {
+            for (var i = 0; i < all_options.length; i+=2) {
+                if (all_options[i] == undefined || all_options[i+1]==undefined) {
                     polls_valid = 0;
                     break;
                 }
-                if (all_options[i].value != "") {
+                if (all_options[i].value != ""&&all_options[i+1].value!="") {
                     count++;
                 }
-                for (var j = i + 1; j < all_options.length; j++) {
-                    if (all_options[j] == undefined) {
+                for (var j = i+2; j < all_options.length; j+=2) {
+                    if (all_options[j] == undefined || all_options[j+1] == undefined) {
                         polls_valid = 0;
                         break;
                     }
-                    if (all_options[j].value == all_options[i].value && all_options[i].value != "") {
+                    if ((all_options[j].value == all_options[i].value && all_options[i].value != "") &&
+                        (all_options[j+1].value==all_options[i+1].value && all_options[i+1].value!=""))
+                    {
+                        console.log((all_options[j].value == all_options[i].value && all_options[i].value != "") &&
+                        (all_options[j+1].value==all_options[i+1].value&&all_options[i+1].value!=""))
                         window.alert("Poll options must be different!");
                         polls_valid = 0;
                         break;
