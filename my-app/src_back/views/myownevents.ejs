@@ -143,30 +143,12 @@
                                 }
                             }
                             if (type.length == 1) {
-                                    types_put_already.push(" " + type[0]);
                                 if (!types_put_already.includes(" " + type[0])) {
+                                    types_put_already.push(" " + type[0]);
                                 }
                             }
                         }
-                        var eventtype = invited_events[i]["type"];
-                        var types = eventtype.split(',');
-                        var types_put_already = new Array();
-                    %>
-                    <% for (var typeindex = 0; typeindex < types.length; typeindex++) { %>
-                    <% var type = types[typeindex].split('_');
-                        if (type.length > 1) {
-                            if (!types_put_already.includes(type[1])) {
-                                types_put_already.push(type[1]);
-                            }
-                        }
-                        if (type.length == 1) {
-                            if (!types_put_already.includes(type[0])) {
-                                types_put_already.push(type[0]);
-                            }
-                        }
-                    }
-                    %>
-
+                        %>
                     <tr class='clickable-row'
                         data-href="/eventMe/event/<%= invited_events[i]["eventId"] %>/<%= user_id %>">
                         <td id="<%= invited_events[i]["type"] %>"><%= types_put_already %></td>
