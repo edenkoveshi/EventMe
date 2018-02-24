@@ -70,7 +70,8 @@
         <% include createeventbar %>
         <div id="event-properties" class="center"><!--event creation form-->
             <div class="container-fluid">
-                <form id="event-form" action="/eventMe/edit/<%= user_id %>/<%= event_id %>" method="post">
+                <form id="event-form" action='/eventMe/save_edited_event/<%= user_id %>' method="post">
+                    <input type="text" style="display:none" name="event_id" value="<%= event_id %>"/>
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="inputEmail4">Event Name:</label>
@@ -116,7 +117,7 @@
                         </div>
                         <div class="form-group col-md-8">
                             <input class="form-control" type="datetime-local" name="Activity_time" id="event-time"
-                                   style="display:inline-block" value="<%= time %>"/>
+                                   style="display:inline-block" value="<%= event_time %>"/>
                         </div>
                     </div>
                     <div class="form-row">
@@ -124,13 +125,14 @@
                             <label for="inputPassword4">Location: </label>
                             <label for="inputPassword4" id="location-polled">(default - current location)</label>
                             <input type="text" name="google-location" id="location" class="form-control"
-                                   style="display:none" value="<%= location %>"/>
+                                   style="display:none" value="<%= event_location %>"/>
                         </div>
                         <div class="form-group col-md-6">
                             <input type="button" class="form-control" id="Activity_location" value="Click here"
                                    onclick="ChooseLocation()" style="background-color: black; color: white"/>
                         </div>
                     </div>
+                    <p id="event-type"><%= event_type %></p>
                     <div class="form-row">
                         <div class="form-group col-md">
                             <input type="button" class="form-control" value="Select your event type:(optional)"
@@ -320,7 +322,7 @@
                         </div>
                         <div class="form-group col-md-6">
                             <input class="form-control" placeholder="Description" name="description"
-                                   value=<%= description %>>
+                                   value='<%= event_desc %>'>
                         </div>
                     </div>
                     <div class="form-row">

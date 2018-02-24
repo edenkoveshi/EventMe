@@ -9,18 +9,25 @@ var Poll=require('./poll')
 
 class eventService {
     save_edited_event(eventId, title ,location, type, info, time){
+        console.log("---------------save_edited_event-----------------")
+        console.log(eventId);
         return new Promise((resolve, reject) => {
             eventDAO.get_event(eventId).then(event=>{
                 if(event.length > 0){
+                    console.log("event found")
                     event[0].eventId = eventId;
                     event[0].title = title;
                     event[0].location = location;
                     event[0].type = type;
-                    event[0].info = info;
+                    event[0].information = info;
                     event[0].time = time;
-                    update_event(event[0].eventId, event[0]).then(_=>{
-                        resolve(event[0])
+                    eventDAO.update_event(event[0].eventId, event[0]).then(_=>{
+                        resolve()
                     })
+                }
+                else
+                {
+                    console.log("couldnt find the event")
                 }
             }).catch(err=> reject(err))
         });

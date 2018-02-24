@@ -358,17 +358,18 @@ router.post('/newUser', (req, res) => {
 
 
 router.post('/edit/:user_id', (req, res) => {
+    console.log(req.params.user_id);
     if (us.checkUserID(req.params.user_id, req) == false) {
         res.render('welcome')
     };
     console.log('-----------edit page-------------------');
-    let p = es.getEvent(req.body.event_id);
+    let p = es.getEvent(req.body.eventId);
     p.then((event) => {
-        console.log('going to edit eventif '+req.body.event_id)
+        console.log('going to edit eventif '+req.body.eventId)
         if (event !== undefined) {
             console.log('event found')
-            res.render('edit', {
-                event_id: req.body.event_id,
+            res.render('editevent', {
+                event_id: req.body.eventId,
                 title: event["title"], // 'my event',
                 event_img: event["type"].indexOf("Food") != -1 ? 'food.jpg' :
                     event["type"].indexOf("Sport") != -1 ? 'sport.jpg' :
@@ -377,7 +378,7 @@ router.post('/edit/:user_id', (req, res) => {
                                 event["type"].indexOf("Adventure") != -1 ? 'adventure.jpg' :
                                     event["type"].indexOf("Party") != -1 ? 'party.jpg' : 'other.jpg',
                 event_time: (event["time"] == undefined ? "" : event["time"]),
-                event_place: (event["location"] == undefined ? "" : event["location"]),
+                event_location: (event["location"] == undefined ? "" : event["location"]),
                 event_type: event["type"],
                 event_desc: event["information"],
                 user_id: req.params.user_id,
@@ -439,7 +440,7 @@ router.post('/save_edited_event/:user_id', (req, res) => {
     return new Promise((resolve, reject) => {
         console.log(' is trying to create new event');
         console.log(req.body);
-        es.save_edited_event(req.body["eventId"], req.body["Activity_name"], req.body["google-location"], req.body["categories"], req.body["description"], req.body["Activity_time"])
+        es.save_edited_event(req.body["event_id"], req.body["Activity_name"], req.body["google-location"], req.body["categories"], req.body["description"], req.body["Activity_time"])
             .then(_ => {
                 let newUrl = '/eventMe/myownevents/' + req.params["user_id"];
                 console.log(newUrl);
