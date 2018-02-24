@@ -5,12 +5,13 @@ function getList(){
 
     $('#excelDataTable tr').each(function(row, tr){
         myList[row]={
-            "Type" : $(tr).find('td:eq(0)').attr('id'),
-            "Title" : $(tr).find('td:eq(1)').text(),
-            "Distance" : $(tr).find('td:eq(2)').text(),
-            "Time" :$(tr).find('td:eq(4)').text(),
+            "Title" : $(tr).find('td:eq(0)').text(),
+            "Distance" : $(tr).find('td:eq(1)').text(),
+            "Event Id" :$(tr).find('td:eq(2)').text(),
+            "Time" :$(tr).find('td:eq(3)').text(),
+            "Type" : $(tr).find('td:eq(4)').attr('id'),
             "Owner" :$(tr).find('td:eq(5)').text(),
-            "Event Id" :$(tr).find('td:eq(3)').text()
+
         }
     });
     for (var listIndex = 2; listIndex < myList.length; listIndex++) {
@@ -192,13 +193,13 @@ function buildEventsTable(selector, myList) {
                 for (var typeindex = 0; typeindex < types.length; typeindex++) {
                     var type = types[typeindex].split('_');
                     if (type.length > 1) {
-                        if (!types_put_already.includes(type[1])) {
-                            types_put_already.push(type[1]);
+                        if (!types_put_already.includes(" " + type[1])) {
+                            types_put_already.push(" " + type[1]);
                         }
                     }
                     if (type.length == 1) {
-                        if (!types_put_already.includes(type[0])) {
-                            types_put_already.push(type[0]);
+                        if (!types_put_already.includes(" " + type[0])) {
+                            types_put_already.push(" " + type[0]);
                         }
                     }
                 }row$.append($('<td>' + types_put_already + '</td>' + '</tr>'));
