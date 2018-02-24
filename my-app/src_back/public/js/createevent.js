@@ -477,10 +477,12 @@ function CreateEvent() {
     //Look for checkboxes,make sure at least one is chekced
     var cblist = document.querySelectorAll('input[type="checkbox"]:checked');
     var str = "";
+    var cbnum=0;
     for (i = 0; i < cblist.length; i++) {
         //concatenate all category checked boxes to a string
         if (cblist[i].id != "location-cb" && cblist[i].id != "time-cb" && cblist[i].id != "free-poll-cb") {
             str += "," + cblist[i].id;
+            cbnum++;
         }
     }
     if (str.length == 0)//type was not chosen,'Other' set as default
@@ -593,7 +595,7 @@ function CreateEvent() {
 
     //If everything is okay submit form, err otherwise
     var poll_questions = [];
-    if (all_fields_set && polls_valid && cblist.length<MAX_TYPES) {
+    if (all_fields_set && polls_valid && cbnum<MAX_TYPES) {
         window.alert("Event created successfully!");
         var poll_counter = 0;
         if ($('#location-cb').is(':checked')) {
@@ -644,7 +646,7 @@ function CreateEvent() {
 
         document.getElementById("event-form").submit();
     }
-    else if (polls_valid && cblist.length <MAX_TYPES) {
+    else if (polls_valid && cbnum <MAX_TYPES) {
         window.alert("Please fill all non-optional fields.");
     }
     else if(polls_valid)
