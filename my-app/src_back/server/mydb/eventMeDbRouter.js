@@ -576,62 +576,6 @@ router.get('/eventsiattend/:fb_id', (req, res) => {
         })
 });
 
-/*
-************************************
-            shoeMeUsers page
-    params : none
-    body : none
-    redirect : none
-
-    private page
-    prints to console my all of the users
-*************************************
- */
-
-router.get('/showMeUsers', (req, res) => {
-    return new Promise((resolve, reject) => {
-        us.getAllUsers()
-            .then(all_users => {
-                console.log(all_users);
-                //res.render(all_users);
-                resolve()
-            }).catch(err => reject(err))
-    })
-});
-
-// 404 routing
-router.get('*', function (req, res) {
-    res.render('welcome');
-    //res.status(404).send('404 : The page you have requested does not exist.');
-});
-
-/*
-************************************
-            getMyInvitedEvents page
-    params : user_id
-    body : none
-    redirect : none
-
-    private page
-    prints to console my invted events
-*************************************
- */
-
-router.get('/getMyInvitedEvents/:user_id', (req, res) => {
-    return new Promise((resolve, reject) => {
-        console.log('getting all of my invited arrays:');
-        if (us.checkUserID(req.params.user_id, req) == false) {
-            res.render('welcome')
-        }
-        ;
-
-        us.get_my_invited_events(req.params.user_id)
-            .then(events_array => {
-                console.log('recieved ', events_array.length, ' arreys');
-                resolve()
-            }).catch(err => reject(err))
-    })
-});
 
 /*
 ************************************

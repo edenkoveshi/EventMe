@@ -1,4 +1,4 @@
-const DB = require('../data/DB')
+//const DB = require('../data/DB')
 const eventDAO = require('./eventDAO')
 const userDAO = require('./userDAO')
 var Event = require('./event')
