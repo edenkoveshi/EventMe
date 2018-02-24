@@ -10,22 +10,10 @@ $(document).ready(function () {
     var noon = document.getElementById('Noon');
     var evening = document.getElementById('Evening');
     today.onclick = function () {
-        var date = new Date();
-        var time = document.getElementById('event-time').value;
-        if (time != "")//if time is specified already,do not change it
-        {
-            date.setHours(parseInt(time.split('T')[1].split(':')[0]) + 2);//takes -2 for some reason
-            date.setMinutes(parseInt(time.split('T')[1].split(':')[1]));
-        }
-        SetDate(date);
+        SetDate(new Date());
     }
     tommorow.onclick = function () {
         var date = new Date();
-        var time = document.getElementById('event-time').value;
-        if (time != "") {
-            date.setHours(parseInt(time.split('T')[1].split(':')[0]) + 2);
-            date.setMinutes(parseInt(time.split('T')[1].split(':')[1]));
-        }
         var day = date.getDate();
         var month = date.getMonth();
         var year = date.getFullYear();
@@ -68,47 +56,38 @@ $(document).ready(function () {
         SetDate(date);
     }
     morning.onclick = function () {
-        var time = document.getElementById('event-time').value;
-        if (time == "")//if time&date is not specified,set default date for today's date
-        {
-            time = new Date();
-            time = time.toISOString();
-        }
-        var date = parseISOString(time);
+        var date = new Date();
         date.setHours(11);
         date.setMinutes(0);
-        SetDate(date);
+        SetTime(date);
     }
     noon.onclick = function () {
-        var time = document.getElementById('event-time').value;
-        if (time == "") {
-            time = new Date();
-            time = time.toISOString();
-        }
-        var date = parseISOString(time);
+        var date=new Date()
         date.setHours(17);
         date.setMinutes(0);
-        SetDate(date);
+        SetTime(date);
     }
     evening.onclick = function () {
-        var time = document.getElementById('event-time').value;
-        if (time == "") {
-            time = new Date();
-            time = time.toISOString();
-        }
-        var date = parseISOString(time);
+        var date = new Date();
         date.setHours(23);
         date.setMinutes(0);
-        SetDate(date);
+        SetTime(date);
     }
 
 });
 
 //Set date&time in input field
 function SetDate(date) {
-    var time = document.getElementById('event-time');
+    var d = document.getElementById('date');
     var isodate = date.toISOString();
-    time.value = isodate.substring(0, isodate.length - 8);//remove sec and millisec
+    d.value = isodate.substring(0, 10);//remove time
+}
+
+function SetTime(time)
+{
+    var t = document.getElementById('time');
+    var isodate = time.toISOString();
+    t.value = isodate.substring(11, isodate.length-8);//remove date,T,sec and millisec
 }
 
 //Parse ISO formatted string to Date object
@@ -211,14 +190,19 @@ function initMap(event) {
                 marker.setMap(map);
                 location_no_poll.value = "(" + result.lat + ", " + result.lng + ')';
             }
+            if(user_loc!='0')
+            {
+                var s=user_loc.split(',');
+                var pos={
+                    lat: parseFloat(s[0].substring(1,s[0].length)),
+                    lng: parseFloat(s[1].substring(0,s[1].length-1)),
+                }
+                console.log(pos);
+                map.setCenter(pos);
+                location_no_poll.value=user_loc;
+            }
             google.maps.event.trigger(map, "resize");
         });
-
-        if(user_loc!='0')
-        {
-            map.setCenter(user_loc);
-            location_no_poll.value=user_loc;
-        }
 
         //-------------- CHANGE LOCATION ON CLICK ------
         google.maps.event.addListener(map, 'click', function (event) {
@@ -355,7 +339,8 @@ function Poll() { // Get the modal
             }
         )
         $('#time-cb').click(function () {
-            $('#event-time').toggle(!this.checked);
+            $('#time').toggle(!this.checked);
+            $('#date').toggle(!this.checked);
             p = document.getElementById('time-polled');
             p.innerHTML = (p.innerHTML == "Date and time: Under poll") ? "Date and time" : "Date and time: Under poll";
             $('#time-options').toggle(this.checked);
@@ -388,8 +373,10 @@ function Poll() { // Get the modal
 
 //Add date and time objects,used for date and time polls
 function AddDateAndTime() {
-    $("<input type=datetime-local name='time-poll-option'/>").insertBefore($('#add-options'));
-    $("<input type=datetime-local name='time-poll-option'/>").insertBefore($('#add-options'));
+    $("<input type=date name='time-poll-option'/>").insertBefore($('#add-options'));
+    $("<input type=time name='time-poll-option'/><br>").insertBefore($('#add-options'));
+    $("<input type=date name='time-poll-option'/>").insertBefore($('#add-options'));
+    $("<input type=time name='time-poll-option'/><br>").insertBefore($('#add-options'));
 }
 
 //Same here for free polls
@@ -443,6 +430,13 @@ function ValidateTime(time) {
 function CreateEvent() {
     var location_under_poll = ($('#location-cb').is(':checked')) ? 1 : 0;
     var time_under_poll = ($('#time-cb').is(':checked')) ? 1 : 0;
+    if(!time_under_poll)
+    {
+        var t=document.getElementById('time').value;
+        var d=document.getElementById('date').value;
+        document.getElementById('event-time').value=(d+'T'+t);//ISO format
+
+    }
     var polls_valid = 1; //1 iff polls are valid - at least 2 options
     var all_fields_set = 1;
     var polls = [];
@@ -596,9 +590,9 @@ function CreateEvent() {
         if ($('#time-cb').is(':checked')) {
             var options = document.getElementsByName('time-poll-option');
             var values = [];
-            for (var i = 0; i < options.length; i++)
+            for (var i = 0; i < options.length; i+=2)
                 if (options[i].value != "")
-                    values.push(options[i].value);
+                    values.push(options[i].value+'T'+options[i+1].value);
             polls.push(values);
             poll_counter++;
             poll_questions.push("When is the best time for us?");
