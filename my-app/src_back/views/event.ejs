@@ -404,8 +404,8 @@
                         //Set options
                         var options = {
                             'title': title,
-                            'width': 400,
-                            'height': 300,
+                            'width': $(document).width() > 760 ? 400 : 200,
+                            'height': $(document).width() > 760 ? 300 : 150,
                             'bar': {groupWidth: "95%"},
                             'legend': {position: "none"},
                             'focusTarget': 'category',
