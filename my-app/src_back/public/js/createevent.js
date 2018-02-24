@@ -197,7 +197,6 @@ function initMap(event) {
                     lat: parseFloat(s[0].substring(1,s[0].length)),
                     lng: parseFloat(s[1].substring(0,s[1].length-1)),
                 }
-                console.log(pos);
                 map.setCenter(pos);
                 location_no_poll.value=user_loc;
             }
