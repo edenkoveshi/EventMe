@@ -86,7 +86,7 @@ router.get('/event/:event_id/:user_id', function (req, res) {
                     loca = find_location(event.pollArray[cur_poll].options, event.pollArray[cur_poll].voted_users[i].vote);
                     sanity_array[loca] += 1;
                 }
-                let vote_user_array_length = event.pollArray[cur_poll].voted_users.length;
+                let vote_user_array_length = event.pollArray[cur_poll].options.length;
                 for(let j = 0; j<vote_user_array_length; j++){
                     event.pollArray[cur_poll].options[j].votes = sanity_array[j];
                 }
