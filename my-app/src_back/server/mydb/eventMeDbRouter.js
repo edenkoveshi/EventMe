@@ -228,17 +228,14 @@ router.post('/addOpenEvent/:user_id', (req, res) => {
     }
     ;
 
-    return new Promise((resolve, reject) => {
-        console.log(' is trying to create new event');
-        console.log(req.body);
-        es.addOpenEvent(req.params["user_id"], req.body["Activity_name"], req.body["google-location"], req.body["categories"], req.body["description"], req.body["Activity_time"], req.body)
-            .then(_ => {
-                let newUrl = '/eventMe/myownevents/' + req.params["user_id"];
-                console.log(newUrl);
-                res.redirect(newUrl);
-                resolve()
-            }).catch(err => reject(err))
-    })
+    console.log(' is trying to create new event');
+    console.log(req.body);
+    es.addOpenEvent(req.params["user_id"], req.body["Activity_name"], req.body["google-location"], req.body["categories"], req.body["description"], req.body["Activity_time"], req.body)
+        .then(_ => {
+            let newUrl = '/eventMe/myownevents/' + req.params["user_id"];
+            console.log(newUrl);
+            res.redirect(newUrl);
+        }).catch(err => reject(err))
 });
 
 /*
@@ -259,19 +256,16 @@ router.post('/addOpenEvent/:user_id', (req, res) => {
  */
 router.get('/newUserTest/:fb_id/:f_name', (req, res) => {
     res.cookie('user_id', us.hashID(req.params.fb_id));
-    return new Promise((resolve, reject) => {
-        let friend_list = [{name: 'barak', id: '10155189617577308'}, {
-            name: 'itay',
-            id: '10209916833948634'
-        }, {name: 'Ronnie Artzi', id: '10155941032798926'},
-            {name: 'Eden Koveshi', id: '2358949860799526'}]
-        let frontpage = '/eventMe/frontpage/' + req.params.fb_id
-        us.addUser(req.params.fb_id, req.params.f_name, friend_list)
-            .then(events_array => {
-                res.redirect(frontpage);
-                resolve()
-            }).catch(err => reject(err))
-    })
+    let friend_list = [{name: 'barak', id: '10155189617577308'}, {
+        name: 'itay',
+        id: '10209916833948634'
+    }, {name: 'Ronnie Artzi', id: '10155941032798926'},
+        {name: 'Eden Koveshi', id: '2358949860799526'}]
+    let frontpage = '/eventMe/frontpage/' + req.params.fb_id
+    us.addUser(req.params.fb_id, req.params.f_name, friend_list)
+        .then(events_array => {
+            res.redirect(frontpage);
+        }).catch(err => reject(err))
 })
 
 /*
@@ -296,46 +290,42 @@ router.get('/newUserTest/:fb_id/:f_name', (req, res) => {
 
 router.post('/newUser', (req, res) => {
     console.log('trying to add new user');
-    return new Promise((resolve, reject) => {
-        // console.log(req.body);
-        var fb_id = req.body.fb_id;
-        res.cookie('user_id', us.hashID(fb_id));
-        var f_name = req.body.f_name;
-        var location = req.body.location;
-        var friend_list = JSON.parse(req.body.friend_list);
-        console.log(fb_id, f_name, friend_list);
-        var frontpage = '/eventMe/frontpage/' + fb_id;
-        us.getUserByFb(fb_id)
-            .then(user => {
-                if (user.length > 0) {
-                    console.log('user is already in the db, updating location and redirecting to frontpage');
-                    user[0].current_location = location
-                    var friends_id_only = []
-                    console.log(friend_list)
-                    var counter
-                    for (counter = 0; counter < friend_list.length; counter++) {
-                        friends_id_only[counter] = friend_list[counter].id
-                    }
-                    user[0].friends_list = friends_id_only;
-                    us.update_user(user[0])
-                        .then(_ => {
-                            res.redirect(frontpage);
-                            resolve()
-                        }).catch(err => reject(err))
-
-                } else {
-                    console.log('the user is not in the DB -> trying to add him');
-                    us.addUser(fb_id, f_name, friend_list, location)
-                        .then(_ => {
-                            us.get_my_invited_events(fb_id)
-                                .then(events_array => {
-                                    res.redirect(frontpage);
-                                    resolve()
-                                }).catch(err => reject(err))
-                        }).catch(err => reject(err))
+    var fb_id = req.body.fb_id;
+    res.cookie('user_id', us.hashID(fb_id));
+    var f_name = req.body.f_name;
+    var location = req.body.location;
+    var friend_list = JSON.parse(req.body.friend_list);
+    console.log(fb_id, f_name, friend_list);
+    var frontpage = '/eventMe/frontpage/' + fb_id;
+    us.getUserByFb(fb_id)
+        .then(user => {
+            if (user.length > 0) {
+                console.log('user is already in the db, updating location and redirecting to frontpage');
+                user[0].current_location = location
+                var friends_id_only = []
+                console.log(friend_list)
+                var counter
+                for (counter = 0; counter < friend_list.length; counter++) {
+                    friends_id_only[counter] = friend_list[counter].id
                 }
-            })
-    })
+                user[0].friends_list = friends_id_only;
+                us.update_user(user[0])
+                    .then(_ => {
+                        res.redirect(frontpage);
+                        resolve()
+                    }).catch(err => reject(err))
+
+            } else {
+                console.log('the user is not in the DB -> trying to add him');
+                us.addUser(fb_id, f_name, friend_list, location)
+                    .then(_ => {
+                        us.get_my_invited_events(fb_id)
+                            .then(events_array => {
+                                res.redirect(frontpage);
+                            }).catch(err => reject(err))
+                    }).catch(err => reject(err))
+            }
+        })
 });
 
 /*
@@ -434,20 +424,16 @@ router.post('/edit/:user_id', (req, res) => {
 router.post('/save_edited_event/:user_id', (req, res) => {
     if (us.checkUserID(req.params.user_id, req) == false) {
         res.render('welcome')
-    }
-    ;
+    };
 
-    return new Promise((resolve, reject) => {
-        console.log(' is trying to create new event');
-        console.log(req.body);
-        es.save_edited_event(req.body["event_id"], req.body["Activity_name"], req.body["google-location"], req.body["categories"], req.body["description"], req.body["Activity_time"])
-            .then(_ => {
-                let newUrl = '/eventMe/myownevents/' + req.params["user_id"];
-                console.log(newUrl);
-                res.redirect(newUrl);
-                resolve()
-            }).catch(err => reject(err))
-    })
+    console.log(' is trying to create new event');
+    console.log(req.body);
+    es.save_edited_event(req.body["event_id"], req.body["Activity_name"], req.body["google-location"], req.body["categories"], req.body["description"], req.body["Activity_time"])
+        .then(_ => {
+            let newUrl = '/eventMe/myownevents/' + req.params["user_id"];
+            console.log(newUrl);
+            res.redirect(newUrl);
+        }).catch(err => reject(err))
 });
 
 /*
@@ -659,23 +645,20 @@ router.get('/getMyInvitedEvents/:user_id', (req, res) => {
  */
 
 router.post('/vote/:user_id', (req, res) => {
-    return new Promise((resolve, reject) => {
-        console.log('I am using my right to vote !  go trump!')
-        user_id = req.params.user_id
-        if (us.checkUserID(req.params.user_id, req) == false) {
-            res.render('welcome')
-        }
-        ;
+    console.log('I am using my right to vote !  go trump!')
+    user_id = req.params.user_id
+    if (us.checkUserID(req.params.user_id, req) == false) {
+        res.render('welcome')
+    }
+    ;
 
-        event_id = req.body.eventId
-        cur_pull = req.body.pollNum
-        my_vote = req.body.myVote
-        es.vote(user_id, event_id, cur_pull - 1, my_vote).then(_ => {
-            console.log('I managed to vote!!, maybe i shoudent have voted for trump...')
-            res.redirect('/eventMe/event/' + event_id + '/' + user_id);
-            resolve()
-        }).catch(err => reject(err))
-    })
+    event_id = req.body.eventId
+    cur_pull = req.body.pollNum
+    my_vote = req.body.myVote
+    es.vote(user_id, event_id, cur_pull - 1, my_vote).then(_ => {
+        console.log('I managed to vote!!, maybe i shoudent have voted for trump...')
+        res.redirect('/eventMe/event/' + event_id + '/' + user_id);
+    }).catch(err => reject(err))
 });
 
 
@@ -690,24 +673,21 @@ router.post('/vote/:user_id', (req, res) => {
 *************************************
  */
 router.post('/closepoll', (req, res) => {
-    return new Promise((resolve, reject) => {
-        console.log('trying to vote, let it close, let it close')
-        user_id = req.body.user_id
-        console.log('user_id = ' + user_id)
-        event_id = req.body.eventId
-        console.log('event_id = ' + event_id)
-        cur_pull = req.body.pollNum
-        console.log('cur_pull = ' + cur_pull)
-        poll_type = req.body.event_type
-        console.log('poll_type = ' + poll_type)
-        console.log('body = ')
-        console.log(req.body)
-        es.close_vote(user_id, event_id, cur_pull - 1, poll_type).then(_ => {
-            console.log('The event is closed')
-            res.redirect('/eventMe/event/' + event_id + '/' + user_id);
-            resolve()
-        }).catch(err => reject(err))
-    })
+    console.log('trying to vote, let it close, let it close')
+    user_id = req.body.user_id
+    console.log('user_id = ' + user_id)
+    event_id = req.body.eventId
+    console.log('event_id = ' + event_id)
+    cur_pull = req.body.pollNum
+    console.log('cur_pull = ' + cur_pull)
+    poll_type = req.body.event_type
+    console.log('poll_type = ' + poll_type)
+    console.log('body = ')
+    console.log(req.body)
+    es.close_vote(user_id, event_id, cur_pull - 1, poll_type).then(_ => {
+        console.log('The event is closed')
+        res.redirect('/eventMe/event/' + event_id + '/' + user_id);
+    }).catch(err => reject(err))
 });
 
 

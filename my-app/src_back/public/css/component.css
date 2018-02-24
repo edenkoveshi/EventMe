@@ -83,7 +83,7 @@
     overflow-x: hidden;
 }
 
-#excelDataTable, #cf {
+#cf {
     width: 100%;
     height: 100%;
     position: relative;
@@ -96,27 +96,53 @@
 
 }
 
+#excelDataTable {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 0.5;
+    display: block;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    border-radius: 23px;
+    font-size:20px;
+
+}
+
 #excelDataTable td{
+    valign:middle;
+    text-align:center;
     width: 290px;
-    height: 100px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border: 2px solid #dddddd;
+    height: 65px;
+    background-color: rgba(255, 255, 255, 0.75);
+
 }
 
 #excelDataTable th{
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 3px;
+    text-align:center;
+    padding-left: 10px;
     color: white;
-    font: 800 25px/1.5 "Helvetica Neue", helvetica, arial, sans-serif;
+    font-family: "Helvetica Neue";
+    font-size: 32px;
+    font-weight: 700;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    border-collapse: collapse;
 }
 
 #excelDataTable tr{
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.75);
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    border-collapse: collapse;
 }
 
 #excelDataTable tr:hover{
     background: #b3d4fc;
+}
+
+#excelDataTable a:hover, a:visited, a:link, a:active
+{
+    text-decoration: none;
 }
 
 input[type=text] {

@@ -132,7 +132,7 @@
                                    onclick="ChooseLocation()" style="background-color: black; color: white"/>
                         </div>
                     </div>
-                    <p id="event-type"><%= event_type %></p>
+                    <p style="display:none" id="event-type"><%= event_type %></p>
                     <div class="form-row">
                         <div class="form-group col-md">
                             <input type="button" class="form-control" value="Select your event type:(optional)"
@@ -321,7 +321,7 @@
                             <input class="form-control" type="hidden" name="categories">Description (optional):</input>
                         </div>
                         <div class="form-group col-md-6">
-                            <input class="form-control" placeholder="Description" name="description"
+                            <input class="form-control" placeholder="Description" name="description" id="description"
                                    value='<%= event_desc %>'>
                         </div>
                     </div>
@@ -329,7 +329,7 @@
                         <div class="form-group col-md"
                              style="margin-left:auto; margin-right: auto; overflow-y: scroll;">
                             <input type="button" id="poll" onclick="Poll()" value="Poll!" class="form-control"
-                                   style="background-color: black; color: white"/>
+                                   style="display:none"/>
                             <div id="poll-modal" style="display:none">
                                 <div class="modal-content" style="color:black">
                                     <div id="poll">
@@ -392,11 +392,28 @@
 </div><!-- /container -->
 <script>
     var time = document.getElementById('event-time').value;
-    if (time == undefined) document.getElementById('event-time').value = "";
+    if (time == '')
+    {
+        document.getElementById('event-time').style = "display:none";
+        p = document.getElementById('time-polled');
+        p.value=p.innerHTML+"Under Poll";
+
+    }
     var description = document.getElementById('description').value;
-    if (description == undefined) document.getElementById('description').value = "";
-    var type = document.getElementById('event-type');
+    if (description == undefined)
+    {
+        document.getElementById('description').value = "";
+    }
+    var event_location=document.getElementById('location');
+    if(event_location.value=='')
+    {
+        document.getElementById('Activity_location').style="display:none";
+        var tmp = document.getElementById('location-polled');
+        tmp.innerHTML = "Under poll";
+    }
+    var type = document.getElementById('event-type').innerHTML;
     var types = type.split(',');
+    console.log(types);
     types.forEach(function (item, index) {
         $('#' + item).prop('checked', true);
     });
