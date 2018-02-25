@@ -133,6 +133,7 @@ class eventService {
                 else
                 {
                     console.log('delete_my_event - user does not own this event')
+                    resolve()
                 }
             }).catch(err => reject(err))
         })

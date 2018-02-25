@@ -314,8 +314,11 @@ function updated_accepted_user(event, user_id, user_name) {
 }
 function move_event_to_old(user, invited_list, event_id)
 {
-    user[invited_list].splice(user[invited_events].indexOf(event_id), 1);
-    user.old_events.push(event_id);
+    console.log("-----move_event_to_old--------");
+    console.log("old events:")
+    console.log(user["old_events"])
+    user[invited_list].splice(user[invited_list].indexOf(event_id), 1);
+    user["old_events"].push(event_id);
     userDAO.update_user(user.fb_id, user)
 }
 function get_all_my_full_events(user, invited_list) {
@@ -327,14 +330,19 @@ function get_all_my_full_events(user, invited_list) {
         let a_promise;
         for (let i = 0; i < user_invited_events.length; i++) {
             a_promise = eventDAO.get_event(user_invited_events[i]).then(full_event => {
-                console.log('trying to validate event time for event Id '+full_event[0].eventId);
-                if(validate_event_date(full_event[0]))
-                {
-                    console.log("Pushed an event, " + full_event[0].eventId);
-                    full_event_list.push(full_event[0])
-                }else
-                {
-                    move_event_to_old(user, invited_list, full_event[0].eventId)
+                if(full_event.length > 0){
+                    console.log('trying to validate event time for event Id '+full_event[0].eventId);
+                    if(validate_event_date(full_event[0]))
+                    {
+                        console.log("Pushed an event, " + full_event[0].eventId);
+                        full_event_list.push(full_event[0])
+                    }else
+                    {
+                        move_event_to_old(user, invited_list, full_event[0].eventId)
+                    }
+                }
+                else{
+                    console.log("problem - you have bad event")
                 }
 
             }).catch(err => reject(err));
