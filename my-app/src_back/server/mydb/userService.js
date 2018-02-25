@@ -314,7 +314,7 @@ function updated_accepted_user(event, user_id, user_name) {
 }
 function move_event_to_old(user, invited_list, event_id)
 {
-    user[invited_list].splice(user.invited_events.indexOf(event_id), 1);
+    user[invited_list].splice(user[invited_events].indexOf(event_id), 1);
     user.old_events.push(event_id);
     userDAO.update_user(user.fb_id, user)
 }
