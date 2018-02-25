@@ -1,5 +1,6 @@
 var myList = new Array();
 var myTmpCurrentList = new Array();
+var collapse_nav_open = false;
 
 function getList(){
 
@@ -25,6 +26,134 @@ function getList(){
     }
     return myList;
 }
+
+function csschange() {
+    if (!collapse_nav_open) {
+        collapse_nav_open = true;
+        if (window.innerHeight < 420 && window.innerHeight > 320) {
+            $('#excelDataTable tbody').css({
+                'height': '150px'
+            });
+
+            $('#excelDataTable').css({
+                'height': '50px'
+            });
+        }
+        else if (window.innerHeight < 520 && window.innerHeight > 420) {
+            $('#excelDataTable tbody').css({
+                'height': '250px'
+            });
+
+            $('#excelDataTable').css({
+                'height': '150px'
+            });
+        }
+        else if (window.innerHeight < 650 && window.innerHeight > 520) {
+            $('#excelDataTable tbody').css({
+                'height': '350px'
+            });
+
+            $('#excelDataTable').css({
+                'height': '250px'
+            });
+        }
+        else if (window.innerHeight < 720 && window.innerHeight > 650) {
+            $('#excelDataTable tbody').css({
+                'height': '450px'
+            });
+
+            $('#excelDataTable').css({
+                'height': '350px'
+            });
+        }
+        else{
+            $('#excelDataTable tbody').css({
+                'height': '550px'
+            });
+
+            $('#excelDataTable').css({
+                'height': '450px'
+            });
+        }
+    } else {
+        collapse_nav_open = false;
+
+        if (window.innerHeight < 420 && window.innerHeight > 320) {
+            $('#excelDataTable tbody').css({
+                'height': '300px'
+            });
+
+            $('#excelDataTable').css({
+                'height': '200px'
+            });
+        }
+        else if (window.innerHeight < 520 && window.innerHeight > 420) {
+            $('#excelDataTable tbody').css({
+                'height': '400px'
+            });
+
+            $('#excelDataTable').css({
+                'height': '300px'
+            });
+        }
+        else if (window.innerHeight < 650 && window.innerHeight > 520) {
+            $('#excelDataTable tbody').css({
+                'height': '500px'
+            });
+
+            $('#excelDataTable').css({
+                'height': '400px'
+            });
+        }
+        else if (window.innerHeight < 720 && window.innerHeight > 650) {
+            $('#excelDataTable tbody').css({
+                'height': '630px'
+            });
+
+            $('#excelDataTable').css({
+                'height': '530px'
+            });
+        }
+        else if (window.innerHeight < 1220 && window.innerHeight > 720) {
+            $('#excelDataTable tbody').css({
+                'height': '700px'
+            });
+
+            $('#excelDataTable').css({
+                'height': '600px'
+            });
+        }
+        else if (window.innerHeight < 2120 && window.innerHeight > 1220) {
+            $('#excelDataTable tbody').css({
+                'height': '1200px'
+            });
+
+            $('#excelDataTable').css({
+                'height': '1100px'
+            });
+        }
+        else if (window.innerHeight < 3120 && window.innerHeight > 2120) {
+            $('#excelDataTable tbody').css({
+                'height': '2100px'
+            });
+
+            $('#excelDataTable').css({
+                'height': '2000px'
+            });
+        }
+        else if (window.innerHeight > 3120) {
+            $('#excelDataTable tbody').css({
+                'height': '3100px'
+            });
+
+            $('#excelDataTable').css({
+                'height': '3000px'
+            });
+        }
+    }
+}
+
+
 function boxChecked() {
     var myCurrentList = [];
     var numberchecked = 0;
