@@ -393,7 +393,7 @@ router.post('/edit/:user_id', (req, res) => {
         }
         else {
             console.log('event was not found!!!');
-            res.render('404');
+            res.render('welcome');
         }
     });
 });
