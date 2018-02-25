@@ -185,7 +185,7 @@ function buildEventsTable(selector, myList) {
             var link = "/eventMe/event/" + myList[i]["Event Id"]+ "/" + user_id;
             var hrefdelete = "/eventMe/delete_event/" + myList[i]["Event Id"]+ "/" +user_id;
             if (columns[colIndex] == "Title") {
-                row$.append($('<td>'+'<a href='+link+'>'+cellValue+'</a>'+'</td>'+'</tr>'));
+                row$.append($('<td>'+'<a href='+link+'>'+cellValue+'</a>'+'</td>'));
             }
             else if (columns[colIndex] == "Type") {
                 var types = cellValue.split(',');
@@ -202,15 +202,18 @@ function buildEventsTable(selector, myList) {
                             types_put_already.push(" " + type[0]);
                         }
                     }
-                }row$.append($('<td>' + types_put_already + '</td>' + '</tr>'));
+                }row$.append($('<td>' + types_put_already + '</td>'));
             }
             else if (columns[colIndex] == "Owner" && arrayHref[4] == "myownevents") {
-                row$.append($('<td>'+cellValue+'</td>'+'</tr>'));
+                row$.append($('<td>'+cellValue+'</td>'));
                 row$.append($('<td>'+'<a style="white-space: normal; background-color: rgba(248,131,121,0.8); color: black; border-color: black" class="btn btn-info btn-lg" href='+hrefdelete+'>delete</a>'+'</td>'+'</tr>'));
             }
             else {
-                row$.append($('<td>'+cellValue+'</td>'+'</tr>'));
+                row$.append($('<td>'+cellValue+'</td>'));
             }
+        }
+        if (arrayHref[4] !== "myownevents") {
+            row$.append($('<td>'+'</td>'+'</tr>'));
         }
         $(selector).append(row$);
     }
@@ -250,9 +253,7 @@ function addAllColumnHeaders(myList, selector) {
             }
         }
     }
-    if (arrayHref[4] == "myownevents") {
-        headerTr$.append($('<th/>'));
-    }
+    headerTr$.append($('<th/>'));
     $(selector).append(headerTr$);
 
     return columnSet;

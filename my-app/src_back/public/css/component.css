@@ -90,15 +90,16 @@
 }
 
 #excelDataTable {
-    overflow-x: auto;
-    overflow-y: auto;
     width: 100%;
     position: relative;
+    overflow-x: auto;
+    overflow-y: auto;
     z-index: 0.5;
     display: block;
     -ms-overflow-style: -ms-autohiding-scrollbar;
     font-size: 20px;
-    padding-bottom:70px;
+    /*padding-bottom:70px;*/
+    border-radius: 30px;
 }
 
 #excelDataTable td {
