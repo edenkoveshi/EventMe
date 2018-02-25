@@ -330,14 +330,19 @@ function get_all_my_full_events(user, invited_list) {
         let a_promise;
         for (let i = 0; i < user_invited_events.length; i++) {
             a_promise = eventDAO.get_event(user_invited_events[i]).then(full_event => {
-                console.log('trying to validate event time for event Id '+full_event[0].eventId);
-                if(validate_event_date(full_event[0]))
-                {
-                    console.log("Pushed an event, " + full_event[0].eventId);
-                    full_event_list.push(full_event[0])
-                }else
-                {
-                    move_event_to_old(user, invited_list, full_event[0].eventId)
+                if(full_event.length > 0){
+                    console.log('trying to validate event time for event Id '+full_event[0].eventId);
+                    if(validate_event_date(full_event[0]))
+                    {
+                        console.log("Pushed an event, " + full_event[0].eventId);
+                        full_event_list.push(full_event[0])
+                    }else
+                    {
+                        move_event_to_old(user, invited_list, full_event[0].eventId)
+                    }
+                }
+                else{
+                    console.log("problem - you have bad event")
                 }
 
             }).catch(err => reject(err));
