@@ -227,7 +227,7 @@ function addAllColumnHeaders(myList, selector) {
     var headerTr$ = $('<tr/>');
     var myHref = window.location.href;
     var arrayHref = myHref.split("/");
-    var ifEmpty = ["Type", "Title", "Distance", "Time", "Owner"];
+    var ifEmpty = ["Title", "Distance", "Time", "Type", "Owner"];
     if (myList.length == 0) {
         for (var i = 0; i < ifEmpty.length; i++) {
             if (ifEmpty[i] !== "Distance") {
