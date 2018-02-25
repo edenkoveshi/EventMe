@@ -191,11 +191,11 @@ router.get('/delete_event/:event_id/:user_id', function (req, res) {
     if (!us.checkUserID(req.params.user_id, req)) {
         res.render('welcome')
     }
-
+    let newUrl = '/eventMe/myownevents/' + req.params["user_id"];
     es.delete_my_event(req.params.event_id, req.params.user_id)
         .then(_ => {
             console.log('delelted event - event deleted');
-            res.redirect(req.get('referer'));
+            res.redirect(newUrl);
         });
 });
 
