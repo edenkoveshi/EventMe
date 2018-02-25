@@ -123,7 +123,7 @@ router.get('/event/:event_id/:user_id', function (req, res) {
             ;
         }
         else {
-            res.render('404');
+            res.render('welcome');
         }
     });
 });
