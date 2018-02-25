@@ -314,8 +314,11 @@ function updated_accepted_user(event, user_id, user_name) {
 }
 function move_event_to_old(user, invited_list, event_id)
 {
+    console.log("-----move_event_to_old--------");
+    console.log("old events:")
+    console.log(user["old_events"])
     user[invited_list].splice(user[invited_list].indexOf(event_id), 1);
-    user.old_events.push(event_id);
+    user["old_events"].push(event_id);
     userDAO.update_user(user.fb_id, user)
 }
 function get_all_my_full_events(user, invited_list) {
