@@ -211,6 +211,7 @@
 #excelDataTable th {
     text-align: center;
     padding-left: 10px;
+    width: 20%;
     color: white;
     font-family: "Helvetica Neue";
     font-size: 32px;
@@ -221,12 +222,8 @@
 }
 
 #excelDataTable tr {
-    /*from*/
     width: 100%;
-    /*display: inline-table;*/
-    /*table-layout: fixed;*/
     overflow-x: scroll;
-    /*end of from*/
     background-color: rgba(0, 0, 0, 0.75);
     border-bottom: 1px solid black;
     border-top: 1px solid black;
