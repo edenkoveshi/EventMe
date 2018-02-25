@@ -223,7 +223,6 @@ function buildEventsTable(selector, myList) {
 // Need to do union of keys from all records as some records may not contain
 // all records.
 function addAllColumnHeaders(myList, selector) {
-    // $(selector).append($('<caption>'+"Events"+'</caption>'));
     var columnSet = [];
     var headerTr$ = $('<tr/>');
     var myHref = window.location.href;
