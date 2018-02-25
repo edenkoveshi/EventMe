@@ -80,109 +80,164 @@
     -ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
+
 @media only screen and (min-height: 320px) and (max-height: 420px) {
-    #cf {
-        overflow-x: scroll;
-        overflow-y: scroll;
-    }
     #excelDataTable tbody {
         overflow-y: scroll;
-        height: 200px;
+        height: 300px;
         width: 100%;
         position: relative;
     }
 
     #excelDataTable {
-        height: 100px;
+        height: 200px;
         display: -moz-groupbox;
+        font-size: 13px;
+    }
+
+    #excelDataTable th {
+        font-size: 24px;
+        font-weight: 300;
     }
 }
 
 @media only screen and (min-height: 420px) and (max-height: 520px) {
-    #cf {
-        overflow-x: scroll;
-        overflow-y: scroll;
-    }
     #excelDataTable tbody {
         overflow-y: scroll;
-        height: 290px;
+        height: 400px;
         width: 100%;
         position: relative;
     }
 
     #excelDataTable {
-        height: 190px;
+        height: 300px;
         display: -moz-groupbox;
+        font-size: 13px;
+    }
+
+    #excelDataTable th {
+        font-size: 24px;
+        font-weight: 300;
     }
 }
 
-@media only screen and (min-height: 520px) and (max-height: 720px) {
+@media only screen and (min-height: 520px) and (max-height: 650px) {
     #excelDataTable tbody {
         overflow-y: scroll;
-        height: 390px;
+        height: 500px;
         width: 100%;
         position: relative;
     }
 
     #excelDataTable {
-        height: 290px;
+        height: 400px;
         display: -moz-groupbox;
+        font-size: 13px;
+    }
+
+    #excelDataTable th {
+        font-size: 24px;
+        font-weight: 300;
     }
 }
 
-@media only screen and (min-height: 620px) and (max-height: 1220px){
+@media only screen and (min-height: 650px) and (max-height: 720px) {
     #excelDataTable tbody {
         overflow-y: scroll;
-        height: 490px;
+        height: 630px;
         width: 100%;
         position: relative;
     }
 
     #excelDataTable {
-        height: 390px;
+        height: 530px;
         display: -moz-groupbox;
+        font-size: 13px;
+    }
+
+    #excelDataTable th {
+        font-size: 24px;
+        font-weight: 300;
+    }
+}
+
+@media only screen and (min-height: 720px) and (max-height: 1220px){
+    #excelDataTable tbody {
+        overflow-y: scroll;
+        height: 700px;
+        width: 100%;
+        position: relative;
+    }
+
+    #excelDataTable {
+        height: 600px;
+        display: -moz-groupbox;
+        font-size: 20px;
+    }
+
+    #excelDataTable th {
+        font-size: 32px;
+        font-weight: 700;
     }
 }
 
 @media only screen and (min-height: 1220px) and (max-height: 2120px) {
     #excelDataTable tbody {
         overflow-y: scroll;
-        height: 1090px;
+        height: 1200px;
         width: 100%;
         position: relative;
     }
 
     #excelDataTable {
-        height: 990px;
+        height: 1100px;
         display: -moz-groupbox;
+        font-size: 20px;
+    }
+
+    #excelDataTable th {
+        font-size: 32px;
+        font-weight: 700;
     }
 }
 
 @media only screen and (min-height: 2120px) and (max-height: 3120px) {
     #excelDataTable tbody {
         overflow-y: scroll;
-        height: 1990px;
+        height: 2100px;
         width: 100%;
         position: relative;
     }
 
     #excelDataTable {
-        height: 1890px;
+        height: 2000px;
         display: -moz-groupbox;
+        font-size: 20px;
+    }
+
+    #excelDataTable th {
+        font-size: 32px;
+        font-weight: 700;
     }
 }
 
 @media only screen and (min-height: 3120px) {
     #excelDataTable tbody {
         overflow-y: scroll;
-        height: 2990px;
+        height: 3100px;
         width: 100%;
         position: relative;
     }
 
     #excelDataTable {
-        height: 2890px;
+        height: 3000px;
         display: -moz-groupbox;
+        font-size: 20px;
+    }
+
+    #excelDataTable th {
+        font-size: 32px;
+        font-weight: 700;
     }
 }
 
@@ -195,7 +250,6 @@
     z-index: 0.5;
     display: block;
     -ms-overflow-style: -ms-autohiding-scrollbar;
-    font-size: 20px;
     border-radius: 30px;
 }
 
@@ -214,8 +268,6 @@
     width: 20%;
     color: white;
     font-family: "Helvetica Neue";
-    font-size: 32px;
-    font-weight: 700;
     border-bottom: 1px solid black;
     border-top: 1px solid black;
     border-collapse: collapse;
