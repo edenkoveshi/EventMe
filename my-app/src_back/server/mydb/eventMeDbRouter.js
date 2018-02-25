@@ -81,16 +81,19 @@ router.get('/event/:event_id/:user_id', function (req, res) {
         if (event !== undefined) {
             let sanity_array = [0,0,0,0];
             let loca = 0;
-            for(let cur_poll = 0; cur_poll<event.pollArray.length ; cur_poll++){
-                for(let i = 0; i<event.pollArray[cur_poll].voted_users.length; i++){
-                    loca = find_location(event.pollArray[cur_poll].options, event.pollArray[cur_poll].voted_users[i].vote);
-                    sanity_array[loca] += 1;
-                }
-                let vote_user_array_length = event.pollArray[cur_poll].options.length;
-                for(let j = 0; j<vote_user_array_length; j++){
-                    event.pollArray[cur_poll].options[j].votes = sanity_array[j];
+            if (event.pollArray.pollCounter > 0){
+                for(let cur_poll = 0; cur_poll<event.pollArray.length ; cur_poll++){
+                    for(let i = 0; i<event.pollArray[cur_poll].voted_users.length; i++){
+                        loca = find_location(event.pollArray[cur_poll].options, event.pollArray[cur_poll].voted_users[i].vote);
+                        sanity_array[loca] += 1;
+                    }
+                    let vote_user_array_length = event.pollArray[cur_poll].options.length;
+                    for(let j = 0; j<vote_user_array_length; j++){
+                        event.pollArray[cur_poll].options[j].votes = sanity_array[j];
+                    }
                 }
             }
+
 
             res.render('event', {
                 event_id: req.params.event_id,
