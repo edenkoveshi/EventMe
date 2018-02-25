@@ -6,8 +6,13 @@ var free_poll_counter=0;
 const MAX_OPTIONS = 4;
 const MAX_TYPES = 3;
 
+var location_edit_poll; //edit page, location is polled
+var time_edit_poll; //similiar
+
 $(document).ready(function () {
     //----Set onclick functions for time&date buttons-------
+    location_edit_poll=(document.getElementById('location-polled').innerHTML=="Under poll");
+    time_edit_poll=(document.getElementById('time-polled').innerHTML=="Date &amp; Time:Under Poll");
     var today = document.getElementById('Today');
     var tommorow = document.getElementById('Tommorow');
     var morning = document.getElementById('Morning');
@@ -446,8 +451,6 @@ function ValidateTime(time) {
 function CreateEvent() {
     var location_under_poll = ($('#location-cb').is(':checked')) ? 1 : 0;
     var time_under_poll = ($('#time-cb').is(':checked')) ? 1 : 0;
-    var location_edit_poll=(document.getElementById('location').value=="") ? 0 : 1; //edit page, location is polled
-    var time_edit_poll=(document.getElementById('event-time').value=="") ? 0 : 1; //similiar
     if(!time_under_poll)
     {
         var t=document.getElementById('time').value;
@@ -595,7 +598,7 @@ function CreateEvent() {
 
     //If everything is okay submit form, err otherwise
     var poll_questions = [];
-    if (all_fields_set && polls_valid && cbnum<MAX_TYPES) {
+    if (all_fields_set && polls_valid && cbnum<=MAX_TYPES) {
         window.alert("Event created successfully!");
         var poll_counter = 0;
         if ($('#location-cb').is(':checked')) {

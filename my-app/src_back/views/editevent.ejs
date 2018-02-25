@@ -411,22 +411,21 @@
         p.innerHTML=p.innerHTML+":Under Poll";
 
     }
-    else
-    {
+    else {
         function SetDate(date) {
             var d = document.getElementById('date');
             d.value = date.substring(0, 10);//remove time
         }
 
-        function SetTime(time)
-        {
+        function SetTime(time) {
             var t = document.getElementById('time');
             t.value = time.substring(11, time.length);//remove date,T,sec and millisec
         }
+
         SetDate(time_date);
         SetTime(time_date);
-
     }
+
     var description = document.getElementById('description').value;
     if (description == undefined)
     {
